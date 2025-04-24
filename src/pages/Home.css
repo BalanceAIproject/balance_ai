@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,19 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+p {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 3vw;
+}
+
+button {
+  color: red;
+  padding: 10px 20px;
+  border: black;
+  background-color: #61dafb;
+  font-size: 3vw;
+  cursor: pointer;
+  border-radius: 10px;
 }
