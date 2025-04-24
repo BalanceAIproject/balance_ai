@@ -6,7 +6,7 @@ function About ()  {
   return (
     <div>
       <div className='navbar'>
-        <a href='/'>Home</a>
+        <a href='/Home'>Home</a>
         <a href='/About'>About</a>
       </div>
 

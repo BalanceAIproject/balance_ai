@@ -1,7 +1,10 @@
 import './Greet.css';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 function Greet () {
+    const navigate = useNavigate();
     return (
         <body className='greetpage'>
 
@@ -9,12 +12,12 @@ function Greet () {
                 <h1>Imagination Canvas</h1>
             </div>
             <div>
-                <h3>Brough to you by: Balance.ai</h3>
+                <h3>Brough to you by: Balnce.ai</h3>
             </div>
 
             <div className='buttons'>
-                <button href="/login">Log In</button>
-                <button href="/signup">Sign Up</button>
+                <button onClick={() => navigate('/login')}>Log In</button>
+                <button onClick={() => navigate('/signup')}>Sign Up</button>
             </div>
 
         </body>
