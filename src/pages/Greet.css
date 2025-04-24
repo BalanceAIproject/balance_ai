@@ -1,0 +1,40 @@
+.greetpage {
+    text-align: center;
+    background-color: #d0ebd0;
+    display: grid;
+    place-items: center;
+    height: 100vh;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    place-items: center;
+}
+
+h1 {
+    color: green;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 5vw;
+}
+
+h3 {
+    color: green;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2vw;
+}
+
+button {
+    color: green;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    width: 10vw;
+    font-size: 1vw;
+}
+
+button:hover {
+    background-color: rgb(219, 217, 217);
+    font-weight: bold;
+}

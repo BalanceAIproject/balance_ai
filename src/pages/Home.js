@@ -1,8 +1,23 @@
 import './Home.css';
+import React from 'react';
 
 
-const home = () => {
-  return <h1>Home Page</h1>;
+function Home() {
+  return (
+    <div>
+
+      <div className='navbar'>
+        <a href='/'>Home</a>
+        <a href='/About'>About</a>
+        <a href='/login'>Log in</a>
+      </div>
+
+      <div>
+        THIS IS THE HOMEPAGE
+      </div>
+
+    </div>
+  );
 };
 
-export default home;
+export default Home;

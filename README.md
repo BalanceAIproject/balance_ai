@@ -1,6 +1,11 @@
 
 'npm start' to host the website on localhost:3000
 
+
+add .css for every .js, avoid directly formatting in the .js files
+import .css file ontop of according .js file
+
+
 installed React features:
 
     npm install react-router-dom

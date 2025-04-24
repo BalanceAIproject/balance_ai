@@ -1,22 +1,14 @@
+import './navigation.css';
 import { Outlet, Link } from "react-router-dom";
 
 const navigation = () => {
   return (
-    <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/About">About</Link>
-          </li>
-        </ul>
-      </nav>
-
-      <Outlet />
-    </>
-  )
+  <div className='navbar'>
+    <a Link to="/">Home</a>
+    <a Link to="/About">About</a>
+    <Outlet />
+  </div>
+  );
 };
 
 export default navigation;
