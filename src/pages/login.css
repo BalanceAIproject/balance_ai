@@ -13,15 +13,7 @@
     place-items: center;
 }
 
-
-h1 {
-    color: green;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 4vw;
-    margin: 10px;
-}
-
-input {
+.textinput {
     border-radius: 30px;
     border: none;
     height: 50px;
@@ -36,4 +28,44 @@ input::placeholder{
     text-align: center;
     color: green;
     font-family: cursive;
+    font-size: 1vw;
+}
+
+label {
+    margin: 0px;
+}
+
+.checkbox {
+    margin-right: -50px;;
+}
+
+h1 {
+    color: green;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 4vw;
+    margin-bottom: 10px;
+}
+
+p   {
+    color: green;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: .8vw;
+    margin: 10px;
+}
+
+button {
+    background-color: green;
+    color: white;
+    border-radius: 30px;
+    border: none;
+    height: 40px;
+    width: 8vw;
+    font-size: 1vw;
+    cursor: pointer;
+    margin-top: 80px;
+}
+
+button:hover {
+    background-color: #4CAF50;
+    color: white;
 }
