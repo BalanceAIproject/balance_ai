@@ -6,8 +6,8 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from './pages/Home';
 import About from './pages/About'
 import Greet from './pages/Greet';
-import Login from './pages/login';
-import Signup from './pages/signup';
+import Login from './pages/log in/login';
+import Signup from './pages/sign up/signup';
 
 export default function App() {
   return(

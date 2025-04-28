@@ -1,0 +1,11 @@
+{
+    "name": "Balnce_AI: Imagination Canvas",
+    "short_name": "Imagination Canvas",
+    "description": "building in progress...",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ceebcb",
+    "theme_color": "#008000",
+    "icons": [{},{}]
+  }
+  

@@ -8,27 +8,24 @@ function Login () {
     const navigate = useNavigate();
     
     return (
-        <div className="Loginpage">
-            <div>
+        <div className="backdrop">
+
                 <h1>Log In</h1>
 
                 <div className="inputBox">
-                    <input type="text" placeholder="Username" className="textiput"></input>
-                    <input type="text" placeholder="Password" className="textinput"></input>
+                    <input type="text" placeholder="Username"></input>
+                    <input type="text" placeholder="Password"></input>
                 </div>
 
-                {/* <div>
-                    <input  type="checkbox" id="rememberMe" 
-                            className="checkbox"
-                            value={true}/>
+                <div className="remember">
+                    <input type="checkbox" id="rememberMe" value={true}/>
                     <label htmlFor="rememberMe">Remember Me</label>
-                </div> */}
+                </div>
 
                 <div>
                     <button onClick={() => navigate('/Home')}>Log in</button>
                     <p>Don't have an account? <a href="/signup">Sign up</a></p>
                 </div>
-            </div>
         </div>
     );
 };
