@@ -37,7 +37,7 @@ input::placeholder{
     text-align: center;
     color: green;
     font-family: cursive;
-    font-size: 1vh;
+    font-size: calc((1vw + 1vh)/2);
 }
 
 

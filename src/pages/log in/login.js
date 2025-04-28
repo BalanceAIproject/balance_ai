@@ -18,8 +18,14 @@ function Login () {
                 </div>
 
                 <div className="remember">
-                    <input type="checkbox" id="rememberMe" value={true}/>
-                    <label htmlFor="rememberMe">Remember Me</label>
+                    <div className="left">
+                        <input type="checkbox" id="rememberMe" value={true}/>
+                        <label htmlFor="rememberMe">Remember Me</label>
+                    </div>
+
+                    <div className="right">
+                        <a href="/forgotpassword">Forgot Password?</a>
+                    </div>
                 </div>
 
                 <div>

@@ -72,5 +72,32 @@ button:hover {
 }
 
 .remember {
-    padding-right: 6%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 10px;
+}
+
+.remember input[type="checkbox"] {
+    width: 1.5vh;
+    height: 1.5vh;
+}
+
+.remember label {
+    font-size: 1.5vh;
+}
+
+
+.remember a{
+    font-size: 1.5vh;
+}
+
+.left {
+    display: flex;
+    justify-self: left;
+}
+
+.right {
+    display: flex;
+    justify-self: right;
 }
