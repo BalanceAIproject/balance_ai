@@ -4,10 +4,10 @@ import './index.css';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from './pages/Home';
-import About from './pages/About'
 import Greet from './pages/Greet';
 import Login from './pages/log in/login';
 import Signup from './pages/sign up/signup';
+import Forgot from './pages/Forgot';
 
 export default function App() {
   return(
@@ -15,7 +15,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Greet />}/>
         <Route path='/Home' element={<Home />}/>
-        <Route path='/About' element={<About />}/>
+        <Route path='/forgotpassword' element={<Forgot />}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/signup' element={<Signup />}/>
       </Routes>
