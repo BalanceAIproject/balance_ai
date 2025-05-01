@@ -1,6 +1,6 @@
 .chatbackdrop {
+    display: flex;
     background-image: linear-gradient(to bottom, #ffffff 0%, #b7dab3 100%);;
-    flex-direction: column;
     height: 100vh;
 }
 
@@ -8,9 +8,12 @@
     background-color: rgb(149, 233, 149);
     height: 100vh;
     width: 20%;
+    padding-top: 3vh;
 }
 
-.external {}
+.external {
+    padding-top: 20px;
+}
 
 .share {
     background-color: white;
@@ -38,21 +41,6 @@
 }
 
 .help {
-    background-color: red;
-    color: black;
-    padding: 10px;
-    width: 60%;
-    height: 60%;
-    font-size: .8vw;
-    border-radius: 20px;
-    border: none;
-    font-weight: bold;
-    font-size: medium;
-}
-
-.prompt{}
-
-.prompt button {
     background-color: white;
     color: black;
     padding: 10px;
@@ -65,7 +53,67 @@
     font-size: medium;
 }
 
+.prompt{
+    display: flex;
+    place-items: center;
+    flex-direction: column;
+    gap: 8vh;
+    margin-top: 30px;
+}
+
+.prompt button {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    width: 100%;
+    height: 60%;
+    font-size: medium;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    font-size: medium;
+}
+
 .defaultPrompt button:hover {
     background-color: #8a8a8a;
     color: white;
+}
+
+.chatinput  {
+    display: flex;
+    place-items: center;
+}
+
+.wrap {
+    display: inline-block;
+    position: relative;
+    padding-top: 80vh;
+    padding-left: 4vw;
+}
+
+.wrap input {
+    width: 70vw;
+    height: 5vh;
+    border-radius: 20px;
+    border: none;
+    padding-left: 10px;
+    font-size: medium;
+    position: relative;
+    bottom: 0;
+}
+
+.wrap button {
+    position: absolute;
+    padding-right: 20px;
+    height: 3.8vh;
+    display: flex;
+    right: 0;
+    bottom: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.wrap button:hover {
+    color: grey;
 }
