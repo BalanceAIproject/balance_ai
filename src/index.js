@@ -8,28 +8,30 @@ import Greet from './pages/Greet';
 import Login from './pages/log in/login';
 import Signup from './pages/sign up/signup';
 import Forgot from './pages/Forgot';
+import { AppProvider } from './context/AppContext';
 import Chat from './pages/chat';
 
 export default function App() {
   return(
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Greet />}/>
-        <Route path='/Home' element={<Home />}/>
-        <Route path='/forgotpassword' element={<Forgot />}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/signup' element={<Signup />}/>
-        <Route path='/chat' element={<Chat />}/>
-      </Routes>
-    </BrowserRouter>
+    <AppProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Greet />}/>
+          <Route path='/Home' element={<Home />}/>
+          <Route path='/forgotpassword' element={<Forgot />}/>
+          <Route path='/login' element={<Login />}/>
+          <Route path='/signup' element={<Signup />}/>
+        </Routes>
+      </BrowserRouter>
+    </AppProvider>
   )
 };
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<React.StrictMode>
-    <App />
+  <React.StrictMode>
+      <App />
   </React.StrictMode>
 );
 
