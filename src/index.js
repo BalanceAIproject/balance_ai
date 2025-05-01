@@ -8,6 +8,7 @@ import Greet from './pages/Greet';
 import Login from './pages/log in/login';
 import Signup from './pages/sign up/signup';
 import Forgot from './pages/Forgot';
+import Chat from './pages/chat';
 
 export default function App() {
   return(
@@ -18,6 +19,7 @@ export default function App() {
         <Route path='/forgotpassword' element={<Forgot />}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/signup' element={<Signup />}/>
+        <Route path='/chat' element={<Chat />}/>
       </Routes>
     </BrowserRouter>
   )

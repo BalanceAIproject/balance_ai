@@ -1,10 +1,10 @@
 import './Forgot.css';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+
 
 
 function Forgot () {
 
-    const navigate = useNavigate();
 
     return (
         <div>

@@ -12,7 +12,7 @@ function Login () {
 
                 <h1>Log In</h1>
 
-                <div className="inputBox">
+                <div className="inputBoxL">
                     <input type="text" placeholder="Username"></input>
                     <input type="text" placeholder="Password"></input>
                 </div>
@@ -28,7 +28,7 @@ function Login () {
                     </div>
                 </div>
 
-                <div>
+                <div className="loginB">
                     <button onClick={() => navigate('/Home')}>Log in</button>
                     <p>Don't have an account? <a href="/signup">Sign up</a></p>
                 </div>

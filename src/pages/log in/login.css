@@ -7,29 +7,28 @@
     height: 100vh;
 }
 
-.inputBox {
+.inputBoxL {
     display: flex;
     flex-direction: column;
     gap: 20px;
     place-items: center;
 }
 
-.inputBox input {
+.inputBoxL input {
     border-radius: 30px;
     border: none;
-    height: 50px;
-    width: 5vw;
+    min-height: 50px;
+    min-width: 170px;
+    width: 10vw;
     text-align: left;
     color: black;
     padding-left: 20px;
     padding-right: 20px;
 }
 
-input::placeholder{
+.inputBoxL input::placeholder{
     text-align: center;
-    color: green;
-    font-family: cursive;
-    font-size: 2vw;
+    color: black;
 }
 
 label {
@@ -40,7 +39,7 @@ label {
     margin-right: -50px;;
 }
 
-h1 {
+.backdrop h1 {
     color: green;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 4vw;
@@ -54,13 +53,13 @@ p   {
     margin: 10px;
 }
 
+.loginB  {}
 
-button {
+.loginB button {
     border-radius: 30px;
     border: none;
     color: white;
     background-color: green;
-    font-size: small ;
     width: 8vw;
     min-width: 120px;
     height: 40px;
@@ -71,7 +70,7 @@ button {
     margin-top: 40px;
 }
 
-button:hover {
+.loginB button:hover {
     background-color: #4CAF50;
     color: white;
 }
@@ -79,22 +78,22 @@ button:hover {
 .remember {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 2vw;
     padding-top: 10px;
 }
 
-.remember input[type="checkbox"] {
-    width: 1.5vh;
-    height: 1.5vh;
+.remember input {
+    width: 2vw;
+    height: 2vh;
 }
 
 .remember label {
-    font-size: calc((1.5vh + 1.5vw)/3);
+    font-size: calc((2vh + 2vw)/3);
 }
 
 
 .remember a{
-    font-size: calc((1.5vh + 1.5vw)/3);
+    font-size: calc((2vh + 2vw)/3);
 }
 
 .left {
