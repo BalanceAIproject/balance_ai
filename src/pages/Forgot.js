@@ -1,5 +1,6 @@
 import './Forgot.css';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import React from 'react';
 
 
@@ -12,6 +13,8 @@ function Forgot () {
             this is forgot password page
         </div>
 =======
+=======
+>>>>>>> Stashed changes
 
 
 function Forgot() {
@@ -30,6 +33,9 @@ function Forgot() {
 
         </div>
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     );
 

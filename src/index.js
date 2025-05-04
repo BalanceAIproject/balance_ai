@@ -9,6 +9,7 @@ import Login from './pages/log in/login';
 import Signup from './pages/sign up/signup';
 import Forgot from './pages/Forgot';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { AppProvider } from './context/AppContext';
 import Chat from './pages/chat';
 
@@ -27,6 +28,8 @@ export default function App() {
       </BrowserRouter>
     </AppProvider>
 =======
+=======
+>>>>>>> Stashed changes
 
 export default function App() {
   return(
