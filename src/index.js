@@ -8,8 +8,7 @@ import Greet from './pages/Greet';
 import Login from './pages/log in/login';
 import Signup from './pages/sign up/signup';
 import Forgot from './pages/Forgot';
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
 import { AppProvider } from './context/AppContext';
 import Chat from './pages/chat';
 
@@ -27,24 +26,8 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </AppProvider>
-=======
-=======
->>>>>>> Stashed changes
-
-export default function App() {
-  return(
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Greet />}/>
-        <Route path='/forgotpassword' element={<Forgot />} />;
-        <Route path='/Home' element={<Home />}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/signup' element={<Signup />}/>
-      </Routes>
-    </BrowserRouter>
->>>>>>> Stashed changes
-  )
-};
+    )
+}
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -82,46 +82,26 @@ p   {
     padding-top: 10px;
 }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 .remember input {
-    width: 2vw;
-    height: 2vh;
+    width: 1vw;
+    height: 1vh;
 }
 
 .remember label {
-    font-size: calc((2vh + 2vw)/3);
-=======
+    font-size: calc((2vh + 2vw)/3.5);
+}
+
 .remember input[type="checkbox"] {
-    min-width: 1vw;
-    min-height: 1vh;
+    min-width: 1.5vw;
+    min-height: 1.5vh;
 }
 
-.remember label {
-    font-size: calc((1.4vh + 1.4vw)/2.5);
->>>>>>> Stashed changes
-=======
-.remember input[type="checkbox"] {
-    min-width: 1vw;
-    min-height: 1vh;
-}
-
-.remember label {
-    font-size: calc((1.4vh + 1.4vw)/2.5);
->>>>>>> Stashed changes
-}
 
 
 .remember a{
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     font-size: calc((2vh + 2vw)/3);
-=======
     font-size: calc((1.4vh + 1.4vw)/3);
->>>>>>> Stashed changes
-=======
     font-size: calc((1.4vh + 1.4vw)/3);
->>>>>>> Stashed changes
 }
 
 .left {
