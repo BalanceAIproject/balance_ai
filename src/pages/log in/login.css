@@ -82,6 +82,7 @@ p   {
     padding-top: 10px;
 }
 
+<<<<<<< Updated upstream
 .remember input {
     width: 2vw;
     height: 2vh;
@@ -89,11 +90,24 @@ p   {
 
 .remember label {
     font-size: calc((2vh + 2vw)/3);
+=======
+.remember input[type="checkbox"] {
+    min-width: 1vw;
+    min-height: 1vh;
+}
+
+.remember label {
+    font-size: calc((1.4vh + 1.4vw)/2.5);
+>>>>>>> Stashed changes
 }
 
 
 .remember a{
+<<<<<<< Updated upstream
     font-size: calc((2vh + 2vw)/3);
+=======
+    font-size: calc((1.4vh + 1.4vw)/3);
+>>>>>>> Stashed changes
 }
 
 .left {

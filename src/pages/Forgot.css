@@ -1,0 +1,53 @@
+.backdropP {
+    text-align: center;
+    background-image: linear-gradient(to bottom, #ffffff 0%, #b7dab3 100%);;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+h1 {
+    color: green;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 4vw;
+    margin-bottom: 20px;
+}
+
+.inputBox input {
+    border-radius: 30px;
+    border: none;
+    height: 1vh;
+    width: 5vw;
+    text-align: center;
+    color: black;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    
+}
+
+input::placeholder {
+    padding-top: 5px;
+}
+
+button {
+    border-radius: 30px;
+    border: none;
+    color: white;
+    background-color: green;
+    font-size: small ;
+    width: 8vw;
+    min-width: 120px;
+    height: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 1vh;
+    font-size: 1vw;
+    font-weight: bold;
+    margin-top: 40px;
+}
+
+button:hover {
+    background-color: #4CAF50;
+    color: white;
+}
