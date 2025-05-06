@@ -18,3 +18,11 @@ every new page added:
 
     add the link to index.js
     add page to navigation.js
+
+to use the backend folder or the ai agent:
+    cd backend
+    npm install
+    npm init -y
+    npm install express cors dotenv openai
+    node server.js
+    #Once you get a confirmation that backend running on port 3000 in the terminal then you can npm start the frontend
