@@ -1,7 +1,49 @@
 import './chat.css';
-import React from 'react';
+import React, { useState } from 'react';
+import { blockService } from '../services/blockService';
+import { useParams } from 'react-router-dom';
 
 function Chat() {
+    const [input, setInput] = useState('');
+    const [agentReply, setAgentReply] = useState('');
+    const { canvasId } = useParams(); 
+
+    const sendPrompt = async () => {
+        if (!input.trim()) return;
+
+        try {
+            const response = await fetch('http://localhost:3000/agent-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    prompt: input,
+                    canvasId: canvasId || 'canvas123',
+                    blocks: []
+        })
+      });
+
+            const data = await response.json();
+            setAgentReply(data.agentReply || 'No reply from agent');
+
+            if (data.suggestedBlocks?.length) {
+                data.suggestedBlocks.forEach(block => {
+                    blockService.createBlock(canvasId, {
+                        type: block.type,
+                        content: block.content,
+                        position: { x: Math.random() * 600, y: Math.random() * 400 }
+          });
+        });
+
+                window.location.reload();
+      }
+
+        } catch (error) {
+        console.error('Error contacting backend:', error);
+        setAgentReply('Agent failed to respond.');
+    }
+
+    setInput('');
+  };
     return (
         <div className='chatbackdrop'>
 
@@ -24,13 +66,24 @@ function Chat() {
             </div>
             
             <div className='chatinput'>
-                <div className='wrap'>
-                    <input type='text' placeholder='Type your message here...' className='input' />
-                    <button className='send'>Send</button>
-                </div>
-            </div>
-
+        <div className='wrap'>
+          <input
+            type='text'
+            placeholder='Type your message here...'
+            className='input'
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <button className='send' onClick={sendPrompt}>Send</button>
         </div>
+        {agentReply && (
+          <div className='agent-reply'>
+            <strong>Agent:</strong> {agentReply}
+          </div>
+        )}
+      </div>
+     </div>
+        
     );
 };
 
