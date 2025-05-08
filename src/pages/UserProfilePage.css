@@ -1,0 +1,442 @@
+html, body {
+    height: 100%;
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.main-canvas-area {
+    flex-grow: 1;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 100px 40px 40px;
+}
+
+.user-profile-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    background: #f3f9f4;
+}
+
+.sidebar {
+    width: 280px;
+    padding: 100px 20px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f3f9f4;
+}
+
+.home-icon {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    font-size: 1.8rem;
+}
+
+.profile-pic {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 16px;
+}
+
+.username {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: #000;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 0px;
+    margin-top: 8px;
+}
+
+.profile-actions button {
+    background-color: #f3f9f4;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #000;
+    padding: 0;
+}
+
+.top-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 30px;
+    margin-right: 40px;
+    margin-bottom: 20px;
+    justify-content: flex-end;
+}
+
+.upload-btn,
+.share-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #edf3eb;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.upload-btn {
+    width: 52px;
+    height: 52px;
+    color: #000000;
+    background-color: #e3efda;
+}
+
+.share-btn {
+    width: 52px;
+    height: 52px;
+    padding: 10px 20px;
+    gap: 10px;
+    color: #000000;
+    font-weight: 500;
+    background-color: #e3efda;
+}
+
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 12px;
+}
+
+.main-canvas-area {
+    flex-grow: 1;
+    padding: 20px 40px 0;
+    overflow-y: auto;
+    background: #f3f9f4;
+}
+
+.top-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 60px;
+    margin-top: 20px;
+}
+
+.left-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 450;
+    color: #1e3b25;
+    background-color: #e3ecda;
+    padding: 15px 24px;
+    border-radius: 999px;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.filter-icon-wrapper {
+    background-color: #666;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.filter-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #e3efda;
+    padding: 10px 20px;
+    border-radius: 999px;
+    gap: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.search-box {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #000000;
+    font-weight: 500;
+}
+
+.search-icon {
+    color: #444;
+}
+
+.canvas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.canvas-card {
+    background-color: #e8f0e3;
+    border-radius: 20px;
+    padding: 64px 60px 60px;
+    position: relative;
+}
+
+.canvas-emoji {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 0.5px solid #000;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.canvas-emoji.smiled {
+    background-color: #b9e6c0;
+    color: #2e7d32;
+}
+
+.canvas-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.canvas-block {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    color: #666;
+    height: 200px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.block-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+    font-size: 1.20rem;
+}
+
+.video-block .block-title {
+    padding: 12px 12px 0;
+}
+
+
+.block-text {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: #666;
+}
+
+.canvas-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: #333;
+}
+
+.filter-dropdown {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 16px;
+    margin-left: 60px;
+    margin-bottom: 20px;
+    width: fit-content;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.meta-info {
+    font-size: 0.85rem;
+    color: #555;
+    margin: 4px 0;
+}
+
+.video-block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.video-container {
+    height: 140px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.video-overlay-text {
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    z-index: 2;
+    position: absolute;
+    top: 12px;
+    left: 16px;
+}
+
+.play-button {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 16px solid white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.video-footer-space {
+    height: 24px;
+    background-color: white;
+    width: 100%;
+}
+
+.video-progress {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    right: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.6rem;
+}
+
+.control-buttons {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    display: flex;
+    gap: 8px;
+}
+
+.control-btn {
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 0;
+}
+
+.progress-bar {
+    height: 2px;
+    width: 70%;
+    background-color: #555;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 00%;
+    background-color: white;
+}
+
+.pagination-arrows {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    background-color: #f3f9f4;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.arrow-btn {
+    background-color: #e3efda;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    color: #333;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.arrow-btn:hover {
+    background-color: #d1e4c4;
+}
+
+.arrow-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.active-bar {
+    height: 6px;
+    width: 100%;
+    background-color: #1e3b25;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
