@@ -41,7 +41,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <h3 className="sidebar-section-title">Blocks</h3>
+      <h3 className="sidebar-section-title">Need help starting your idea?</h3>
 
       {/* Map over available block types to create draggable elements */}
       {availableBlocks.map((block) => (
@@ -57,7 +57,7 @@ const Sidebar = () => {
 
        {/* Placeholder for "Unseen Blocks" section */}
        <div className="dnd-node-item unseen-blocks-placeholder">
-            4 Unseen Blocks
+            More
        </div>
     </aside>
   );

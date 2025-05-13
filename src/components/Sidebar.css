@@ -1,14 +1,15 @@
 .imagination-sidebar {
-    width: 250px;
-    background-color: #d4e9d6;
-    padding: 20px 15px;
+    width: 20%;
+    background-color: rgb(149, 233, 149);
+    padding: 20px 30px;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 88vh;
     box-sizing: border-box;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
     flex-shrink: 0;
+    gap: 30px;
   }
   
   .sidebar-top-icons {
