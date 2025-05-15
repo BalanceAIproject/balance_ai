@@ -20,21 +20,69 @@ app.post("/agent-message", async (req, res) => {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", 
+      model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
-          content: `You are a helpful and creative assistant working inside a canvas called ${canvasId}.`,
+          content: `
+You are an AI assistant inside a visual workspace called a canvas. 
+Your goal is to break down the user's prompt into helpful UI blocks like:
+
+- checklists
+- equipment/resource cards
+- fillable forms
+
+Return your answer in the following JSON structure:
+
+{
+  "agentReply": "Friendly explanation of what's happening.",
+  "suggestedBlocks": [
+    {
+      "type": "CHECKLIST",
+      "title": "Block Title",
+      "items": ["Item 1", "Item 2"]
+    },
+    {
+      "type": "RESOURCE_CARD",
+      "title": "Block Title",
+      "items": [
+        { "name": "Name", "purpose": "Why it's used", "recommended": "Suggestions" }
+      ]
+    },
+    {
+      "type": "FORM",
+      "title": "Block Title",
+      "fields": [
+        { "label": "Field label", "placeholder": "Type here..." }
+      ]
+    }
+  ]
+}
+        `.trim()
         },
         {
           role: "user",
-          content: `Here’s what I’ve added so far:\n${context}\nNow I want to explore: ${prompt}`,
-        },
+          content: `Here’s what I’ve added so far:\n${context}\nNow I want to explore: ${prompt}`
+        }
       ],
+      temperature: 0.7
     });
 
-    const agentReply = completion.choices[0].message.content;
-    res.json({ agentReply }); 
+    const responseText = completion.choices[0].message.content;
+
+    let responseData;
+    try {
+      responseData = JSON.parse(responseText);
+    } catch (err) {
+      console.error("Failed to parse assistant JSON:", err);
+      return res.json({
+        agentReply: responseText,
+        suggestedBlocks: []
+      });
+    }
+
+    return res.json(responseData);
+
   } catch (error) {
     console.error("Error from OpenAI:", error.message);
     res.status(500).json({
@@ -42,6 +90,7 @@ app.post("/agent-message", async (req, res) => {
     });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Backend running on http://localhost:${PORT}`);
