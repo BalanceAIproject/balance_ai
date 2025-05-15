@@ -17,6 +17,7 @@ import TopBar from '../components/TopBar';
 
 const UserProfilePage = () => {
     const navigate = useNavigate();
+    const [draggedCanvasId, setDraggedCanvasId] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [filterOpen, setFilterOpen] = useState(false);
     const [showOnlyWithVideo, setShowOnlyWithVideo] = useState(false);
@@ -31,7 +32,7 @@ const UserProfilePage = () => {
             blocks: ['Journal Block', 'Budget Block', 'To-Do List', 'Idea Mapper'],
             updated: '1 Min Ago',
             status: 'Active',
-            videoTitles: [] // no videos
+            videoTitles: []
         },
         {
             id: 2,
@@ -39,7 +40,7 @@ const UserProfilePage = () => {
             blocks: ['Journal Block', 'Characters Block', 'Timeline Block', 'To-Do List'],
             updated: '5 Hrs Ago',
             status: 'Active',
-            videoTitles: [] // no videos
+            videoTitles: []
         },
         {
             id: 3,
@@ -59,13 +60,45 @@ const UserProfilePage = () => {
         }
     ];
 
+
+    const handleDragStart = (e, canvasId) => {
+        setDraggedCanvasId(canvasId);
+        e.dataTransfer.setData('text/plain', canvasId);
+        e.effectAllowed = "move";
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+    };
+
+    const handleDrop = (e, targetCanvasId) => {
+        e.preventDefault();
+        if (draggedCanvasId && draggedCanvasId !== targetCanvasId) {
+            const draggedCanvas = canvasData.find(c => c.id === draggedCanvasId);
+            const targetCanvas = canvasData.find(c => c.id === targetCanvasId);
+
+            if (draggedCanvas && targetCanvas) {
+                const combinedContext = {
+                    title: `Combined: ${draggedCanvas.title} & ${targetCanvas.title}`,
+                    canvases: [draggedCanvas, targetCanvas],
+                    blocks: [...new Set([...draggedCanvas.blocks, ...targetCanvas.blocks])],
+                };
+                console.log("Combining canvases:", draggedCanvas.title, "and", targetCanvas.title);
+                console.log("Combined context for CanvasPage:", combinedContext);
+                navigate('/canvas', { state: { combinedContext } });
+            }
+        }
+        setDraggedCanvasId(null);
+    };
+
     const filteredData = canvasData
         .filter(c => c.title.toLowerCase().includes(searchQuery.toLowerCase()))
         .filter(c => !showOnlyWithVideo || (c.videoTitles && c.videoTitles.length > 0))
         .sort((a, b) => {
             const aSmiled = smiledCanvases.includes(a.id);
             const bSmiled = smiledCanvases.includes(b.id);
-            return (bSmiled ? 1 : 0) - (aSmiled ? 1 : 0); // smiled canvases first
+            return (bSmiled ? 1 : 0) - (aSmiled ? 1 : 0);
         });
 
     return (
@@ -139,7 +172,14 @@ const UserProfilePage = () => {
 
                     <div className="canvas-grid">
                         {filteredData.map(canvas => (
-                            <div className="canvas-card" key={canvas.id}>
+                            <div
+                                className={`canvas-card ${draggedCanvasId === canvas.id ? 'dragging' : ''}`}
+                                key={canvas.id}
+                                draggable="true"
+                                onDragStart={(e) => handleDragStart(e, canvas.id)}
+                                onDragOver={handleDragOver}
+                                onDrop={(e) => handleDrop(e, canvas.id)}
+                            >
                                 {canvas.status === 'Active' && <div className="active-bar"/>}
                                 <div
                                     className={`canvas-emoji ${smiledCanvases.includes(canvas.id) ? 'smiled' : ''}`}

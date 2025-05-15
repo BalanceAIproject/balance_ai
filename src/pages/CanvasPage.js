@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import {
     ReactFlow,
     ReactFlowProvider,
@@ -16,7 +16,7 @@ import Sidebar from '../components/Sidebar';
 import PlanningNode from '../components/nodes/PlanningNode';
 import WebsiteNode from '../components/nodes/WebsiteNode';
 import AdvertisingNode from '../components/nodes/AdvertisingNode';
-// Import other node types as needed
+import DefaultNode from '../components/nodes/DefaultNode';
 
 // Corrected Import: Import both canvasService and CanvasState
 import { canvasService, CanvasState } from '../services/canvasService';
@@ -33,6 +33,7 @@ const nodeTypes = {
     PLANNING_VIDEO: PlanningNode,
     WEBSITE_SETUP: WebsiteNode,
     ADVERTISING: AdvertisingNode,
+    DEFAULT_NODE: DefaultNode,
     // Add other custom node types here (e.g., 'JOURNAL': JournalNode)
 };
 
@@ -180,52 +181,88 @@ const CanvasComponent = ({ canvasId }) => {
 const CanvasPage = () => {
     const { canvasId: paramId } = useParams();
     const navigate = useNavigate();
-    const { state } = useAppContext();
+    const location = useLocation();
+    const { state: appState } = useAppContext();
     const [currentCanvasId, setCurrentCanvasId] = useState(null);
+    const [isLoadingCanvas, setIsLoadingCanvas] = useState(true);
 
-    // Redirect if not logged in
+
     useEffect(() => {
-        if (!state.isLoading && !state.user) {
+        if (location.state?.combinedContext) {
+            const { combinedContext } = location.state;
+            console.log("Received combinedContext in CanvasPage:", combinedContext);
+
+            const newCanvasId = `combined-${Date.now()}`;
+            const createdCanvas = canvasService.createCanvas(combinedContext.title, newCanvasId);
+
+            if (createdCanvas) {
+                combinedContext.blocks.forEach((blockContent, index) => {
+                    blockService.createBlock(newCanvasId, {
+                        type: 'DEFAULT_NODE',
+                        content: blockContent,
+                        position: { x: 100 + (index * 50) % 400, y: 100 + Math.floor(index / 4) * 100 },
+                    });
+                });
+                console.log(`Created new canvas ${newCanvasId} from combined context and added blocks.`);
+                navigate(`/canvas/${newCanvasId}`, { replace: true, state: {} });
+            } else {
+                console.error("Failed to create canvas from combinedContext");
+                setIsLoadingCanvas(false);
+            }
+        } else {
+            setIsLoadingCanvas(false);
+        }
+    }, [location.state, navigate]);
+
+
+    useEffect(() => {
+        if (!appState.isLoading && !appState.user && !location.state?.combinedContext) {
             console.log("User not logged in, redirecting to login.");
             navigate('/login');
         }
-    }, [state.user, state.isLoading, navigate]);
+    }, [appState.user, appState.isLoading, navigate, location.state]);
 
-    // Determine which canvas ID to load
+
     useEffect(() => {
-        if (paramId) {
-            console.log(`Using canvasId from URL param: ${paramId}`);
-            setCurrentCanvasId(paramId);
-        } else if (state.user) {
-            console.log("No canvasId in URL, determining default canvas...");
-            const canvases = canvasService.getAllCanvases();
-            // Use the correctly imported CanvasState here
-            const activeOrMostRecentCanvas = canvases
-                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-                .find(c => c.state === CanvasState.ACTIVE) || canvases[0]; // <-- Use CanvasState.ACTIVE
+        if (!location.state?.combinedContext) {
+            if (paramId) {
+                console.log(`Using canvasId from URL param: ${paramId}`);
+                setCurrentCanvasId(paramId);
+            } else if (appState.user) {
+                console.log("No canvasId in URL, determining default canvas...");
+                const canvases = canvasService.getAllCanvases();
+                const activeOrMostRecentCanvas = canvases
+                    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                    .find(c => c.state === CanvasState.ACTIVE) || canvases[0];
 
-            if (activeOrMostRecentCanvas) {
-                console.log(`Defaulting to canvas: ${activeOrMostRecentCanvas.id}`);
-                setCurrentCanvasId(activeOrMostRecentCanvas.id);
-                // navigate(`/canvas/${activeOrMostRecentCanvas.id}`, { replace: true });
-            } else {
-                console.log("No existing canvases found, creating a default one.");
-                const newCanvas = canvasService.createCanvas("My First Canvas");
-                if (newCanvas) {
-                    console.log(`Created default canvas: ${newCanvas.id}`);
-                    setCurrentCanvasId(newCanvas.id);
-                    // navigate(`/canvas/${newCanvas.id}`, { replace: true });
+                if (activeOrMostRecentCanvas) {
+                    console.log(`Defaulting to canvas: ${activeOrMostRecentCanvas.id}`);
+                    navigate(`/canvas/${activeOrMostRecentCanvas.id}`, { replace: true });
                 } else {
-                    console.error("Failed to create initial default canvas.");
+                    console.log("No existing canvases found, creating a default one.");
+                    const newCanvas = canvasService.createCanvas("My First Canvas");
+                    if (newCanvas) {
+                        console.log(`Created default canvas: ${newCanvas.id}`);
+                        navigate(`/canvas/${newCanvas.id}`, { replace: true });
+                    } else {
+                        console.error("Failed to create initial default canvas.");
+                    }
                 }
             }
         }
-    }, [paramId, state.user, navigate]);
+    }, [paramId, appState.user, navigate, location.state]);
 
 
-    if (state.isLoading || !state.user || !currentCanvasId) {
+    if (isLoadingCanvas || appState.isLoading || (!appState.user && !location.state?.combinedContext) || (!currentCanvasId && !paramId && !location.state?.combinedContext)) {
         return <div className="loading-placeholder">Loading Canvas...</div>;
     }
+    
+    const finalCanvasIdToRender = paramId || currentCanvasId;
+
+    if (!finalCanvasIdToRender && !location.state?.combinedContext) {
+        return <div className="loading-placeholder">Preparing Canvas...</div>;
+    }
+
 
     return (
         <div className="canvas-page-container">
@@ -236,10 +273,10 @@ const CanvasPage = () => {
                     <div className="canvas-top-bar">
                         <button className="top-bar-btn share-btn">Share</button>
                         <div className="user-icon-placeholder">
-                            {state.user.username ? state.user.username.charAt(0).toUpperCase() : '?'}
+                            {appState.user?.username ? appState.user.username.charAt(0).toUpperCase() : '?'}
                         </div>
                     </div>
-                    <CanvasComponent canvasId={currentCanvasId} />
+                    {finalCanvasIdToRender && <CanvasComponent canvasId={finalCanvasIdToRender} />}
                 </main>
             </ReactFlowProvider>
         </div>

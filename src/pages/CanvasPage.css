@@ -16,21 +16,21 @@
 }
 
 .canvas-page-container {
-    padding-top: 60px; /* for fixed TopBar */
+    padding-top: 60px;
 }
 
 .canvas-top-bar {
     position: absolute;
-    top: 15px;
-    right: 20px;
-    z-index: 10; /* Ensure above canvas */
+    top: 20px;
+    right: 25px;
+    z-index: 10;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 .top-bar-btn {
-    padding: 8px 16px;
+    padding: 10px 20px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -61,7 +61,7 @@
 .reactflow-wrapper {
     flex-grow: 1;
     position: relative;
-    margin-bottom: 80px; /* Space for the bottom input bar */
+    margin-bottom: 80px;
     box-sizing: border-box;
 }
 
@@ -95,9 +95,9 @@
     align-items: center;
     background-color: #ffffff;
     border-radius: 25px;
-    padding: 5px 5px 5px 20px;
+    padding: 8px 8px 8px 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    z-index: 10; /* Ensure above canvas elements */
+    z-index: 10;
     box-sizing: border-box;
 }
 
@@ -105,34 +105,41 @@
     flex-grow: 1;
     border: none;
     outline: none;
-    padding: 10px 0;
+    padding: 12px 0;
     font-size: 1rem;
     background: transparent;
+    line-height: normal;
 }
 
 .prompt-input-bar button {
     background-color: #9ae6b4;
     color: #2f855a;
     border: none;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    font-size: 1.3rem;
-    font-weight: bold;
+    border-radius: 18px; /* More of a squircle than a perfect circle */
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem; /* Adjusted for potentially better icon centering */
+    line-height: 1; /* Helps center text/icons vertically in some cases */
+    font-weight: normal; /* Bold might make arrow too thick */
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-left: 10px;
     flex-shrink: 0;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Subtle shadow */
 }
 
 .prompt-input-bar button:hover {
+    background-color: #89dcb0; /* Slightly different hover */
+}
+.prompt-input-bar button:active {
+    transform: scale(0.95); /* Click effect */
     background-color: #68d391;
 }
 
 .canvas-page-container,
 .user-profile-container {
-    padding-top: 60px; /* match the TopBar height */
+    padding-top: 60px;
 }

@@ -1,26 +1,45 @@
 import './chat.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { blockService } from '../services/blockService';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 function Chat() {
     const [input, setInput] = useState('');
     const [agentReply, setAgentReply] = useState('');
-    const { canvasId } = useParams(); 
+    const { canvasId } = useParams();
+    const location = useLocation();
+    const [currentCombinedContext, setCurrentCombinedContext] = useState(null);
+
+    useEffect(() => {
+        if (location.state?.combinedContext) {
+            setCurrentCombinedContext(location.state.combinedContext);
+        }
+    }, [location.state]);
 
     const sendPrompt = async () => {
         if (!input.trim()) return;
+
+        let promptToSend = input;
+        let blocksForPrompt = [];
+        let contextIdentifier = canvasId || 'canvas123';
+
+        if (currentCombinedContext) {
+            promptToSend = `Context: ${currentCombinedContext.title}. User question: ${input}`;
+            blocksForPrompt = currentCombinedContext.blocks || [];
+            contextIdentifier = currentCombinedContext.title;
+            console.log("Sending prompt with combined context:", currentCombinedContext);
+        }
 
         try {
             const response = await fetch('http://localhost:3000/agent-message', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    prompt: input,
-                    canvasId: canvasId || 'canvas123',
-                    blocks: []
-        })
-      });
+                    prompt: promptToSend,
+                    canvasId: contextIdentifier,
+                    blocks: blocksForPrompt 
+                })
+            });
 
             const data = await response.json();
             setAgentReply(data.agentReply || 'No reply from agent');
@@ -44,8 +63,21 @@ function Chat() {
 
     setInput('');
   };
+
     return (
         <div className='chatbackdrop'>
+            {currentCombinedContext && (
+                <div className="combined-context-display">
+                    <h3>Chatting about: {currentCombinedContext.title}</h3>
+                    <p><strong>Combined Blocks:</strong></p>
+                    <ul>
+                        {currentCombinedContext.blocks.map((block, index) => (
+                            <li key={index}>{block}</li>
+                        ))}
+                    </ul>
+                    <hr />
+                </div>
+            )}
 
             <div className='chatbar'>
 
