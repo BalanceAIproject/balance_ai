@@ -20,6 +20,7 @@ every new page added:
     add page to navigation.js
 
 to use the backend folder or the ai agent:
+create a .env file in the backend folder and input "OPENAI_API_KEY={ourkey}"
 
     cd backend
     npm install
