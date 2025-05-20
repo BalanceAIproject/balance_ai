@@ -14,7 +14,7 @@ function Chat() {
     let currentAgentReply = 'Agent failed to respond.'; // Variable to store reply/error
 
     try {
-      const response = await fetch('http://localhost:3000/agent-message', {
+      const response = await fetch('http://localhost:3001/agent-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -107,18 +107,7 @@ function Chat() {
                     ))}
                   </div>
                 );
-              case 'FORM':
-                return (
-                  <div key={index} className="block form">
-                    <h3>{block.title}</h3>
-                    {block.fields.map((field, i) => (
-                      <div key={i}>
-                        <label>{field.label}</label>
-                        <input placeholder={field.placeholder} />
-                      </div>
-                    ))}
-                  </div>
-                );
+    
               default:
                 return null;
             }
