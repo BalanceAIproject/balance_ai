@@ -1,0 +1,110 @@
+[
+  {
+    "timestamp": "2025-05-20T08:24:55.737Z",
+    "userPrompt": "Help me launch a productivity app",
+    "agentReply": "That's great! To launch a productivity app, you can start by brainstorming the key features you want in the app, creating a design mockup, and then developing the app either by yourself or with a team. What specific aspects of the productivity app are you interested in exploring further?",
+    "suggestedBlocks": []
+  },
+  {
+    "timestamp": "2025-05-20T08:31:23.766Z",
+    "userPrompt": "Help me create a mindfulness course",
+    "agentReply": "That's a great idea! Let's break down the steps to help you create a mindfulness course.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Mindfulness Course Creation Checklist",
+        "items": [
+          "Define course objectives and goals",
+          "Create course outline and structure",
+          "Develop course content (videos, readings, exercises)",
+          "Design course materials (slides, handouts)",
+          "Decide on course delivery method (online, in-person)",
+          "Plan assessment methods (quizzes, assignments)",
+          "Set up a schedule for course sessions",
+          "Promote the course to potential participants"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Mindfulness Course Creation Resources",
+        "items": [
+          {
+            "name": "Mindfulness Activities Guide",
+            "purpose": "Provides ideas for mindfulness exercises",
+            "recommended": "Include variety for different preferences"
+          },
+          {
+            "name": "Course Planning Template",
+            "purpose": "Helps organize course structure and content",
+            "recommended": "Break down into modules and lessons"
+          },
+          {
+            "name": "Assessment Tools Checklist",
+            "purpose": "Lists options for evaluating participant progress",
+            "recommended": "Mix of self-reflection and knowledge assessments"
+          }
+        ]
+      },
+      {
+        "type": "FORM",
+        "title": "Participant Feedback Form",
+        "fields": [
+          {
+            "label": "What did you enjoy most about the course?",
+            "placeholder": "Type here..."
+          },
+          {
+            "label": "How can we improve the course?",
+            "placeholder": "Type here..."
+          },
+          {
+            "label": "Would you recommend this course to others?",
+            "placeholder": "Type here..."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-05-20T10:52:54.912Z",
+    "userPrompt": "help me start a podcast",
+    "agentReply": "Starting a podcast is an exciting project! Let's break it down step by step to help you get started.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Steps to Start a Podcast",
+        "items": [
+          "Define your podcast concept and target audience",
+          "Choose a podcast name and format",
+          "Select podcast equipment (microphone, headphones, recording software)",
+          "Create podcast artwork and music intro",
+          "Record and edit your episodes",
+          "Choose a podcast hosting platform",
+          "Submit your podcast to directories like Apple Podcasts and Spotify",
+          "Promote your podcast through social media and other channels"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Recommended Podcast Equipment",
+        "items": [
+          {
+            "name": "Microphone",
+            "purpose": "To capture high-quality audio for your episodes",
+            "recommended": "Blue Yeti, Audio-Technica AT2020"
+          },
+          {
+            "name": "Headphones",
+            "purpose": "To monitor audio quality while recording and editing",
+            "recommended": "Sony MDR7506, Audio-Technica ATH-M50x"
+          },
+          {
+            "name": "Recording Software",
+            "purpose": "To edit and enhance your podcast episodes",
+            "recommended": "Audacity, Adobe Audition, GarageBand"
+          }
+        ]
+      }
+    ]
+  }
+]

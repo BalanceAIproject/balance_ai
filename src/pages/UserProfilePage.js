@@ -28,6 +28,7 @@ const UserProfilePage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(3);
     const [openStatusDropdown, setOpenStatusDropdown] = useState(null);
+    const [chatHistory, setChatHistory] = useState([]);
 
     const statusOptions = ['Active', 'Ambient', 'Checkpointed', 'Dormant'];
 
@@ -94,8 +95,8 @@ const UserProfilePage = () => {
                     blocks: [...new Set([...draggedCanvas.blocks, ...targetCanvas.blocks])]
                 };
                 console.log("Combining canvases:", draggedCanvas.title, "and", targetCanvas.title);
-                console.log("Combined context for CanvasPage:", combinedContext);
-                navigate('/canvas', { state: { combinedContext } });
+                // Navigate to chat page with combined context
+                navigate('/chat', { state: { combinedContext } });
             }
         }
         setDraggedCanvasId(null);
@@ -120,6 +121,16 @@ const UserProfilePage = () => {
             setOpenStatusDropdown(null);
         };
         document.addEventListener('click', handleClickOutside);
+        
+        // Load chat history from localStorage
+        try {
+            const storedHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            setChatHistory(storedHistory);
+        } catch (e) {
+            console.error('Failed to load chat history from localStorage:', e);
+            setChatHistory([]);
+        }
+
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
@@ -212,6 +223,22 @@ const UserProfilePage = () => {
                             </label>
                         </div>
                     )}
+
+                    <div className="chat-prompts-section">
+                        <h3>Recent Chat History</h3>
+                        {chatHistory.length > 0 ? (
+                            <ul>
+                                {chatHistory.slice(-5).reverse().map((entry, index) => ( // Display last 5 entries, newest first
+                                    <li key={index}>
+                                        <p><strong>You:</strong> {entry.userInput}</p>
+                                        <p><strong>Agent:</strong> {entry.agentReply}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>No chat history recorded yet.</p>
+                        )}
+                    </div>
 
                     {/* Delete Confirmation Modal */}
                     {deleteConfirmation && (
