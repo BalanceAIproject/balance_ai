@@ -35,6 +35,7 @@ const UserProfilePage = () => {
         {
             id: 1,
             title: 'Small Business',
+            description: 'Manage tasks and finances for your business.',
             blocks: ['Journal Block', 'Budget Block', 'To-Do List', 'Idea Mapper'],
             updated: '1 Min Ago',
             status: 'Active',
@@ -43,6 +44,7 @@ const UserProfilePage = () => {
         {
             id: 2,
             title: 'Short Stories',
+            description: 'Track your characters, timelines, and story drafts.',
             blocks: ['Journal Block', 'Characters Block', 'Timeline Block', 'To-Do List'],
             updated: '5 Hrs Ago',
             status: 'Active',
@@ -51,6 +53,7 @@ const UserProfilePage = () => {
         {
             id: 3,
             title: 'Crochet',
+            description: 'Organize your crochet projects and tools.',
             blocks: ['Beginners Block', 'Tools Block', 'Ideas Block'],
             updated: '2 Days Ago',
             status: 'Inactive',
@@ -59,6 +62,7 @@ const UserProfilePage = () => {
         {
             id: 4,
             title: 'Cooking',
+            description: 'Plan and collect your favorite recipes.',
             blocks: ['Beginners Safety', 'Cooking Tools'],
             updated: '1 Week Ago',
             status: 'Active',
@@ -278,6 +282,9 @@ const UserProfilePage = () => {
                                 </div>
 
                                 <div className="canvas-title">{canvas.title}</div>
+                                {canvas.description && (
+                                    <div className="canvas-description">{canvas.description}</div>
+                                )}
                                 <div className="meta-info">{canvas.updated}</div>
 
                                 <div className="status-dropdown-container">

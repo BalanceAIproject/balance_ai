@@ -287,7 +287,7 @@ html, body {
     z-index: 5;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, opacity 0.2s ease-out;
-    height: 600px;
+    height: 775px;
     width: 680px;
     font-size: 1.4rem;
     overflow: visible;
@@ -316,6 +316,7 @@ html, body {
     background-color: #fff;
     overflow: visible;
     position: relative;
+    border: 1px solid #ccc;
 }
 
 .block-title {
@@ -339,7 +340,6 @@ html, body {
     color: #222;
 }
 
-
 .canvas-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.08);
@@ -352,6 +352,13 @@ html, body {
     cursor: grabbing;
 }
 
+.canvas-description {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 6px 0 14px;
+    line-height: 1.4;
+    font-weight: 400;
+}
 
 .canvas-emoji {
     position: absolute;
