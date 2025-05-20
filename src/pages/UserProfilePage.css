@@ -360,28 +360,6 @@ html, body {
     font-weight: 400;
 }
 
-.canvas-emoji {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    background-color: #f7f7f7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    z-index: 2;
-    cursor: pointer;
-}
-
-.canvas-emoji.smiled {
-    background-color: #b9e6c0;
-    color: #2e7d32;
-}
-
 .canvas-preview-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
