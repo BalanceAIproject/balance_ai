@@ -11,6 +11,7 @@ function Chat() {
 
   const sendPrompt = async () => {
     if (!input.trim()) return;
+    let currentAgentReply = 'Agent failed to respond.'; // Variable to store reply/error
 
     try {
       const response = await fetch('http://localhost:3000/agent-message', {
@@ -24,7 +25,8 @@ function Chat() {
       });
 
       const data = await response.json();
-      setAgentReply(data.agentReply || 'No reply from agent');
+      currentAgentReply = data.agentReply || 'No reply from agent'; // Assign actual reply
+      setAgentReply(currentAgentReply);
       setBlocks(data.suggestedBlocks || []);
 
       if (data.suggestedBlocks?.length) {
@@ -38,7 +40,18 @@ function Chat() {
       }
     } catch (error) {
       console.error('Error contacting backend:', error);
-      setAgentReply('Agent failed to respond.');
+      // currentAgentReply will hold the default "Agent failed to respond."
+      setAgentReply(currentAgentReply);
+    }
+
+    // Store the full chat interaction in localStorage
+    try {
+      const chatEntry = { userInput: input, agentReply: currentAgentReply }; // Use the local variable
+      const existingHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+      const updatedHistory = [...existingHistory, chatEntry];
+      localStorage.setItem('chatHistory', JSON.stringify(updatedHistory));
+    } catch (e) {
+      console.error('Failed to save chat history to localStorage:', e);
     }
 
     setInput('');

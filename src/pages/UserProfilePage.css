@@ -719,3 +719,50 @@ html, body {
         margin-left: 240px;
     }
 }
+
+.chat-prompts-section {
+    background-color: #f0f4f8; /* Light blue-gray background */
+    padding: 20px;
+    margin: 20px 40px; /* Match other content padding */
+    border-radius: 12px; /* Consistent with other elements */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+}
+
+.chat-prompts-section h3 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.chat-prompts-section ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.chat-prompts-section li {
+    background-color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 12px; /* Increased margin for better separation */
+    font-size: 0.95rem;
+    color: #555;
+    border: 1px solid #e0e0e0;
+}
+
+.chat-prompts-section li p { /* Target paragraphs within list items */
+    margin-top: 3px; /* Reduced top margin for tighter spacing within an entry */
+    margin-bottom: 3px; /* Reduced bottom margin */
+    line-height: 1.4;
+}
+
+.chat-prompts-section li p strong { /* Style for "You:" and "Agent:" */
+    color: #333;
+}
+
+.chat-prompts-section > p { /* Target the "No chat history" paragraph directly */
+    font-size: 0.95rem;
+    color: #777;
+}
