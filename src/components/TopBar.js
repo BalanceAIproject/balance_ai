@@ -7,8 +7,14 @@ export default function TopBar() {
 
     return (
         <div className="top-bar-global">
-            <button className="top-bar-btn" onClick={() => navigate('/canvas')}>Canvas</button>
-            <button className="top-bar-btn" onClick={() => navigate('/userprofile')}>Profile</button>
+            <div className="top-bar-left">
+                <h1 className="top-bar-title">Balnce.ai</h1> {/* optional logo or title */}
+            </div>
+            <div className="top-bar-right">
+                <button className="top-bar-btn" onClick={() => navigate('/canvas')}>Canvas</button>
+                <button className="top-bar-btn" onClick={() => navigate('/chat')}>Chat</button>
+                <button className="top-bar-btn" onClick={() => navigate('/userprofile')}>Profile</button>
+            </div>
         </div>
     );
 }

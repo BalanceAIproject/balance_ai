@@ -66,7 +66,6 @@ const UserProfilePage = () => {
         }
     ]);
 
-    // Drag-and-drop handlers
     const handleDragStart = (e, canvasId) => {
         setDraggedCanvasId(canvasId);
         e.dataTransfer.setData('text/plain', canvasId);
@@ -98,7 +97,6 @@ const UserProfilePage = () => {
         setDraggedCanvasId(null);
     };
 
-    // Status dropdown handlers
     const handleStatusChange = (canvasId, newStatus) => {
         setCanvases(prev =>
             prev.map(canvas =>
@@ -121,7 +119,6 @@ const UserProfilePage = () => {
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
-    // Pin toggle
     const togglePinCanvas = (canvasId, e) => {
         e.stopPropagation();
         setPinnedCanvases(prev =>
@@ -131,7 +128,6 @@ const UserProfilePage = () => {
         );
     };
 
-    // Delete modal handlers
     const handleDeleteClick = (canvasId, e) => {
         e.stopPropagation();
         setDeleteConfirmation(canvasId);
@@ -147,7 +143,6 @@ const UserProfilePage = () => {
         setDeleteConfirmation(null);
     };
 
-    // Filter and sort data (pinned first)
     const filteredData = canvases
         .filter(c => c.title.toLowerCase().includes(searchQuery.toLowerCase()))
         .filter(c => !showOnlyWithVideo || (c.videoTitles && c.videoTitles.length > 0))
@@ -170,46 +165,34 @@ const UserProfilePage = () => {
                     <h2 className="username">Amy Smith</h2>
                     <div className="profile-actions">
                         <button title="Add" onClick={() => alert("Add new canvas!")}>
-                            <Plus size={40} />
+                            <Plus size={40}/>
                         </button>
-                        <button title="Settings" onClick={() => alert("Settings clicked!")}>
-                            <Settings size={30} />
+                        <button title="Settings" onClick={() => navigate("/settings")}>
+                            <Settings size={30}/>
                         </button>
                     </div>
                 </aside>
 
                 <main className="main-canvas-area">
-                    <header className="top-bar">
-                        <button className="upload-btn" onClick={() => alert("Upload clicked!")}>
-                            <Upload size={20} strokeWidth={2.5} />
-                        </button>
-                        <button className="share-btn" onClick={() => alert("Share clicked!")}>
-                            <Lock size={16} />
-                            <span>Share</span>
-                        </button>
-                        <img src="/images/profile-pic.jpg" className="profile-icon" alt="User" />
-                    </header>
 
                     <div className="top-controls">
-                        <div className="left-controls">
-                            <h2 className="section-title">My Canvases</h2>
-                            <button className="filter-btn" onClick={() => setFilterOpen(prev => !prev)}>
-                                <div className="filter-icon-wrapper">
-                                    <Filter size={20} />
-                                </div>
-                                <span className="filter-text">Filter</span>
-                            </button>
-                        </div>
-
-                        <div className="search-container">
-                            <Search className="search-icon" size={18} />
-                            <input
-                                className="search-box"
-                                type="text"
-                                placeholder="Search"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
+                        <div className="top-controls-inner">
+                            <div className="left-controls">
+                                <button className="pill-btn">My Canvases</button>
+                                <button className="pill-btn" onClick={() => setFilterOpen(prev => !prev)}>
+                                    <Filter/> Filter
+                                </button>
+                            </div>
+                            <div className="search-container">
+                                <Search className="search-icon" size={18}/>
+                                <input
+                                    className="search-box"
+                                    type="text"
+                                    placeholder="Search"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -234,7 +217,8 @@ const UserProfilePage = () => {
                                     Are you sure you want to delete this canvas?
                                 </div>
                                 <div className="delete-modal-buttons">
-                                    <button className="delete-confirm-btn" onClick={() => confirmDelete(deleteConfirmation)}>
+                                    <button className="delete-confirm-btn"
+                                            onClick={() => confirmDelete(deleteConfirmation)}>
                                         Yes
                                     </button>
                                     <button className="delete-cancel-btn" onClick={cancelDelete}>
@@ -254,14 +238,14 @@ const UserProfilePage = () => {
                                 onDragStart={(e) => handleDragStart(e, canvas.id)}
                                 onDragOver={handleDragOver}
                                 onDrop={(e) => handleDrop(e, canvas.id)}
-                                style={{ position: 'relative' }}
+                                style={{position: 'relative'}}
                             >
                                 <div
                                     className={`pin-icon ${pinnedCanvases.includes(canvas.id) ? 'pinned' : ''}`}
                                     onClick={(e) => togglePinCanvas(canvas.id, e)}
                                     title={pinnedCanvases.includes(canvas.id) ? 'Unpin' : 'Pin'}
                                 >
-                                    <Pin size={16} />
+                                    <Pin size={16}/>
                                 </div>
 
                                 <div
@@ -269,10 +253,10 @@ const UserProfilePage = () => {
                                     onClick={(e) => handleDeleteClick(canvas.id, e)}
                                     title="Delete"
                                 >
-                                    <Trash2 size={16} />
+                                    <Trash2 size={16}/>
                                 </div>
 
-                                {canvas.status === 'Active' && <div className="active-bar" />}
+                                {canvas.status === 'Active' && <div className="active-bar"/>}
 
                                 <div className="canvas-preview-grid">
                                     {canvas.blocks.map((block, i) => (
@@ -286,7 +270,7 @@ const UserProfilePage = () => {
                                             <div className="block-title">{title}</div>
                                             <div className="video-container">
                                                 <div className="video-overlay-text">Video Preview</div>
-                                                <div className="play-button" />
+                                                <div className="play-button"/>
                                             </div>
                                             <div className="video-footer-space"></div>
                                         </div>
@@ -302,7 +286,7 @@ const UserProfilePage = () => {
                                         onClick={(e) => toggleStatusDropdown(canvas.id, e)}
                                     >
                                         {canvas.status}
-                                        <ChevronDown size={16} />
+                                        <ChevronDown size={16}/>
                                     </button>
                                     {openStatusDropdown === canvas.id && (
                                         <div className="status-options">
@@ -328,14 +312,14 @@ const UserProfilePage = () => {
                             onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                             disabled={currentPage === 1}
                         >
-                            <ChevronLeft />
+                            <ChevronLeft/>
                         </button>
                         <button
                             className="arrow-btn"
                             onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                             disabled={currentPage === totalPages}
                         >
-                            <ChevronRight />
+                            <ChevronRight/>
                         </button>
                     </div>
                 </main>

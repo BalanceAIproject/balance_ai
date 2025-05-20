@@ -10,7 +10,7 @@ import {
     Background,
     useReactFlow,
 } from '@xyflow/react';
-import '@xyflow/react/dist/style.css'; // Base styles are needed
+import '@xyflow/react/dist/style.css';
 
 import Sidebar from '../components/Sidebar';
 import PlanningNode from '../components/nodes/PlanningNode';
@@ -18,7 +18,6 @@ import WebsiteNode from '../components/nodes/WebsiteNode';
 import AdvertisingNode from '../components/nodes/AdvertisingNode';
 import DefaultNode from '../components/nodes/DefaultNode';
 
-// Corrected Import: Import both canvasService and CanvasState
 import { canvasService, CanvasState } from '../services/canvasService';
 import { blockService } from '../services/blockService';
 import { useAppContext } from '../context/AppContext';
@@ -28,16 +27,13 @@ import '../components/Sidebar.css';
 import '../components/nodes/NodeStyles.css';
 import TopBar from '../components/TopBar';
 
-// Map node type strings to their corresponding React components.
 const nodeTypes = {
     PLANNING_VIDEO: PlanningNode,
     WEBSITE_SETUP: WebsiteNode,
     ADVERTISING: AdvertisingNode,
     DEFAULT_NODE: DefaultNode,
-    // Add other custom node types here (e.g., 'JOURNAL': JournalNode)
 };
 
-// --- Canvas Component (Renders the React Flow instance) ---
 const CanvasComponent = ({ canvasId }) => {
     const reactFlowWrapper = useRef(null);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -45,7 +41,6 @@ const CanvasComponent = ({ canvasId }) => {
     const { screenToFlowPosition } = useReactFlow();
     const [canvasTitle, setCanvasTitle] = useState('Loading Canvas...');
 
-    // Load initial canvas data and blocks
     useEffect(() => {
         if (!canvasId) {
             console.warn("CanvasComponent loaded without canvasId");
@@ -72,7 +67,6 @@ const CanvasComponent = ({ canvasId }) => {
             }));
             setNodes(initialNodes);
             // TODO: Load edges if stored per canvas
-            // setEdges(canvas.edges || []);
             console.log(`Loaded ${initialNodes.length} nodes for canvas ${canvasId}`);
         } else {
             console.error(`Canvas with ID ${canvasId} not found.`);
@@ -82,7 +76,6 @@ const CanvasComponent = ({ canvasId }) => {
         }
     }, [canvasId, setNodes, setEdges]);
 
-    // Handles new connections
     const onConnect = useCallback(
         (params) => {
             console.log('Edge created:', params);
@@ -92,13 +85,11 @@ const CanvasComponent = ({ canvasId }) => {
         [setEdges]
     );
 
-    // Handles dragging over the canvas
     const onDragOver = useCallback((event) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
     }, []);
 
-    // Handles dropping an element from the sidebar
     const onDrop = useCallback(
         (event) => {
             event.preventDefault();
@@ -133,7 +124,6 @@ const CanvasComponent = ({ canvasId }) => {
         [screenToFlowPosition, canvasId, setNodes]
     );
 
-    // Handles node changes, including persisting position after drag
     const handleNodesChange = useCallback((changes) => {
         onNodesChange(changes);
         changes.forEach(change => {
@@ -177,7 +167,6 @@ const CanvasComponent = ({ canvasId }) => {
     );
 };
 
-// --- Main Page Component (Container) ---
 const CanvasPage = () => {
     const { canvasId: paramId } = useParams();
     const navigate = useNavigate();

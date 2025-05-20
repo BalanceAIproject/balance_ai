@@ -11,6 +11,7 @@ import Forgot from './pages/Forgot';
 import CanvasPage from './pages/CanvasPage'; // Import the Canvas Page
 import UserProfile from './pages/UserProfilePage';
 import Chat from './pages/chat';
+import Settings from './pages/SettingsPage';
 
 import { AppProvider } from './context/AppContext';
 
@@ -27,6 +28,8 @@ export default function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/chat' element={<Chat />} />
           <Route path='/userprofile' element={<UserProfile />} />
+          <Route path='/settings' element={<Settings />} />
+
 
           {/* Canvas Routes */}
           {/* Route for specific canvas ID */}
