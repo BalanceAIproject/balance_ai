@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { blockService } from '../services/blockService';
 import { useParams } from 'react-router-dom';
 import TopBar from '../components/TopBar';
+import { Lock, Upload, Plus, ArrowUpCircle } from 'lucide-react';
 
 function Chat() {
   const [input, setInput] = useState('');
   const [agentReply, setAgentReply] = useState('');
   const [blocks, setBlocks] = useState([]);
   const { canvasId } = useParams();
+  const [showSharePopup, setShowSharePopup] = useState(false);
 
   const sendPrompt = async () => {
     if (!input.trim()) return;
@@ -58,6 +60,19 @@ function Chat() {
     setInput('');
   };
 
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Selected file:', file.name);
+    }
+  };
+
+  const shareLink = `https://balanceai.com/share/…`;
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shareLink);
+    alert('Link copied to clipboard!');
+  };
+
   return (
       <>
         {/* Add TopBar component at the top of the page */}
@@ -65,14 +80,22 @@ function Chat() {
 
         <div className="chatbackdrop">
           <div className="chatbar">
-            <div className="external">
-              <button className="share">Share</button>
+            <div className="chatbar-buttons">
+              <button className="icon-button share-button" onClick={() => setShowSharePopup(true)}>
+                <Lock size={55}/>
+                <span>Share</span>
+              </button>
+              <button className="icon-button round"><Plus size={55}/></button>
+              <button className="icon-button round"><Upload size={55}/></button>
+              <div></div>
+              {/* Empty slot to complete the 2x2 grid */}
             </div>
             <div className="defaultPrompt">
-              <button className="help">Need help starting your ideas?</button>
+              <button className="help">Need Help Starting Your Ideas?</button>
               <div className="prompt">
                 <button>Education</button>
                 <button>Business</button>
+                <button>Personal</button>
                 <button>Family</button>
                 <button>Content</button>
               </div>
@@ -128,10 +151,33 @@ function Chat() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                 />
-                <button className="send" onClick={sendPrompt}>Send</button>
+                <button
+                    className="icon-button round send-btn"
+                    onClick={() => document.getElementById('file-upload').click()}
+                >
+                  <ArrowUpCircle size={80}/>
+                </button>
+                <input
+                    type="file"
+                    id="file-upload"
+                    style={{display: 'none'}}
+                    onChange={(e) => handleFileUpload(e)}
+                />
               </div>
             </div>
           </div>
+          {showSharePopup && (
+              <div className="share-popup">
+                <div className="popup-content">
+                  <button className="close-btn" onClick={() => setShowSharePopup(false)}>×</button>
+                  <h2>Share public link to canva</h2>
+                  <div className="share-link-box">
+                    <span className="share-link">{shareLink}</span>
+                    <button className="copy-btn" onClick={copyToClipboard}>Copy Link</button>
+                  </div>
+                </div>
+              </div>
+          )}
         </div>
       </>
   );
