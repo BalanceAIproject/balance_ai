@@ -22,16 +22,16 @@ const UserProfilePage = () => {
     const [draggedCanvasId, setDraggedCanvasId] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [filterOpen, setFilterOpen] = useState(false);
-    const [showOnlyWithVideo, setShowOnlyWithVideo] = useState(false);
     const [pinnedCanvases, setPinnedCanvases] = useState([]);
     const [deleteConfirmation, setDeleteConfirmation] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(3);
     const [openStatusDropdown, setOpenStatusDropdown] = useState(null);
     const [chatHistory, setChatHistory] = useState([]);
-
+    const [sortOrder, setSortOrder] = useState('newest');
     const statusOptions = ['Active', 'Ambient', 'Checkpointed', 'Dormant'];
-
+    const [editingCanvasId, setEditingCanvasId] = useState(null);
+    const [editingTitle, setEditingTitle] = useState('');
     const [canvases, setCanvases] = useState([
         {
             id: 1,
@@ -119,10 +119,10 @@ const UserProfilePage = () => {
     useEffect(() => {
         const handleClickOutside = () => {
             setOpenStatusDropdown(null);
+            setFilterOpen(false);
         };
         document.addEventListener('click', handleClickOutside);
-        
-        // Load chat history from localStorage
+
         try {
             const storedHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
             setChatHistory(storedHistory);
@@ -158,13 +158,24 @@ const UserProfilePage = () => {
         setDeleteConfirmation(null);
     };
 
-    const filteredData = canvases
+    const handleFilterClick = (e) => {
+        e.stopPropagation();
+        setFilterOpen(prev => !prev);
+    };
+
+    const handleSortOrderChange = (newOrder) => {
+        setSortOrder(newOrder);
+        setFilterOpen(false);
+    };
+
+    const filteredData = [...canvases]
         .filter(c => c.title.toLowerCase().includes(searchQuery.toLowerCase()))
-        .filter(c => !showOnlyWithVideo || (c.videoTitles && c.videoTitles.length > 0))
         .sort((a, b) => {
             const aPinned = pinnedCanvases.includes(a.id);
             const bPinned = pinnedCanvases.includes(b.id);
-            return (bPinned ? 1 : 0) - (aPinned ? 1 : 0);
+            if (aPinned !== bPinned) return (bPinned ? 1 : 0) - (aPinned ? 1 : 0);
+
+            return sortOrder === 'newest' ? b.id - a.id : a.id - b.id;
         });
 
     return (
@@ -194,9 +205,36 @@ const UserProfilePage = () => {
                         <div className="top-controls-inner">
                             <div className="left-controls">
                                 <button className="pill-btn">My Canvases</button>
-                                <button className="pill-btn" onClick={() => setFilterOpen(prev => !prev)}>
-                                    <Filter/> Filter
-                                </button>
+                                <div className={`filter-dropdown-full ${filterOpen ? 'open' : ''}`}
+                                     onClick={handleFilterClick}>
+                                    <div className="filter-header">
+                                        <Filter/>
+                                        Filter
+                                        <ChevronDown className={`filter-chevron ${filterOpen ? 'rotated' : ''}`}/>
+                                    </div>
+                                    {filterOpen && (
+                                        <div className="filter-options">
+                                            <div
+                                                className={`sort-option ${sortOrder === 'newest' ? 'selected' : ''}`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleSortOrderChange('newest');
+                                                }}
+                                            >
+                                                Oldest to Newest
+                                            </div>
+                                            <div
+                                                className={`sort-option ${sortOrder === 'oldest' ? 'selected' : ''}`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleSortOrderChange('oldest');
+                                                }}
+                                            >
+                                                Newest to Oldest
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className="search-container">
                                 <Search className="search-icon" size={18}/>
@@ -211,24 +249,11 @@ const UserProfilePage = () => {
                         </div>
                     </div>
 
-                    {filterOpen && (
-                        <div className="filter-dropdown">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={showOnlyWithVideo}
-                                    onChange={() => setShowOnlyWithVideo(prev => !prev)}
-                                />
-                                Only show canvases with videos
-                            </label>
-                        </div>
-                    )}
-
                     <div className="chat-prompts-section">
                         <h3>Recent Chat History</h3>
                         {chatHistory.length > 0 ? (
                             <ul>
-                                {chatHistory.slice(-5).reverse().map((entry, index) => ( // Display last 5 entries, newest first
+                            {chatHistory.slice(-5).reverse().map((entry, index) => ( // Display last 5 entries, newest first
                                     <li key={index}>
                                         <p><strong>You:</strong> {entry.userInput}</p>
                                         <p><strong>Agent:</strong> {entry.agentReply}</p>
@@ -308,7 +333,39 @@ const UserProfilePage = () => {
                                     ))}
                                 </div>
 
-                                <div className="canvas-title">{canvas.title}</div>
+                                <div className="canvas-title" onDoubleClick={() => {
+                                    setEditingCanvasId(canvas.id);
+                                    setEditingTitle(canvas.title);
+                                }}>
+                                    {editingCanvasId === canvas.id ? (
+                                        <input
+                                            type="text"
+                                            value={editingTitle}
+                                            autoFocus
+                                            onChange={(e) => setEditingTitle(e.target.value)}
+                                            onBlur={() => {
+                                                setCanvases(prev =>
+                                                    prev.map(c => c.id === canvas.id ? {...c, title: editingTitle} : c)
+                                                );
+                                                setEditingCanvasId(null);
+                                            }}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    setCanvases(prev =>
+                                                        prev.map(c => c.id === canvas.id ? {
+                                                            ...c,
+                                                            title: editingTitle
+                                                        } : c)
+                                                    );
+                                                    setEditingCanvasId(null);
+                                                }
+                                            }}
+                                            className="canvas-title-input"
+                                        />
+                                    ) : (
+                                        canvas.title
+                                    )}
+                                </div>
                                 {canvas.description && (
                                     <div className="canvas-description">{canvas.description}</div>
                                 )}

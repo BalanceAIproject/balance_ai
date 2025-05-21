@@ -158,10 +158,8 @@ html, body {
     gap: 16px;
 }
 
-.section-title,
-.filter-btn {
-    background-color: #e3efda;
-    border: none;
+.filter-dropdown-full {
+    background-color: #c6dcb3;
     border-radius: 999px;
     padding: 16px 32px;
     font-size: 1.4rem;
@@ -169,21 +167,83 @@ html, body {
     color: #1e3b25;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 260px;
+    width: fit-content;
+    transition: none !important;
+}
+
+.filter-dropdown-full.open {
+    border-radius: 24px;
+}
+
+.filter-header {
+    display: flex;
     align-items: center;
     gap: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    box-shadow: none;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.sort-option {
+    padding: 10px 16px;
+    background-color: #a8c693;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.sort-option:hover,
+.sort-option.selected {
+    background-color: #7b9463;
+    color: white;
+}
+
+.filter-button-container {
+    position: relative;
+    display: inline-block;
 }
 
 .filter-btn:hover {
     background-color: #d1e4c4;
 }
 
-.filter-btn svg {
+.filter-btn svg:first-of-type {
     width: 24px;
     height: 24px;
     stroke: #1e3b25;
+}
+
+.sort-option:hover,
+.sort-option.selected {
+    background-color: #7b9463;
+    color: black;
+}
+
+.sort-option:first-child {
+    border-top: none;
+}
+
+.sort-option:last-child {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.filter-btn.open {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
 
 .pill-btn {
@@ -391,17 +451,7 @@ html, body {
 }
 
 .filter-dropdown {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 20px;
-    width: fit-content;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    font-size: 0.9rem;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    transition: none !important;
 }
 
 .meta-info {
@@ -750,4 +800,40 @@ html, body {
 .chat-prompts-section > p { /* Target the "No chat history" paragraph directly */
     font-size: 0.95rem;
     color: #777;
+}
+
+.sort-options {
+    background-color: #b3cc99;
+    border-radius: 16px;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.sort-option {
+    padding: 14px 24px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    color: #1e3b25;
+}
+
+.sort-option:hover,
+.sort-option.selected {
+    background-color: #7b9463;
+    color: black;
+}
+
+.canvas-title-input {
+    font-size: 1.6rem;
+    font-weight: bold;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 6px 10px;
+    width: 90%;
+    outline: none;
 }
