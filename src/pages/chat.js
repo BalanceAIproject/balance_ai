@@ -2,6 +2,7 @@ import './chat.css';
 import React, { useState } from 'react';
 import { blockService } from '../services/blockService';
 import { useParams } from 'react-router-dom';
+import TopBar from '../components/TopBar';
 
 function Chat() {
   const [input, setInput] = useState('');
@@ -58,76 +59,81 @@ function Chat() {
   };
 
   return (
-    <div className="chatbackdrop">
-      <div className="chatbar">
-        <div className="external">
-          <button className="share">Share</button>
-        </div>
-        <div className="defaultPrompt">
-          <button className="help">Need help starting your ideas?</button>
-          <div className="prompt">
-            <button>Education</button>
-            <button>Business</button>
-            <button>Family</button>
-            <button>Content</button>
-          </div>
-        </div>
-      </div>
+      <>
+        {/* Add TopBar component at the top of the page */}
+        <TopBar />
 
-      <div className="chat-main">
-        <div className="chat-content">
-          {agentReply && (
-            <div className="agent-reply">
-              <strong>Agent:</strong> {agentReply}
+        <div className="chatbackdrop">
+          <div className="chatbar">
+            <div className="external">
+              <button className="share">Share</button>
             </div>
-          )}
+            <div className="defaultPrompt">
+              <button className="help">Need help starting your ideas?</button>
+              <div className="prompt">
+                <button>Education</button>
+                <button>Business</button>
+                <button>Family</button>
+                <button>Content</button>
+              </div>
+            </div>
+          </div>
 
-          {blocks.map((block, index) => {
-            switch (block.type) {
-              case 'CHECKLIST':
-                return (
-                  <div key={index} className="block checklist">
-                    <h3>{block.title}</h3>
-                    <ul>
-                      {block.items.map((item, i) => (
-                        <li key={i}>{item}</li>
-                      ))}
-                    </ul>
+          <div className="chat-main">
+            <div className="chat-content">
+              {agentReply && (
+                  <div className="agent-reply">
+                    <strong>Agent:</strong> {agentReply}
                   </div>
-                );
-              case 'RESOURCE_CARD':
-                return (
-                  <div key={index} className="block resource">
-                    <h3>{block.title}</h3>
-                    {block.items.map((item, i) => (
-                      <div key={i}>
-                        <strong>{item.name}</strong>: {item.purpose}<br />
-                        <em>Recommended: {item.recommended}</em>
-                      </div>
-                    ))}
-                  </div>
-                );
-    
-              default:
-                return null;
-            }
-          })}
-        </div>
+              )}
 
-        <div className="chatinput">
-          <div className="wrap">
-            <input
-              type="text"
-              placeholder="Type your message here..."
-              className="input"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-            <button className="send" onClick={sendPrompt}>Send</button>
+              {blocks.map((block, index) => {
+                switch (block.type) {
+                  case 'CHECKLIST':
+                    return (
+                        <div key={index} className="block checklist">
+                          <h3>{block.title}</h3>
+                          <ul>
+                            {block.items.map((item, i) => (
+                                <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                    );
+                  case 'RESOURCE_CARD':
+                    return (
+                        <div key={index} className="block resource">
+                          <h3>{block.title}</h3>
+                          {block.items.map((item, i) => (
+                              <div key={i}>
+                                <strong>{item.name}</strong>: {item.purpose}<br />
+                                <em>Recommended: {item.recommended}</em>
+                              </div>
+                          ))}
+                        </div>
+                    );
+
+                  default:
+                    return null;
+                }
+              })}
+            </div>
+
+            <div className="chatinput">
+              <div className="wrap">
+                <input
+                    type="text"
+                    placeholder="Type your message here..."
+                    className="input"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                />
+                <button className="send" onClick={sendPrompt}>Send</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </>
   );
 }
 

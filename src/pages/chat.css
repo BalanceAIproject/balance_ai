@@ -1,12 +1,18 @@
+:root {
+  --top-bar-height: 100px;
+}
+
 .chatbackdrop {
   display: flex;
   background-image: linear-gradient(to bottom, #ffffff 0%, #b7dab3 100%);;
   height: 100vh;
+  padding-top: var(--top-bar-height); /* Add padding for top bar */
+  box-sizing: border-box;
 }
 
 .chatbar {
   background-color: rgb(149, 233, 149);
-  height: 97vh;
+  height: calc(97vh - var(--top-bar-height)); /* Adjust height to accommodate top bar */
   width: 20%;
   padding-top: 3vh;
 }
@@ -82,9 +88,9 @@
 .chatinput {
   position: fixed;
   bottom: 0;
-  left: 20%; 
+  left: 20%;
   width: 80%;
-  background-color: #e0f4dc; 
+  background-color: #e0f4dc;
   padding: 10px 0;
   display: flex;
   justify-content: center;
@@ -126,54 +132,54 @@
 }
 
 .block {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 20px 4vw 0 4vw;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    width: 90%;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  
-  .block h3 {
-    margin-bottom: 12px;
-    font-size: 1.2rem;
-    color: #2c3e50;
-  }
-  
-  .block ul {
-    padding-left: 20px;
-    list-style-type: disc;
-    color: #333;
-  }
-  
-  .block li {
-    margin-bottom: 6px;
-  }
-  
-  .block.resource div {
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-  }
-  
-  .block.form label {
-    display: block;
-    margin: 10px 0 4px;
-    font-weight: 600;
-    font-size: 0.95rem;
-  }
-  
-  .block.form input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-  }
-  .chat-main {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 4vw 0 4vw;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 90%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.block h3 {
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.block ul {
+  padding-left: 20px;
+  list-style-type: disc;
+  color: #333;
+}
+
+.block li {
+  margin-bottom: 6px;
+}
+
+.block.resource div {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.block.form label {
+  display: block;
+  margin: 10px 0 4px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.block.form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.chat-main {
   width: 80%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -183,7 +189,7 @@
   flex: 1;
   overflow-y: auto;
   padding: 2rem;
-  padding-bottom: 120px; 
+  padding-bottom: 120px;
 }
 
 .agent-reply {

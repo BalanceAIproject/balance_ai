@@ -171,7 +171,7 @@ const UserProfilePage = () => {
         <>
             <TopBar />
             <div className="user-profile-container">
-                <div className="home-icon" onClick={() => navigate("../canvas/")}>
+                <div className="home-icon" onClick={() => navigate("../chat/")}>
                     <Home size={24} />
                 </div>
 
@@ -179,7 +179,7 @@ const UserProfilePage = () => {
                     <img src="/images/profile-pic.jpg" alt="Amy Smith" className="profile-pic" />
                     <h2 className="username">Amy Smith</h2>
                     <div className="profile-actions">
-                        <button title="Add" onClick={() => alert("Add new canvas!")}>
+                        <button title="Add" onClick={() => navigate("../chat")}>
                             <Plus size={40}/>
                         </button>
                         <button title="Settings" onClick={() => navigate("/settings")}>
