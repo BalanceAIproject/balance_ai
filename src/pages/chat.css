@@ -318,7 +318,7 @@
   height: 36px;
   font-size: 45px;
   background-color: white;
-  color: white;
+  color: black;
   cursor: pointer;
   display: inline-flex;           /* key fix */
   align-items: center;
@@ -329,7 +329,7 @@
 
 .close-btn:hover {
   color: black;
-  background: none;
+  background: transparent;
 }
 
 .share-link-box {
@@ -347,7 +347,8 @@
 .share-link {
   font-weight: 600;
   font-size: 1.3rem;
-  color: white;
+  color: black;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -368,9 +369,8 @@
   flex-shrink: 0;
 }
 
-
 .copy-btn:hover {
-  background-color: white;
+  background: #f0f0f0;
   color: black;
 }
 
