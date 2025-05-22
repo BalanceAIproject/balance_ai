@@ -86,7 +86,6 @@ function Chat() {
                 <span>Share</span>
               </button>
               <button className="icon-button round"><Plus size={55}/></button>
-              <button className="icon-button round"><Upload size={55}/></button>
               <div></div>
               {/* Empty slot to complete the 2x2 grid */}
             </div>

@@ -28,18 +28,30 @@
 }
 
 .share-button {
-  height: 80px;
-  padding: 0 18px;
-  border-radius: 45px;
-  font-size: 1.0rem;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-weight: bold;
-  background-color: white;
+  padding: 25px 36px;
+  background-color: #6d8c6d;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 600;
+  border-radius: 999px;
   border: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.share-button:hover {
+  background: #f0f0f0;
+  color: black;
+}
+
+.share-button svg {
+  width: 40px;
+  height: 40px;
+  stroke-width: 2.5;
 }
 
 .share:hover {
@@ -238,6 +250,34 @@
   transition: background 0.2s ease;
 }
 
+.icon-button.round {
+  background-color: #6d8c6d; /* or your desired green */
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.icon-button.round:hover {
+  background: #f0f0f0;
+  color: black;
+}
+
+.icon-button.round svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2.5;
+}
+
 .icon-button.send-btn:hover {
   background: #f0f0f0;
 }
@@ -289,7 +329,7 @@
 
 .close-btn:hover {
   color: black;
-  background: none;
+  background: transparent;
 }
 
 .share-link-box {
@@ -308,6 +348,7 @@
   font-weight: 600;
   font-size: 1.3rem;
   color: black;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -328,9 +369,8 @@
   flex-shrink: 0;
 }
 
-
 .copy-btn:hover {
-  background-color: white;
+  background: #f0f0f0;
   color: black;
 }
 
