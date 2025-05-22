@@ -216,5 +216,31 @@
         ]
       }
     ]
+  },
+  {
+    "timestamp": "2025-05-22T18:31:19.052Z",
+    "userPrompt": "help me write a book",
+    "agentReply": "That's a great project! Let's break down the steps to help you get started on writing a book.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Steps to Write a Book",
+        "items": [
+          "1. Define your book idea or concept",
+          "2. Create an outline or structure for your book",
+          "3. Start writing the first draft",
+          "4. Edit and revise your draft",
+          "5. Get feedback and make improvements",
+          "6. Finalize your manuscript",
+          "7. Consider publishing options"
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-05-22T18:32:24.873Z",
+    "userPrompt": "what was my last prompt",
+    "agentReply": "Sure! Let's review your last prompt to see what you were working on.",
+    "suggestedBlocks": []
   }
 ]
