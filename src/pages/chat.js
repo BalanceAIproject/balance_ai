@@ -94,9 +94,6 @@ function Chat() {
               <div className="prompt">
                 <button>Education</button>
                 <button>Business</button>
-                <button>Personal</button>
-                <button>Family</button>
-                <button>Content</button>
               </div>
             </div>
           </div>
