@@ -117,9 +117,14 @@
 
 .wrap {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   width: 70vw;
-  height: 3.5vw;
-  position: relative;
+  min-height: 90px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 20px;
 }
 
 .wrap input {
@@ -134,7 +139,7 @@
 }
 
 .wrap button {
-  position: absolute;
+  position: static;
   padding-left: 60px;
   padding-top: 10px;
   display: flex;
@@ -221,38 +226,25 @@
   width: 90%;
 }
 
-.icon-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.icon-button.send-btn {
   background: white;
   border: none;
-  border-radius: 40px;
-  padding: 8px 16px;
-  font-size: 2.5rem;
-  font-weight: 400;
-  color: #333;
-  transition: background 0.2s;
-  cursor: pointer;
-}
-
-.icon-button svg {
-  stroke-width: 1.8;
-}
-
-.icon-button:hover {
-  background: #a1bc97;
-  color: #000000;
-}
-
-.icon-button.round {
-  width: 80px;
-  height: 90px;
-  padding: 0;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
+  border-radius: 12px;
+  padding: 12px;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s ease;
+}
+
+.icon-button.send-btn:hover {
+  background: #f0f0f0;
+}
+
+.icon-button.send-btn svg {
+  width: 32px;
+  height: 32px;
 }
 
 .share-popup {
@@ -340,4 +332,11 @@
 .copy-btn:hover {
   background-color: white;
   color: black;
+}
+
+.send-btn {
+  padding: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
 }

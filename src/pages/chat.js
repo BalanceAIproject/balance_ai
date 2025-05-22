@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { blockService } from '../services/blockService';
 import { useParams } from 'react-router-dom';
 import TopBar from '../components/TopBar';
-import { Lock, Upload, Plus, ArrowUpCircle } from 'lucide-react';
+import { Lock, Upload, Plus, ArrowUpCircle, Send } from 'lucide-react';
 
 function Chat() {
   const [input, setInput] = useState('');
@@ -143,7 +143,8 @@ function Chat() {
             </div>
 
             <div className="chatinput">
-              <div className="wrap">
+              <div className="wrap" style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
+                {/* Input Field */}
                 <input
                     type="text"
                     placeholder="Type your message here..."
@@ -151,12 +152,24 @@ function Chat() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                 />
+
+                {/* Send Button */}
+                <button
+                    className="icon-button round send-btn"
+                    onClick={sendPrompt}
+                    disabled={!input.trim()}
+                >
+                  <Send size={60}/>
+                </button>
+
+                {/* Upload Button (on the right) */}
                 <button
                     className="icon-button round send-btn"
                     onClick={() => document.getElementById('file-upload').click()}
                 >
-                  <ArrowUpCircle size={80}/>
+                  <ArrowUpCircle size={60}/>
                 </button>
+
                 <input
                     type="file"
                     id="file-upload"
