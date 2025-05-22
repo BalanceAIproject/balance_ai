@@ -14,7 +14,7 @@ function Chat() {
 
   const sendPrompt = async () => {
     if (!input.trim()) return;
-    let currentAgentReply = 'Agent failed to respond.'; // Variable to store reply/error
+    let currentAgentReply = 'Agent failed to respond.';
 
     try {
       const response = await fetch('http://localhost:3001/agent-message', {
@@ -28,7 +28,7 @@ function Chat() {
       });
 
       const data = await response.json();
-      currentAgentReply = data.agentReply || 'No reply from agent'; // Assign actual reply
+      currentAgentReply = data.agentReply || 'No reply from agent';
       setAgentReply(currentAgentReply);
       setBlocks(data.suggestedBlocks || []);
 
@@ -43,13 +43,11 @@ function Chat() {
       }
     } catch (error) {
       console.error('Error contacting backend:', error);
-      // currentAgentReply will hold the default "Agent failed to respond."
       setAgentReply(currentAgentReply);
     }
 
-    // Store the full chat interaction in localStorage
     try {
-      const chatEntry = { userInput: input, agentReply: currentAgentReply }; // Use the local variable
+      const chatEntry = { userInput: input, agentReply: currentAgentReply };
       const existingHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
       const updatedHistory = [...existingHistory, chatEntry];
       localStorage.setItem('chatHistory', JSON.stringify(updatedHistory));
@@ -75,7 +73,7 @@ function Chat() {
 
   return (
       <>
-        {/* Add TopBar component at the top of the page */}
+        {}
         <TopBar />
 
         <div className="chatbackdrop">
@@ -87,10 +85,10 @@ function Chat() {
               </button>
               <button className="icon-button round"><Plus size={55}/></button>
               <div></div>
-              {/* Empty slot to complete the 2x2 grid */}
+              {}
             </div>
             <div className="defaultPrompt">
-              <button className="help">Need Help Starting Your Ideas?</button>
+              <button className="help">Quick Access to Your Chats</button>
               <div className="prompt">
                 <button>Education</button>
                 <button>Business</button>
@@ -158,7 +156,7 @@ function Chat() {
                   <Send size={60}/>
                 </button>
 
-                {/* Upload Button (on the right) */}
+                {}
                 <button
                     className="icon-button round send-btn"
                     onClick={() => document.getElementById('file-upload').click()}
