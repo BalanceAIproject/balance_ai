@@ -14,7 +14,7 @@ function Login() {
         e.preventDefault();
         const success = await loginUser(username, password, rememberMe);
         if (success) {
-            navigate('/canvas');
+            navigate('/userprofile');
         }
     };
 
