@@ -248,7 +248,7 @@ const UserProfilePage = () => {
                             </div>
                         </div>
                     </div>
-
+{/* 
                     <div className="chat-prompts-section">
                         <h3>Recent Chat History</h3>
                         {chatHistory.length > 0 ? (
@@ -263,7 +263,7 @@ const UserProfilePage = () => {
                         ) : (
                             <p>No chat history recorded yet.</p>
                         )}
-                    </div>
+                    </div> */}
 
                     {/* Delete Confirmation Modal */}
                     {deleteConfirmation && (

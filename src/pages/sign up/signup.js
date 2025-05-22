@@ -24,7 +24,7 @@ function Signup() {
         }
         const success = await registerUser(username, password);
         if (success) {
-            navigate('/canvas');
+            navigate('/userprofile');
         }
     };
 
