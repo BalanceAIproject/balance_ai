@@ -23,3 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .env
+
+/backend/node_modules
+/backend/chats
+/backend/summaries
