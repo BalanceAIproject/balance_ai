@@ -71,6 +71,10 @@ function Chat() {
     alert('Link copied to clipboard!');
   };
 
+  function newTab(){
+    window.open('/chat')
+  }
+
   return (
       <>
         {}
@@ -90,8 +94,8 @@ function Chat() {
             <div className="defaultPrompt">
               <button className="help">Quick Access to Your Chats</button>
               <div className="prompt">
-                <button>Education</button>
-                <button>Business</button>
+                <button onClick={newTab}>context 1</button>
+                <button onClick={newTab}>context 2</button>
               </div>
             </div>
           </div>
