@@ -242,5 +242,64 @@
     "userPrompt": "what was my last prompt",
     "agentReply": "Sure! Let's review your last prompt to see what you were working on.",
     "suggestedBlocks": []
+  },
+  {
+    "timestamp": "2025-05-26T08:05:55.242Z",
+    "userPrompt": "help me make a podcast",
+    "agentReply": "Creating a podcast involves several steps, from planning to recording to publishing. Here are some key tasks and resources to help you get started:",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Podcast Creation Checklist",
+        "items": [
+          "Define your podcast concept and target audience",
+          "Create a content calendar for episodes",
+          "Gather necessary equipment like microphones, headphones, and recording software",
+          "Write scripts or outlines for episodes",
+          "Record and edit your podcast episodes",
+          "Choose a hosting platform for your podcast",
+          "Publish and promote your podcast episodes"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Podcast Creation Resources",
+        "items": [
+          {
+            "name": "Microphone",
+            "purpose": "Capture high-quality audio for your podcast recordings",
+            "recommended": "Blue Yeti, Audio-Technica AT2020"
+          },
+          {
+            "name": "Recording Software",
+            "purpose": "Edit and enhance your podcast audio files",
+            "recommended": "Audacity, Adobe Audition"
+          },
+          {
+            "name": "Hosting Platform",
+            "purpose": "Distribute and share your podcast episodes",
+            "recommended": "Anchor, Libsyn, Podbean"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-05-26T08:13:27.023Z",
+    "userPrompt": "write a podcast question",
+    "agentReply": "Great! Let's brainstorm and craft a compelling podcast question. Here are some steps to guide you:",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Steps to Write a Podcast Question",
+        "items": [
+          "Define the theme or topic of your podcast episode.",
+          "Consider what you want to learn or discuss with the question.",
+          "Craft a clear and concise question that sparks curiosity or debate.",
+          "Ensure the question is relevant to your audience and fits the overall tone of your podcast.",
+          "Review and refine the question to make it engaging and thought-provoking."
+        ]
+      }
+    ]
   }
 ]

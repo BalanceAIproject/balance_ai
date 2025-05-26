@@ -56,8 +56,8 @@ const SettingsPage = () => {
                     alt="User Profile"
                 />
                 <div className="profile-text-info">
-                    <h2 className="profile-name">{formData.fullName || "Amelia Smith"}</h2>
-                    <p className="profile-email">{formData.email || "AmySmith@gmail.com"}</p>
+                    <h2 className="profile-name">{formData.fullName || "User Name"}</h2>
+                    <h3 className="profile-email">{formData.email || "username@gmail.com"}</h3>
                 </div>
             </div>
 

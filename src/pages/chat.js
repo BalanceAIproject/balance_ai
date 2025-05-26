@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { blockService } from '../services/blockService';
 import { useParams } from 'react-router-dom';
 import TopBar from '../components/TopBar';
-import { Lock, Upload, Plus, ArrowUpCircle, Send } from 'lucide-react';
+import { Lock, Upload, Plus, ArrowUpCircle, Send, MessageCircle, Clock, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function Chat() {
   const [input, setInput] = useState('');
@@ -11,7 +12,9 @@ function Chat() {
   const [blocks, setBlocks] = useState([]);
   const { canvasId } = useParams();
   const [showSharePopup, setShowSharePopup] = useState(false);
-
+  const navigate = useNavigate();
+  const [showPlusPopup, setShowPlusPopup] = useState(false);
+  const [showShareLinkPopup, setShowShareLinkPopup] = useState(false);
   const sendPrompt = async () => {
     if (!input.trim()) return;
     let currentAgentReply = 'Agent failed to respond.';
@@ -65,6 +68,32 @@ function Chat() {
     }
   };
 
+  const handleNavigation = (section) => {
+    switch(section) {
+      case 'chat':
+        console.log('Current chat selected');
+        break;
+      case 'new-chat':
+        setAgentReply('');
+        setBlocks([]);
+        setInput('');
+        console.log('Starting new chat');
+        break;
+      case 'past-chats':
+        navigate('/chat-history');
+        break;
+      default:
+        console.log(`Navigating to: ${section}`);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('chatHistory');
+    localStorage.removeItem('userToken');
+    navigate('/login');
+    console.log('User logged out');
+  };
+
   const shareLink = `https://balanceai.com/share/…`;
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareLink);
@@ -73,29 +102,42 @@ function Chat() {
 
   return (
       <>
-        {}
         <TopBar />
 
         <div className="chatbackdrop">
           <div className="chatbar">
-            <div className="chatbar-buttons">
-              <button className="icon-button share-button" onClick={() => setShowSharePopup(true)}>
-                <Lock size={55}/>
-                <span>Share</span>
-              </button>
-              <button className="icon-button round"><Plus size={55}/></button>
-              <div></div>
-              {}
-            </div>
-            <div className="defaultPrompt">
-              <button className="help">Quick Access to Your Chats</button>
-              <div className="prompt">
-                <button>Education</button>
-                <button>Business</button>
-                <button>Personal</button>
-                <button>Family</button>
-                <button>Content</button>
+
+            <div className="user-profile">
+              <div className="profile-avatar">
+                <img src="/images/profile-pic.jpg" alt="User Profile" className="profile-image" />
               </div>
+              <div className="profile-info">
+                <div className="profile-name">User Name</div>
+                <div className="profile-email">username@gmail.com</div>
+              </div>
+            </div>
+
+            {/* New Navigation Menu */}
+            <div className="nav-menu">
+              <button className="nav-item" onClick={() => handleNavigation('chat')}>
+                <MessageCircle size={24} />
+                <span>Chat</span>
+              </button>
+
+              <button className="nav-item" onClick={() => handleNavigation('new-chat')}>
+                <Plus size={24} />
+                <span>New Chat</span>
+              </button>
+
+              <button className="nav-item" onClick={() => handleNavigation('past-chats')}>
+                <Clock size={24} />
+                <span>Past Chats</span>
+              </button>
+
+              <button className="nav-item logout" onClick={handleLogout}>
+                <LogOut size={24} />
+                <span>Logout</span>
+              </button>
             </div>
           </div>
 
@@ -126,7 +168,7 @@ function Chat() {
                           <h3>{block.title}</h3>
                           {block.items.map((item, i) => (
                               <div key={i}>
-                                <strong>{item.name}</strong>: {item.purpose}<br />
+                                <strong>{item.name}</strong>: {item.purpose}<br/>
                                 <em>Recommended: {item.recommended}</em>
                               </div>
                           ))}
@@ -140,45 +182,71 @@ function Chat() {
             </div>
 
             <div className="chatinput">
-              <div className="wrap" style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
-                {/* Input Field */}
+              <div className="wrap">
+                <div className="plus-menu-container">
+                  <button className="plus-button" onClick={() => setShowPlusPopup(!showPlusPopup)}>
+                    <div className="plus-icon-wrapper-pill">
+                      <Plus size={28} strokeWidth={3}/>
+                    </div>
+                  </button>
+
+                  {showPlusPopup && (
+                      <div className="plus-popup-strict">
+                        <div className="popup-option-strict">
+                          <div className="icon-circle-strict"><Upload size={28}/></div>
+                          <label htmlFor="file-upload" className="option-label">Upload</label>
+                          <input
+                              type="file"
+                              id="file-upload"
+                              style={{display: 'none'}}
+                              onChange={(e) => handleFileUpload(e)}
+                          />
+                        </div>
+
+                        <div className="popup-option-strict" onClick={() => setShowShareLinkPopup(true)}>
+                          <div className="icon-circle-strict"><Lock size={28}/></div>
+                          <span className="option-label">Share</span>
+                        </div>
+                      </div>
+                  )}
+                </div>
+
                 <input
                     type="text"
-                    placeholder="Type your message here..."
+                    placeholder="Enter an idea"
                     className="input"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                 />
 
-                {/* Send Button */}
                 <button
-                    className="icon-button round send-btn"
+                    className="send-button"
                     onClick={sendPrompt}
                     disabled={!input.trim()}
                 >
-                  <Send size={60}/>
+                  <Send />
                 </button>
-
-                {}
-                <button
-                    className="icon-button round send-btn"
-                    onClick={() => document.getElementById('file-upload').click()}
-                >
-                  <ArrowUpCircle size={60}/>
-                </button>
-
-                <input
-                    type="file"
-                    id="file-upload"
-                    style={{display: 'none'}}
-                    onChange={(e) => handleFileUpload(e)}
-                />
               </div>
+
+              {/* Share link modal */}
+              {showShareLinkPopup && (
+                  <div className="share-popup">
+                    <div className="popup-content">
+                      <button className="close-btn" onClick={() => setShowShareLinkPopup(false)}>×</button>
+                      <h2>Share public link to canva</h2>
+                      <div className="share-link-box">
+                        <span className="share-link">{shareLink}</span>
+                        <button className="copy-btn" onClick={copyToClipboard}>Copy Link</button>
+                      </div>
+                    </div>
+                  </div>
+              )}
             </div>
           </div>
+
           {showSharePopup && (
               <div className="share-popup">
-                <div className="popup-content">
+              <div className="popup-content">
                   <button className="close-btn" onClick={() => setShowSharePopup(false)}>×</button>
                   <h2>Share public link to canva</h2>
                   <div className="share-link-box">
