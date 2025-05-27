@@ -159,26 +159,64 @@ Do NOT include anything outside the JSON. No explanations. No markdown. Just val
 
 app.get("/chat-history", (req, res) => {
   const chatDir = path.join(__dirname, "chats");
-  if (!fs.existsSync(chatDir)) return res.json([]);
+  if (!fs.existsSync(chatDir)) {
+    return res.json([]);
+  }
 
   const files = fs.readdirSync(chatDir);
-  const chatFiles = files.filter(f => f.endsWith('.json')).map(f => {
-    const id = f.replace('.json', '');
-    const summaryPath = path.join(__dirname, "summaries", `${id}_summary.json`);
-    const chatPath = path.join(chatDir, f);
+  const chatFilesData = files
+    .filter(f => f.endsWith('.json') && !f.includes('_summary'))
+    .map(f => {
+      const id = f.replace('.json', '');
+      const summaryPath = path.join(__dirname, "summaries", `${id}_summary.json`);
+      const chatFilePath = path.join(chatDir, f);
 
-    const summary = fs.existsSync(summaryPath)
-      ? JSON.parse(fs.readFileSync(summaryPath, 'utf-8')).summary
-      : 'No summary';
+      let title = 'Untitled Canvas';
+      let description = 'No description available.';
+      let blocks = [];
+      let status = 'Active';
+      let videoTitles = [];
 
-    const firstPrompt = fs.existsSync(chatPath)
-      ? (JSON.parse(fs.readFileSync(chatPath, 'utf-8'))[0]?.userPrompt || "")
-      : "";
+      if (fs.existsSync(chatFilePath)) {
+        try {
+          const chatData = JSON.parse(fs.readFileSync(chatFilePath, 'utf-8'));
+          if (chatData.length > 0) {
+            const lastEntry = chatData[chatData.length - 1];
+            if (lastEntry.suggestedBlocks && Array.isArray(lastEntry.suggestedBlocks)) {
+              blocks = lastEntry.suggestedBlocks.map(block => block.title || block.type || 'Unnamed Block');
+            }
+          }
+        } catch (e) {
+          console.error(`Error parsing chat file ${chatFilePath}:`, e.message);
+        }
+      }
+      
+      if (fs.existsSync(summaryPath)) {
+        try {
+          const summaryData = JSON.parse(fs.readFileSync(summaryPath, 'utf-8'));
+          title = summaryData.title || title;
+          description = summaryData.description || description;
+        } catch (e) {
+          console.error(`Error parsing summary file ${summaryPath}:`, e.message);
+        }
+      }
 
-    return { canvasId: id, summary, firstPrompt };
-  });
+      const timestamp = parseInt(id, 10);
 
-  res.json(chatFiles);
+      return {
+        id: id, // UserProfilePage uses 'id'
+        canvasId: id, // chat.js might still expect canvasId for navigation or fetching
+        title: title, // Both pages can use this for display
+        description: description,
+        timestamp: timestamp,
+        blocks: blocks,
+        status: status,
+        videoTitles: videoTitles
+      };
+    })
+    .sort((a, b) => b.timestamp - a.timestamp);
+
+  res.json(chatFilesData);
 });
 
 

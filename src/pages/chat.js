@@ -85,8 +85,8 @@ function Chat() {
       <div className="chatbar">
         <button className="share" onClick={() => navigate(`/chat/${Date.now()}`)}>+ New Chat</button>
         {chatHistory.map((chat, i) => (
-          <div key={i} className="summary" onClick={() => navigate(`/chat/${chat.canvasId}`)}>
-            {chat.firstPrompt ? chat.firstPrompt.split(" ").slice(0, 5).join(" ") + "..." : "Untitled Chat"}
+          <div key={i} className="summary" onClick={() => navigate(`/chat/${chat.canvasId || chat.id}`)}>
+            {chat.title ? chat.title.split(" ").slice(0, 5).join(" ") + (chat.title.split(" ").length > 5 ? "..." : "") : "Untitled Chat"}
           </div>
         ))}
       </div>

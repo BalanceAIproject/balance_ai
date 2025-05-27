@@ -32,44 +32,55 @@ const UserProfilePage = () => {
     const statusOptions = ['Active', 'Ambient', 'Checkpointed', 'Dormant'];
     const [editingCanvasId, setEditingCanvasId] = useState(null);
     const [editingTitle, setEditingTitle] = useState('');
-    const [canvases, setCanvases] = useState([
-        {
-            id: 1,
-            title: 'Small Business',
-            description: 'Manage tasks and finances for your business.',
-            blocks: ['Journal Block', 'Budget Block', 'To-Do List', 'Idea Mapper'],
-            updated: '1 Min Ago',
-            status: 'Active',
-            videoTitles: []
-        },
-        {
-            id: 2,
-            title: 'Short Stories',
-            description: 'Track your characters, timelines, and story drafts.',
-            blocks: ['Journal Block', 'Characters Block', 'Timeline Block', 'To-Do List'],
-            updated: '5 Hrs Ago',
-            status: 'Active',
-            videoTitles: []
-        },
-        {
-            id: 3,
-            title: 'Crochet',
-            description: 'Organize your crochet projects and tools.',
-            blocks: ['Beginners Block', 'Tools Block', 'Ideas Block'],
-            updated: '2 Days Ago',
-            status: 'Inactive',
-            videoTitles: ['Easy Patterns']
-        },
-        {
-            id: 4,
-            title: 'Cooking',
-            description: 'Plan and collect your favorite recipes.',
-            blocks: ['Beginners Safety', 'Cooking Tools'],
-            updated: '1 Week Ago',
-            status: 'Active',
-            videoTitles: ['Beginners Recipe', 'Recipe with no Peanuts']
+    const [canvases, setCanvases] = useState([]); // Initialize with empty array
+
+    // Helper function to format timestamp to relative time
+    const formatTimeAgo = (timestamp) => {
+        const now = new Date();
+        const secondsPast = (now.getTime() - new Date(timestamp).getTime()) / 1000;
+
+        if (secondsPast < 60) {
+            return `${Math.round(secondsPast)} Sec Ago`;
         }
-    ]);
+        if (secondsPast < 3600) {
+            return `${Math.round(secondsPast / 60)} Min Ago`;
+        }
+        if (secondsPast <= 86400) {
+            return `${Math.round(secondsPast / 3600)} Hrs Ago`;
+        }
+        if (secondsPast > 86400) {
+            const days = Math.round(secondsPast / 86400);
+            if (days === 1) {
+                return `${days} Day Ago`;
+            }
+            return `${days} Days Ago`;
+        }
+    };
+
+
+    useEffect(() => {
+        const fetchCanvases = async () => {
+            try {
+                const response = await fetch('http://localhost:3001/chat-history');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                // Transform data to match the structure expected by the component
+                const formattedCanvases = data.map(canvas => ({
+                    ...canvas, // id, title, description, blocks, status, videoTitles are from backend
+                    updated: formatTimeAgo(canvas.timestamp) // Format timestamp
+                }));
+                setCanvases(formattedCanvases);
+            } catch (error) {
+                console.error("Failed to fetch canvases:", error);
+                setCanvases([]); // Set to empty array on error
+            }
+        };
+
+        fetchCanvases();
+    }, []);
+
 
     const handleDragStart = (e, canvasId) => {
         setDraggedCanvasId(canvasId);
@@ -173,9 +184,17 @@ const UserProfilePage = () => {
         .sort((a, b) => {
             const aPinned = pinnedCanvases.includes(a.id);
             const bPinned = pinnedCanvases.includes(b.id);
-            if (aPinned !== bPinned) return (bPinned ? 1 : 0) - (aPinned ? 1 : 0);
+            if (aPinned !== bPinned) return (bPinned ? 1 : 0) - (aPinned ? 1 : 0); // Pinned items first
 
-            return sortOrder === 'newest' ? b.id - a.id : a.id - b.id;
+            // Sort by timestamp for 'newest' or 'oldest'
+            // The backend already sends `timestamp` as a number.
+            // The backend also sorts by newest first initially.
+            // This client-side sort respects the user's choice.
+            if (sortOrder === 'newest') {
+                return b.timestamp - a.timestamp; // Newest (larger timestamp) first
+            } else {
+                return a.timestamp - b.timestamp; // Oldest (smaller timestamp) first
+            }
         });
 
     return (
@@ -298,22 +317,55 @@ const UserProfilePage = () => {
                                 {canvas.status === 'Active' && <div className="active-bar"/>}
 
                                 <div className="canvas-preview-grid">
-                                    {canvas.blocks.map((block, i) => (
-                                        <div className="canvas-block" key={`text-${i}`}>
-                                            <div className="block-title">{block}</div>
-                                            <div className="block-text">Insert text here...</div>
-                                        </div>
-                                    ))}
-                                    {canvas.videoTitles?.map((title, i) => (
-                                        <div className="canvas-block video-block" key={`video-${i}`}>
-                                            <div className="block-title">{title}</div>
-                                            <div className="video-container">
-                                                <div className="video-overlay-text">Video Preview</div>
-                                                <div className="play-button"/>
-                                            </div>
-                                            <div className="video-footer-space"></div>
-                                        </div>
-                                    ))}
+                                    {(() => {
+                                        const displayItems = [];
+                                        const MAX_PREVIEW_ITEMS = 4;
+
+                                        (canvas.blocks || []).forEach(blockTitle => {
+                                            if (displayItems.length < MAX_PREVIEW_ITEMS) {
+                                                displayItems.push({ type: 'text', title: blockTitle });
+                                            }
+                                        });
+
+                                        (canvas.videoTitles || []).forEach(videoTitle => {
+                                            if (displayItems.length < MAX_PREVIEW_ITEMS) {
+                                                displayItems.push({ type: 'video', title: videoTitle });
+                                            }
+                                        });
+                                        
+                                        while (displayItems.length < MAX_PREVIEW_ITEMS) {
+                                            displayItems.push({ type: 'empty' });
+                                        }
+
+                                        return displayItems.map((item, i) => {
+                                            if (item.type === 'text') {
+                                                return (
+                                                    <div className="canvas-block" key={`text-${canvas.id}-${i}`}>
+                                                        <div className="block-title">{item.title}</div>
+                                                        <div className="block-text">Insert text here...</div>
+                                                    </div>
+                                                );
+                                            } else if (item.type === 'video') {
+                                                return (
+                                                    <div className="canvas-block video-block" key={`video-${canvas.id}-${i}`}>
+                                                        <div className="block-title">{item.title}</div>
+                                                        <div className="video-container">
+                                                            <div className="video-overlay-text">Video Preview</div>
+                                                            <div className="play-button"/>
+                                                        </div>
+                                                        <div className="video-footer-space"></div>
+                                                    </div>
+                                                );
+                                            } else { // 'empty'
+                                                return (
+                                                    <div className="canvas-block empty-canvas-block" key={`empty-${canvas.id}-${i}`}>
+                                                        <div className="block-title"></div>
+                                                        <div className="block-text"></div>
+                                                    </div>
+                                                );
+                                            }
+                                        });
+                                    })()}
                                 </div>
 
                                 <div className="canvas-title" onDoubleClick={() => {
