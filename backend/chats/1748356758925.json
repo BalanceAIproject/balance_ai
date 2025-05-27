@@ -1,0 +1,43 @@
+[
+  {
+    "timestamp": "2025-05-27T14:39:29.825Z",
+    "userPrompt": "help me start a podcast",
+    "agentReply": "I will break down the user's request into UI blocks for you.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Podcast Setup Checklist",
+        "items": [
+          "Define podcast topic and format",
+          "Choose recording equipment",
+          "Select podcast hosting platform",
+          "Create podcast cover art",
+          "Plan and record episodes",
+          "Edit and finalize episodes",
+          "Publish episodes and promote"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Podcasting Resources",
+        "items": [
+          {
+            "name": "Anchor",
+            "purpose": "All-in-one platform for recording, hosting, and distributing podcasts",
+            "recommended": "Great for beginners"
+          },
+          {
+            "name": "Audacity",
+            "purpose": "Free audio editing software for podcast production",
+            "recommended": "Popular among podcasters"
+          },
+          {
+            "name": "Canva",
+            "purpose": "Graphic design tool for creating podcast cover art",
+            "recommended": "Easy to use templates"
+          }
+        ]
+      }
+    ]
+  }
+]

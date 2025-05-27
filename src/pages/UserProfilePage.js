@@ -187,8 +187,8 @@ const UserProfilePage = () => {
                 </div>
 
                 <aside className="sidebar">
-                    <img src="/images/profile-pic.jpg" alt="Amy Smith" className="profile-pic" />
-                    <h2 className="username">Amy Smith</h2>
+                    <img src="/images/profile-pic.jpg" alt="User Name" className="profile-pic" />
+                    <h2 className="username">User Name</h2>
                     <div className="profile-actions">
                         <button title="Add" onClick={() => navigate("../chat")}>
                             <Plus size={40}/>
@@ -248,24 +248,7 @@ const UserProfilePage = () => {
                             </div>
                         </div>
                     </div>
-{/* 
-                    <div className="chat-prompts-section">
-                        <h3>Recent Chat History</h3>
-                        {chatHistory.length > 0 ? (
-                            <ul>
-                            {chatHistory.slice(-5).reverse().map((entry, index) => ( // Display last 5 entries, newest first
-                                    <li key={index}>
-                                        <p><strong>You:</strong> {entry.userInput}</p>
-                                        <p><strong>Agent:</strong> {entry.agentReply}</p>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No chat history recorded yet.</p>
-                        )}
-                    </div> */}
 
-                    {/* Delete Confirmation Modal */}
                     {deleteConfirmation && (
                         <div className="delete-modal" onClick={cancelDelete}>
                             <div className="delete-modal-content" onClick={e => e.stopPropagation()}>

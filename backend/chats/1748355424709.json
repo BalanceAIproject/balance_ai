@@ -1,0 +1,69 @@
+[
+  {
+    "timestamp": "2025-05-27T14:17:19.022Z",
+    "userPrompt": "help me write a book",
+    "agentReply": "I will break down the user's request into UI blocks.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Book Writing Checklist",
+        "items": [
+          "Define the book genre and audience",
+          "Create an outline for the book",
+          "Start writing the chapters",
+          "Edit and revise the content",
+          "Design the book cover",
+          "Publish and promote the book"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Writing Resources",
+        "items": [
+          {
+            "name": "Scrivener",
+            "purpose": "Writing software for organizing and structuring a book",
+            "recommended": "Consider using templates for different genres"
+          },
+          {
+            "name": "Grammarly",
+            "purpose": "Grammar and spell-check tool to improve writing quality",
+            "recommended": "Use the plagiarism checker feature for originality"
+          },
+          {
+            "name": "Canva",
+            "purpose": "Graphic design tool for creating book covers and promotional materials",
+            "recommended": "Explore ready-made book cover templates"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-05-27T14:17:34.475Z",
+    "userPrompt": "for science fiction",
+    "agentReply": "I will break down the user's request into UI blocks.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Book Writing",
+        "items": [
+          "Define genre and theme",
+          "Create characters and plot outline",
+          "Start writing chapters"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources",
+        "items": [
+          {
+            "name": "Science Fiction Writing Guide",
+            "purpose": "Guidelines for writing science fiction books",
+            "recommended": "Explore different sub-genres for inspiration"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,16 +1,16 @@
 import './chat.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { blockService } from '../services/blockService';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import TopBar from '../components/TopBar';
-import { Lock, Upload, Plus, ArrowUpCircle, Send } from 'lucide-react';
+
 
 function Chat() {
   const [input, setInput] = useState('');
-  const [agentReply, setAgentReply] = useState('');
-  const [blocks, setBlocks] = useState([]);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [pastMessages, setPastMessages] = useState([]);
   const { canvasId } = useParams();
-  const [showSharePopup, setShowSharePopup] = useState(false);
+  const navigate = useNavigate();
 
   const sendPrompt = async () => {
     if (!input.trim()) return;
@@ -22,171 +22,127 @@ function Chat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: input,
-          canvasId: canvasId || 'canvas123',
+          canvasId: canvasId,
           blocks: []
         })
       });
 
       const data = await response.json();
       currentAgentReply = data.agentReply || 'No reply from agent';
-      setAgentReply(currentAgentReply);
-      setBlocks(data.suggestedBlocks || []);
 
-      if (data.suggestedBlocks?.length) {
-        data.suggestedBlocks.forEach(block => {
-          blockService.createBlock(canvasId, {
-            type: block.type,
-            content: JSON.stringify(block),
-            position: { x: Math.random() * 600, y: Math.random() * 400 }
-          });
-        });
-      }
+      const updatedMessages = [
+        ...pastMessages,
+        {
+          userPrompt: input,
+          agentReply: currentAgentReply,
+          suggestedBlocks: data.suggestedBlocks || []
+        }
+      ];
+      setPastMessages(updatedMessages);
+
+      await fetch('http://localhost:3001/chat-history')
+        .then(res => res.json())
+        .then(setChatHistory)
+        .catch(err => console.error('Failed to refresh chat list', err));
+
     } catch (error) {
       console.error('Error contacting backend:', error);
-      setAgentReply(currentAgentReply);
-    }
-
-    try {
-      const chatEntry = { userInput: input, agentReply: currentAgentReply };
-      const existingHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-      const updatedHistory = [...existingHistory, chatEntry];
-      localStorage.setItem('chatHistory', JSON.stringify(updatedHistory));
-    } catch (e) {
-      console.error('Failed to save chat history to localStorage:', e);
     }
 
     setInput('');
   };
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      console.log('Selected file:', file.name);
-    }
-  };
+  useEffect(() => {
+    fetch('http://localhost:3001/chat-history')
+      .then(res => res.json())
+      .then(setChatHistory)
+      .catch(err => console.error('Failed to fetch chat history', err));
+  }, []);
 
-  const shareLink = `https://balanceai.com/share/…`;
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(shareLink);
-    alert('Link copied to clipboard!');
-  };
+  useEffect(() => {
+    if (!canvasId) return;
+    setInput('');
+    setPastMessages([]);
+
+    fetch(`http://localhost:3001/chat/${canvasId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setPastMessages(data);
+        } else {
+          setPastMessages([]);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load chat', err);
+        setPastMessages([]);
+      });
+  }, [canvasId]);
 
   return (
-      <>
-        {}
-        <TopBar />
-
-        <div className="chatbackdrop">
-          <div className="chatbar">
-            <div className="chatbar-buttons">
-              <button className="icon-button share-button" onClick={() => setShowSharePopup(true)}>
-                <Lock size={55}/>
-                <span>Share</span>
-              </button>
-              <button className="icon-button round"><Plus size={55}/></button>
-              <div></div>
-              {}
-            </div>
-            <div className="defaultPrompt">
-              <button className="help">Quick Access to Your Chats</button>
-              <div className="prompt">
-                <button>Education</button>
-                <button>Business</button>
-              </div>
-            </div>
+    <div className="chatbackdrop">
+      <TopBar />
+      <div className="chatbar">
+        <button className="share" onClick={() => navigate(`/chat/${Date.now()}`)}>+ New Chat</button>
+        {chatHistory.map((chat, i) => (
+          <div key={i} className="summary" onClick={() => navigate(`/chat/${chat.canvasId}`)}>
+            {chat.firstPrompt ? chat.firstPrompt.split(" ").slice(0, 5).join(" ") + "..." : "Untitled Chat"}
           </div>
+        ))}
+      </div>
 
-          <div className="chat-main">
-            <div className="chat-content">
-              {agentReply && (
-                  <div className="agent-reply">
-                    <strong>Agent:</strong> {agentReply}
-                  </div>
-              )}
+      <div className="chat-main">
+        <div className="chat-content">
+          {pastMessages
+            .filter(entry => entry.userPrompt && entry.agentReply)
+            .map((entry, i) => (
+              <div key={i} className="chat-turn">
+                <div><strong>You:</strong> {entry.userPrompt}</div>
+                <div><strong>Agent:</strong> {entry.agentReply}</div>
 
-              {blocks.map((block, index) => {
-                switch (block.type) {
-                  case 'CHECKLIST':
-                    return (
+                {(entry.suggestedBlocks || []).map((block, index) => {
+                  switch (block.type) {
+                    case 'CHECKLIST':
+                      return (
                         <div key={index} className="block checklist">
                           <h3>{block.title}</h3>
-                          <ul>
-                            {block.items.map((item, i) => (
-                                <li key={i}>{item}</li>
-                            ))}
-                          </ul>
+                          <ul>{block.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
                         </div>
-                    );
-                  case 'RESOURCE_CARD':
-                    return (
+                      );
+                    case 'RESOURCE_CARD':
+                      return (
                         <div key={index} className="block resource">
                           <h3>{block.title}</h3>
                           {block.items.map((item, i) => (
-                              <div key={i}>
-                                <strong>{item.name}</strong>: {item.purpose}<br />
-                                <em>Recommended: {item.recommended}</em>
-                              </div>
+                            <div key={i}>
+                              <strong>{item.name}</strong>: {item.purpose}<br />
+                              <em>Recommended: {item.recommended}</em>
+                            </div>
                           ))}
                         </div>
-                    );
-
-                  default:
-                    return null;
-                }
-              })}
-            </div>
-
-            <div className="chatinput">
-              <div className="wrap" style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
-                {/* Input Field */}
-                <input
-                    type="text"
-                    placeholder="Type your message here..."
-                    className="input"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                />
-
-                {/* Send Button */}
-                <button
-                    className="icon-button round send-btn"
-                    onClick={sendPrompt}
-                    disabled={!input.trim()}
-                >
-                  <Send size={60}/>
-                </button>
-
-                {}
-                <button
-                    className="icon-button round send-btn"
-                    onClick={() => document.getElementById('file-upload').click()}
-                >
-                  <ArrowUpCircle size={60}/>
-                </button>
-
-                <input
-                    type="file"
-                    id="file-upload"
-                    style={{display: 'none'}}
-                    onChange={(e) => handleFileUpload(e)}
-                />
+                      );
+                    default:
+                      return null;
+                  }
+                })}
               </div>
-            </div>
-          </div>
-          {showSharePopup && (
-              <div className="share-popup">
-                <div className="popup-content">
-                  <button className="close-btn" onClick={() => setShowSharePopup(false)}>×</button>
-                  <h2>Share public link to canva</h2>
-                  <div className="share-link-box">
-                    <span className="share-link">{shareLink}</span>
-                    <button className="copy-btn" onClick={copyToClipboard}>Copy Link</button>
-                  </div>
-                </div>
-              </div>
-          )}
+            ))}
         </div>
-      </>
+
+        <div className="chatinput">
+          <div className="wrap">
+            <input
+              type="text"
+              placeholder="Enter an idea"
+              className="input"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <button className="send" onClick={sendPrompt}>Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
