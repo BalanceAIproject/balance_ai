@@ -53,11 +53,12 @@ html, body {
 }
 
 .profile-pic {
-    width: 220px;
-    height: 220px;
+    width: 180px;
+    height: 190px;
     object-fit: cover;
     border-radius: 50%;
     margin-top: 100px;
+    border: 1px solid lightgray;
 }
 .username {
     font-size: 3.0rem;
@@ -113,7 +114,7 @@ html, body {
     transition: background-color 0.2s ease;
 }
 .profile-actions button:hover {
-    background-color: #d1e4c4;
+    background-color: transparent;
 }
 .profile-actions button svg {
     width: 80px;
@@ -158,10 +159,8 @@ html, body {
     gap: 16px;
 }
 
-.section-title,
-.filter-btn {
-    background-color: #e3efda;
-    border: none;
+.filter-dropdown-full {
+    background-color: #c6dcb3;
     border-radius: 999px;
     padding: 16px 32px;
     font-size: 1.4rem;
@@ -169,29 +168,91 @@ html, body {
     color: #1e3b25;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 260px;
+    width: fit-content;
+    transition: none !important;
+}
+
+.filter-dropdown-full.open {
+    border-radius: 24px;
+}
+
+.filter-header {
+    display: flex;
     align-items: center;
     gap: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    box-shadow: none;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.sort-option {
+    padding: 10px 16px;
+    background-color: #a8c693;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.sort-option:hover,
+.sort-option.selected {
+    background-color: #7b9463;
+    color: white;
+}
+
+.filter-button-container {
+    position: relative;
+    display: inline-block;
 }
 
 .filter-btn:hover {
     background-color: #d1e4c4;
 }
 
-.filter-btn svg {
+.filter-btn svg:first-of-type {
     width: 24px;
     height: 24px;
     stroke: #1e3b25;
+}
+
+.sort-option:hover,
+.sort-option.selected {
+    background-color: #7b9463;
+    color: black;
+}
+
+.sort-option:first-child {
+    border-top: none;
+}
+
+.sort-option:last-child {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.filter-btn.open {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
 
 .pill-btn {
     background-color: #e3efda;
     border: none;
     border-radius: 999px;
-    padding: 16px 32px;
-    font-size: 1.4rem;
+    padding: 30px 40px;
+    font-size: 2.0rem;
     font-weight: 700;
     color: #1e3b25;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -287,7 +348,7 @@ html, body {
     z-index: 5;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, opacity 0.2s ease-out;
-    height: 600px;
+    height: 775px;
     width: 680px;
     font-size: 1.4rem;
     overflow: visible;
@@ -316,6 +377,7 @@ html, body {
     background-color: #fff;
     overflow: visible;
     position: relative;
+    border: 1px solid #ccc;
 }
 
 .block-title {
@@ -339,7 +401,6 @@ html, body {
     color: #222;
 }
 
-
 .canvas-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.08);
@@ -352,27 +413,12 @@ html, body {
     cursor: grabbing;
 }
 
-
-.canvas-emoji {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    background-color: #f7f7f7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    z-index: 2;
-    cursor: pointer;
-}
-
-.canvas-emoji.smiled {
-    background-color: #b9e6c0;
-    color: #2e7d32;
+.canvas-description {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 6px 0 14px;
+    line-height: 1.4;
+    font-weight: 400;
 }
 
 .canvas-preview-grid {
@@ -406,17 +452,7 @@ html, body {
 }
 
 .filter-dropdown {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 20px;
-    width: fit-content;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    font-size: 0.9rem;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    transition: none !important;
 }
 
 .meta-info {
@@ -721,11 +757,11 @@ html, body {
 }
 
 .chat-prompts-section {
-    background-color: #f0f4f8; /* Light blue-gray background */
+    background-color: #f0f4f8;
     padding: 20px;
-    margin: 20px 40px; /* Match other content padding */
-    border-radius: 12px; /* Consistent with other elements */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+    margin: 20px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .chat-prompts-section h3 {
@@ -746,23 +782,85 @@ html, body {
     background-color: #ffffff;
     padding: 10px 15px;
     border-radius: 8px;
-    margin-bottom: 12px; /* Increased margin for better separation */
+    margin-bottom: 12px;
     font-size: 0.95rem;
     color: #555;
     border: 1px solid #e0e0e0;
 }
 
-.chat-prompts-section li p { /* Target paragraphs within list items */
-    margin-top: 3px; /* Reduced top margin for tighter spacing within an entry */
-    margin-bottom: 3px; /* Reduced bottom margin */
+.chat-prompts-section li p {
+    margin-top: 3px;
+    margin-bottom: 3px;
     line-height: 1.4;
 }
 
-.chat-prompts-section li p strong { /* Style for "You:" and "Agent:" */
+.chat-prompts-section li p strong {
     color: #333;
 }
 
-.chat-prompts-section > p { /* Target the "No chat history" paragraph directly */
+.chat-prompts-section > p {
     font-size: 0.95rem;
     color: #777;
+}
+
+.sort-options {
+    background-color: #b3cc99;
+    border-radius: 16px;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.sort-option {
+    padding: 14px 24px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    color: #1e3b25;
+}
+
+.sort-option:hover,
+.sort-option.selected {
+    background-color: #7b9463;
+    color: black;
+}
+
+.canvas-title-input {
+    font-size: 1.6rem;
+    font-weight: bold;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 6px 10px;
+    width: 90%;
+    outline: none;
+}
+
+.sidebar.collapsed {
+    width: 80px;
+    align-items: center;
+}
+
+.sidebar.collapsed .sidebar-label {
+    display: none;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #000;
+    cursor: pointer;
+    width: 100%;
+}
+
+.sidebar-icon {
+    width: 24px;
+    height: 24px;
 }
