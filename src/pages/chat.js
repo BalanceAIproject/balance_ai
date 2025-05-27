@@ -1,10 +1,9 @@
 import './chat.css';
 import React, { useState } from 'react';
 import { blockService } from '../services/blockService';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import TopBar from '../components/TopBar';
-import { Lock, Upload, Plus, ArrowUpCircle, Send, MessageCircle, Clock, LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Lock, Upload, Plus, Send, MessageCircle, Clock, LogOut } from 'lucide-react';
 
 function Chat() {
   const [input, setInput] = useState('');
@@ -12,9 +11,11 @@ function Chat() {
   const [blocks, setBlocks] = useState([]);
   const { canvasId } = useParams();
   const [showSharePopup, setShowSharePopup] = useState(false);
-  const navigate = useNavigate();
   const [showPlusPopup, setShowPlusPopup] = useState(false);
   const [showShareLinkPopup, setShowShareLinkPopup] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
+  const navigate = useNavigate();
+
   const sendPrompt = async () => {
     if (!input.trim()) return;
     let currentAgentReply = 'Agent failed to respond.';
@@ -63,13 +64,11 @@ function Chat() {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      console.log('Selected file:', file.name);
-    }
+    if (file) console.log('Selected file:', file.name);
   };
 
   const handleNavigation = (section) => {
-    switch(section) {
+    switch (section) {
       case 'chat':
         console.log('Current chat selected');
         break;
@@ -77,7 +76,6 @@ function Chat() {
         setAgentReply('');
         setBlocks([]);
         setInput('');
-        console.log('Starting new chat');
         break;
       case 'past-chats':
         navigate('/chat-history');
@@ -91,7 +89,6 @@ function Chat() {
     localStorage.removeItem('chatHistory');
     localStorage.removeItem('userToken');
     navigate('/login');
-    console.log('User logged out');
   };
 
   const shareLink = `https://balanceai.com/share/…`;
@@ -103,42 +100,61 @@ function Chat() {
   return (
       <>
         <TopBar />
-
         <div className="chatbackdrop">
-          <div className="chatbar">
+          <div className={`chatbar ${isExpanded ? 'expanded' : 'collapsed'}`}>
 
-            <div className="user-profile">
+            {/* Avatar and Expand */}
+            <div className="profile-row">
               <div className="profile-avatar">
-                <img src="/images/profile-pic.jpg" alt="User Profile" className="profile-image" />
-              </div>
-              <div className="profile-info">
-                <div className="profile-name">User Name</div>
-                <div className="profile-email">username@gmail.com</div>
+                <img src="/images/profile-pic.jpg" className="profile-image" alt="User"/>
               </div>
             </div>
 
-            {/* New Navigation Menu */}
+            {/* Profile Info */}
+            {isExpanded && (
+                <div className="profile-info">
+                  <div className="profile-name">User Name</div>
+                  <div className="profile-email">username@gmail.com</div>
+                </div>
+            )}
+
+            {/* Navigation Buttons */}
             <div className="nav-menu">
               <button className="nav-item" onClick={() => handleNavigation('chat')}>
-                <MessageCircle size={24} />
-                <span>Chat</span>
+                <MessageCircle size={24}/>
+                <span className={`label ${isExpanded ? 'expanded' : 'collapsed'}`}>Chat</span>
               </button>
-
               <button className="nav-item" onClick={() => handleNavigation('new-chat')}>
-                <Plus size={24} />
-                <span>New Chat</span>
+                <Plus size={24}/>
+                <span className={`label ${isExpanded ? 'expanded' : 'collapsed'}`}>New Chat</span>
               </button>
-
               <button className="nav-item" onClick={() => handleNavigation('past-chats')}>
-                <Clock size={24} />
-                <span>Past Chats</span>
+                <Clock size={24}/>
+                <span className={`label ${isExpanded ? 'expanded' : 'collapsed'}`}>Past Chats</span>
               </button>
-
               <button className="nav-item logout" onClick={handleLogout}>
-                <LogOut size={24} />
-                <span>Logout</span>
+                <LogOut size={24}/>
+                <span className={`label ${isExpanded ? 'expanded' : 'collapsed'}`}>Logout</span>
               </button>
             </div>
+          </div>
+
+          <div className={`expand-btn-container ${isExpanded ? 'expanded' : 'collapsed'}`}>
+            <button
+                className={`expand-btn ${isExpanded ? 'expanded' : 'collapsed'}`}
+                onClick={() => setIsExpanded(!isExpanded)}
+            >
+              <svg width="40" height="40" viewBox="0 0 24 24">
+                <path
+                    d={isExpanded ? "M15 6l-6 6 6 6" : "M9 6l6 6-6 6"}
+                    stroke="black"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </div>
 
           <div className="chat-main">
@@ -148,18 +164,13 @@ function Chat() {
                     <strong>Agent:</strong> {agentReply}
                   </div>
               )}
-
               {blocks.map((block, index) => {
                 switch (block.type) {
                   case 'CHECKLIST':
                     return (
                         <div key={index} className="block checklist">
                           <h3>{block.title}</h3>
-                          <ul>
-                            {block.items.map((item, i) => (
-                                <li key={i}>{item}</li>
-                            ))}
-                          </ul>
+                          <ul>{block.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
                         </div>
                     );
                   case 'RESOURCE_CARD':
@@ -174,7 +185,6 @@ function Chat() {
                           ))}
                         </div>
                     );
-
                   default:
                     return null;
                 }
@@ -189,20 +199,13 @@ function Chat() {
                       <Plus size={28} strokeWidth={3}/>
                     </div>
                   </button>
-
                   {showPlusPopup && (
                       <div className="plus-popup-strict">
                         <div className="popup-option-strict">
                           <div className="icon-circle-strict"><Upload size={28}/></div>
                           <label htmlFor="file-upload" className="option-label">Upload</label>
-                          <input
-                              type="file"
-                              id="file-upload"
-                              style={{display: 'none'}}
-                              onChange={(e) => handleFileUpload(e)}
-                          />
+                          <input type="file" id="file-upload" style={{display: 'none'}} onChange={handleFileUpload}/>
                         </div>
-
                         <div className="popup-option-strict" onClick={() => setShowShareLinkPopup(true)}>
                           <div className="icon-circle-strict"><Lock size={28}/></div>
                           <span className="option-label">Share</span>
@@ -211,24 +214,13 @@ function Chat() {
                   )}
                 </div>
 
-                <input
-                    type="text"
-                    placeholder="Enter an idea"
-                    className="input"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                />
-
-                <button
-                    className="send-button"
-                    onClick={sendPrompt}
-                    disabled={!input.trim()}
-                >
-                  <Send />
+                <input type="text" placeholder="Enter an idea" className="input" value={input}
+                       onChange={(e) => setInput(e.target.value)}/>
+                <button className="send-button" onClick={sendPrompt} disabled={!input.trim()}>
+                  <Send/>
                 </button>
               </div>
 
-              {/* Share link modal */}
               {showShareLinkPopup && (
                   <div className="share-popup">
                     <div className="popup-content">
@@ -246,7 +238,7 @@ function Chat() {
 
           {showSharePopup && (
               <div className="share-popup">
-              <div className="popup-content">
+                <div className="popup-content">
                   <button className="close-btn" onClick={() => setShowSharePopup(false)}>×</button>
                   <h2>Share public link to canva</h2>
                   <div className="share-link-box">
