@@ -22,7 +22,7 @@ function Chat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: input,
-          canvasId: canvasId,
+          canvasId: canvasId || "canvas1",
           blocks: []
         })
       });
