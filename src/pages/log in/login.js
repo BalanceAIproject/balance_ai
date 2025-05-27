@@ -15,7 +15,7 @@ function Login () {
         const success = await loginUser(username, password);
         if (success) {
             // Navigate to the main canvas page on successful login
-            navigate('/canvas');
+            navigate('/chat');
         }
         // Error message is handled by AppContext and displayed below
     };
