@@ -1,0 +1,66 @@
+[
+  {
+    "timestamp": "2025-05-27T14:08:07.850Z",
+    "userPrompt": "help me bake a vanilla cake",
+    "agentReply": "Breaking down the user prompt into UI blocks for exploring how to bake a vanilla cake.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Steps to Bake a Vanilla Cake",
+        "items": [
+          "Gather ingredients",
+          "Preheat the oven",
+          "Prepare the cake pan",
+          "Mix the batter",
+          "Bake the cake",
+          "Cool and serve"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for Baking a Vanilla Cake",
+        "items": [
+          {
+            "name": "Vanilla Cake Recipe",
+            "purpose": "Detailed recipe for baking a vanilla cake",
+            "recommended": "Use high-quality vanilla extract for better flavor"
+          },
+          {
+            "name": "Baking Tips",
+            "purpose": "Helpful tips for successful baking",
+            "recommended": "Sift dry ingredients for a smoother batter"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-05-27T14:08:23.695Z",
+    "userPrompt": "now for chocolate cake",
+    "agentReply": "Breaking down the user prompt into UI blocks for exploring how to bake a chocolate cake.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Checklist for Baking a Chocolate Cake",
+        "items": [
+          "Gather ingredients for chocolate cake",
+          "Preheat the oven to the required temperature",
+          "Prepare the cake batter",
+          "Bake the chocolate cake in the oven",
+          "Let the cake cool before frosting"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for Baking a Chocolate Cake",
+        "items": [
+          {
+            "name": "Chocolate Cake Recipe",
+            "purpose": "Step-by-step guide on baking a chocolate cake",
+            "recommended": "Use high-quality chocolate for better flavor"
+          }
+        ]
+      }
+    ]
+  }
+]

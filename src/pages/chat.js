@@ -1,17 +1,20 @@
 import './chat.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { blockService } from '../services/blockService';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import TopBar from '../components/TopBar';
+
 
 function Chat() {
   const [input, setInput] = useState('');
-  const [agentReply, setAgentReply] = useState('');
-  const [blocks, setBlocks] = useState([]);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [pastMessages, setPastMessages] = useState([]);
   const { canvasId } = useParams();
+  const navigate = useNavigate();
 
   const sendPrompt = async () => {
     if (!input.trim()) return;
-    let currentAgentReply = 'Agent failed to respond.'; // Variable to store reply/error
+    let currentAgentReply = 'Agent failed to respond.';
 
     try {
       const response = await fetch('http://localhost:3001/agent-message', {
@@ -19,106 +22,118 @@ function Chat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: input,
-          canvasId: canvasId || 'canvas123',
+          canvasId: canvasId,
           blocks: []
         })
       });
 
       const data = await response.json();
-      currentAgentReply = data.agentReply || 'No reply from agent'; // Assign actual reply
-      setAgentReply(currentAgentReply);
-      setBlocks(data.suggestedBlocks || []);
+      currentAgentReply = data.agentReply || 'No reply from agent';
 
-      if (data.suggestedBlocks?.length) {
-        data.suggestedBlocks.forEach(block => {
-          blockService.createBlock(canvasId, {
-            type: block.type,
-            content: JSON.stringify(block),
-            position: { x: Math.random() * 600, y: Math.random() * 400 }
-          });
-        });
-      }
+      const updatedMessages = [
+        ...pastMessages,
+        {
+          userPrompt: input,
+          agentReply: currentAgentReply,
+          suggestedBlocks: data.suggestedBlocks || []
+        }
+      ];
+      setPastMessages(updatedMessages);
+
+      await fetch('http://localhost:3001/chat-history')
+        .then(res => res.json())
+        .then(setChatHistory)
+        .catch(err => console.error('Failed to refresh chat list', err));
+
     } catch (error) {
       console.error('Error contacting backend:', error);
-      // currentAgentReply will hold the default "Agent failed to respond."
-      setAgentReply(currentAgentReply);
-    }
-
-    // Store the full chat interaction in localStorage
-    try {
-      const chatEntry = { userInput: input, agentReply: currentAgentReply }; // Use the local variable
-      const existingHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-      const updatedHistory = [...existingHistory, chatEntry];
-      localStorage.setItem('chatHistory', JSON.stringify(updatedHistory));
-    } catch (e) {
-      console.error('Failed to save chat history to localStorage:', e);
     }
 
     setInput('');
   };
 
+  useEffect(() => {
+    fetch('http://localhost:3001/chat-history')
+      .then(res => res.json())
+      .then(setChatHistory)
+      .catch(err => console.error('Failed to fetch chat history', err));
+  }, []);
+
+  useEffect(() => {
+    if (!canvasId) return;
+    setInput('');
+    setPastMessages([]);
+
+    fetch(`http://localhost:3001/chat/${canvasId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setPastMessages(data);
+        } else {
+          setPastMessages([]);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load chat', err);
+        setPastMessages([]);
+      });
+  }, [canvasId]);
+
   return (
     <div className="chatbackdrop">
+      <TopBar />
       <div className="chatbar">
-        <div className="external">
-          <button className="share">Share</button>
-        </div>
-        <div className="defaultPrompt">
-          <button className="help">Need help starting your ideas?</button>
-          <div className="prompt">
-            <button>Education</button>
-            <button>Business</button>
-            <button>Family</button>
-            <button>Content</button>
+        <button className="share" onClick={() => navigate(`/chat/${Date.now()}`)}>+ New Chat</button>
+        {chatHistory.map((chat, i) => (
+          <div key={i} className="summary" onClick={() => navigate(`/chat/${chat.canvasId}`)}>
+            {chat.firstPrompt ? chat.firstPrompt.split(" ").slice(0, 5).join(" ") + "..." : "Untitled Chat"}
           </div>
-        </div>
+        ))}
       </div>
 
       <div className="chat-main">
         <div className="chat-content">
-          {agentReply && (
-            <div className="agent-reply">
-              <strong>Agent:</strong> {agentReply}
-            </div>
-          )}
+          {pastMessages
+            .filter(entry => entry.userPrompt && entry.agentReply)
+            .map((entry, i) => (
+              <div key={i} className="chat-turn">
+                <div><strong>You:</strong> {entry.userPrompt}</div>
+                <div><strong>Agent:</strong> {entry.agentReply}</div>
 
-          {blocks.map((block, index) => {
-            switch (block.type) {
-              case 'CHECKLIST':
-                return (
-                  <div key={index} className="block checklist">
-                    <h3>{block.title}</h3>
-                    <ul>
-                      {block.items.map((item, i) => (
-                        <li key={i}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              case 'RESOURCE_CARD':
-                return (
-                  <div key={index} className="block resource">
-                    <h3>{block.title}</h3>
-                    {block.items.map((item, i) => (
-                      <div key={i}>
-                        <strong>{item.name}</strong>: {item.purpose}<br />
-                        <em>Recommended: {item.recommended}</em>
-                      </div>
-                    ))}
-                  </div>
-                );
-    
-              default:
-                return null;
-            }
-          })}
+                {(entry.suggestedBlocks || []).map((block, index) => {
+                  switch (block.type) {
+                    case 'CHECKLIST':
+                      return (
+                        <div key={index} className="block checklist">
+                          <h3>{block.title}</h3>
+                          <ul>{block.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
+                        </div>
+                      );
+                    case 'RESOURCE_CARD':
+                      return (
+                        <div key={index} className="block resource">
+                          <h3>{block.title}</h3>
+                          {block.items.map((item, i) => (
+                            <div key={i}>
+                              <strong>{item.name}</strong>: {item.purpose}<br />
+                              <em>Recommended: {item.recommended}</em>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    default:
+                      return null;
+                  }
+                })}
+              </div>
+            ))}
         </div>
 
         <div className="chatinput">
           <div className="wrap">
             <input
               type="text"
-              placeholder="Type your message here..."
+              placeholder="Enter an idea"
               className="input"
               value={input}
               onChange={(e) => setInput(e.target.value)}

@@ -27,6 +27,7 @@ export default function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/chat' element={<Chat />} />
+          <Route path='/chat/:canvasId' element={<Chat />} />
           <Route path='/userprofile' element={<UserProfile />} />
           <Route path='/settings' element={<Settings />} />
 
