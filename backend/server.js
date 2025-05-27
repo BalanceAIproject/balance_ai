@@ -26,19 +26,54 @@ async function summarizeChat(canvasId) {
   const chatPath = path.join(__dirname, "chats", `${canvasId}.json`);
   const summaryPath = path.join(__dirname, "summaries", `${canvasId}_summary.json`);
   if (!fs.existsSync(chatPath)) return;
+
   const chatHistory = JSON.parse(fs.readFileSync(chatPath, "utf-8"));
+
   try {
     const summaryResponse = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "Summarize the user's intent and AI responses into one sentence." },
-        { role: "user", content: JSON.stringify(chatHistory) }
+        {
+          role: "system",
+          content: `You are an assistant that summarizes entire chat histories for a visual canvas UI.
+
+Your response MUST be a valid JSON object with the following structure:
+{
+  "title": "Short title (1-5 words)",
+  "description": "1-2 sentence overview of the entire chat",
+  "summary": "Detailed paragraph explaining the purpose, steps taken, and goal of the canvas"
+}
+
+Return only the JSON. Do not use markdown or explanation.`
+        },
+        {
+          role: "user",
+          content: JSON.stringify(chatHistory)
+        }
       ]
     });
-    const summary = summaryResponse.choices[0].message.content;
-    fs.writeFileSync(summaryPath, JSON.stringify({ summary }, null, 2));
+
+    let raw = summaryResponse.choices[0].message.content.trim();
+
+    if (raw.startsWith("```json")) {
+      raw = raw.replace(/^```json/, "").replace(/```$/, "").trim();
+    }
+
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (err) {
+      console.error("OpenAI did not return valid JSON. Raw response:\n", raw);
+      parsed = {
+        title: "Untitled",
+        description: "",
+        summary: ""
+      };
+    }
+
+    fs.writeFileSync(summaryPath, JSON.stringify(parsed, null, 2));
   } catch (err) {
-    console.error("Failed to summarize chat:", err.message);
+    console.error("Failed to generate chat summary:", err.message);
   }
 }
 
