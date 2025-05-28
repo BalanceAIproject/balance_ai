@@ -1,70 +1,81 @@
 import React, { useState } from "react";
 import './login.css';
 import { useNavigate } from 'react-router-dom';
-import { useAppContext } from '../../context/AppContext'; // Import context
+import { useAppContext } from '../../context/AppContext';
 
-function Login () {
+function Login() {
     const navigate = useNavigate();
-    const { loginUser, state } = useAppContext(); // Get login function and state from context
+    const { loginUser, state } = useAppContext();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // You might want state for 'remember me' if implementing that feature
+    const [rememberMe, setRememberMe] = useState(true)
 
     const handleLogin = async (e) => {
-        e.preventDefault(); // Prevent default form submission if it were a form
-        const success = await loginUser(username, password);
+        e.preventDefault();
+        const success = await loginUser(username, password, rememberMe);
         if (success) {
-            // Navigate to the main canvas page on successful login
-            navigate('/chat');
+            navigate('/userprofile');
         }
-        // Error message is handled by AppContext and displayed below
     };
 
     return (
         <div className="backdrop">
             <h1>Log In</h1>
 
-            {/* Display error message if login fails */}
             {state.error && <p className="error-message">{state.error}</p>}
 
             <div className="inputBoxL">
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    aria-label="Username" // Added for accessibility
-                />
-                <input
-                    type="password" // Use password type for security
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    aria-label="Password" // Added for accessibility
-                />
-            </div>
-
-            <div className="remember">
-                 {/* Remember Me checkbox - functionality not fully implemented */}
-                <div className="left">
-                    <input type="checkbox" id="rememberMe" />
-                    <label htmlFor="rememberMe">Remember Me</label>
+                <div className="username-container">
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        aria-label="Username"
+                    />
                 </div>
 
-                <div className="right">
-                    <a href="/forgotpassword">Forgot Password?</a>
+                <div className="password-container">
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        aria-label="Password"
+                    />
+                </div>
+
+                <div className="remember">
+                    <div className="left">
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                            checked={rememberMe}
+                            onChange={(e) => setRememberMe(e.target.checked)}
+                        />
+                        <label htmlFor="rememberMe">Remember me</label>
+                    </div>
+
+                    <div className="right">
+                        <a href="/forgotpassword">Forgot password?</a>
+                    </div>
+                </div>
+
+                <div className="loginB">
+                    <button
+                        onClick={handleLogin}
+                        disabled={state.isLoading}
+                    >
+                        {state.isLoading ? 'Logging in...' : 'Log In'}
+                    </button>
                 </div>
             </div>
 
-            <div className="loginB">
-                 {/* Disable button while loading state is active */}
-                <button onClick={handleLogin} disabled={state.isLoading}>
-                    {state.isLoading ? 'Logging in...' : 'Log in'}
-                </button>
-                <p>Don't have an account? <a href="/signup">Sign up</a></p>
+            <div className="signup-link">
+                Don't have an account? <a href="/signup">Sign Up</a>
             </div>
         </div>
     );
-};
+}
 
 export default Login;

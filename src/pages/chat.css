@@ -1,3 +1,7 @@
+:root {
+  --top-bar-height: 100px;
+}
+
 .chatbackdrop {
   display: flex;
   height: 100vh;

@@ -13,7 +13,7 @@ function Greet () {
 
             <div>
                 <h1>Imagination Canvas</h1>
-                <h3>Brough to you by: Balnce.ai</h3>
+                <h3>Brought to you by: Balnce.ai</h3>
             </div>
 
             <div className='space'></div>

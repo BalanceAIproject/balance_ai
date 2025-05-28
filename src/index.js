@@ -16,50 +16,50 @@ import Settings from './pages/SettingsPage';
 import { AppProvider } from './context/AppContext';
 
 export default function App() {
-  return (
-    <AppProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Existing Routes */}
-          <Route path='/' element={<Greet />} />
-          <Route path='/Home' element={<Home />} />
-          <Route path='/forgotpassword' element={<Forgot />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route
-              path="/chat"
-              element={
-                <Navigate
-                    to={`/chat/${JSON.parse(localStorage.getItem('chatHistory'))?.at(-1)?.canvasId || `canvas-${Date.now()}`}`}
-                    replace
-                />
-              }
-          />
-          <Route path="/chat/:canvasId" element={<Chat />} />
-          <Route path='/userprofile' element={<UserProfile />} />
-          <Route path='/settings' element={<Settings />} />
+    return (
+        <AppProvider>
+            <BrowserRouter>
+                <Routes>
+                    {/* Existing Routes */}
+                    <Route path='/' element={<Greet />} />
+                    <Route path='/Home' element={<Home />} />
+                    <Route path='/forgotpassword' element={<Forgot />} />
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/signup' element={<Signup />} />
+                    <Route
+                        path="/chat"
+                        element={
+                            <Navigate
+                                to={`/chat/${JSON.parse(localStorage.getItem('chatHistory'))?.at(-1)?.canvasId || `canvas-${Date.now()}`}`}
+                                replace
+                            />
+                        }
+                    />
+                    <Route path="/chat/:canvasId" element={<Chat />} />
+                    <Route path='/userprofile' element={<UserProfile />} />
+                    <Route path='/settings' element={<Settings />} />
 
 
-          {/* Canvas Routes */}
-          {/* Route for specific canvas ID */}
-          <Route path='/canvas/:canvasId' element={<CanvasPage />} />
-          {/* Route for general /canvas path (will determine default canvas) */}
-          <Route path='/canvas' element={<CanvasPage />} />
+                    {/* Canvas Routes */}
+                    {/* Route for specific canvas ID */}
+                    <Route path='/canvas/:canvasId' element={<CanvasPage />} />
+                    {/* Route for general /canvas path (will determine default canvas) */}
+                    <Route path='/canvas' element={<CanvasPage />} />
 
-          {/* Optional: Add a catch-all route for debugging if needed */}
-          {/* <Route path="*" element={<div>404 - Route Not Found</div>} /> */}
+                    {/* Optional: Add a catch-all route for debugging if needed */}
+                    {/* <Route path="*" element={<div>404 - Route Not Found</div>} /> */}
 
-        </Routes>
-      </BrowserRouter>
-    </AppProvider>
-  )
+                </Routes>
+            </BrowserRouter>
+        </AppProvider>
+    )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
