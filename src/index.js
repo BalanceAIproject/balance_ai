@@ -2,7 +2,7 @@ import React from 'react';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from './pages/Home';
 import Greet from './pages/Greet';
 import Login from './pages/log in/login';
@@ -26,8 +26,16 @@ export default function App() {
           <Route path='/forgotpassword' element={<Forgot />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
-          <Route path='/chat' element={<Chat />} />
-          <Route path='/chat/:canvasId' element={<Chat />} />
+          <Route
+              path="/chat"
+              element={
+                <Navigate
+                    to={`/chat/${JSON.parse(localStorage.getItem('chatHistory'))?.at(-1)?.canvasId || `canvas-${Date.now()}`}`}
+                    replace
+                />
+              }
+          />
+          <Route path="/chat/:canvasId" element={<Chat />} />
           <Route path='/userprofile' element={<UserProfile />} />
           <Route path='/settings' element={<Settings />} />
 
