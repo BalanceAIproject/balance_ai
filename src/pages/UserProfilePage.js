@@ -93,21 +93,60 @@ const UserProfilePage = () => {
         e.dataTransfer.dropEffect = "move";
     };
 
-    const handleDrop = (e, targetCanvasId) => {
+    const handleDrop = async (e, targetCanvasId) => {
         e.preventDefault();
         if (draggedCanvasId && draggedCanvasId !== targetCanvasId) {
-            const draggedCanvas = canvases.find(c => c.id === draggedCanvasId);
-            const targetCanvas = canvases.find(c => c.id === targetCanvasId);
+            try {
+                const response = await fetch('http://localhost:3001/combine-chats', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sourceChatId1: draggedCanvasId,
+                        sourceChatId2: targetCanvasId,
+                    }),
+                });
 
-            if (draggedCanvas && targetCanvas) {
-                const combinedContext = {
-                    title: `Combined: ${draggedCanvas.title} & ${targetCanvas.title}`,
-                    canvases: [draggedCanvas, targetCanvas],
-                    blocks: [...new Set([...draggedCanvas.blocks, ...targetCanvas.blocks])]
-                };
-                console.log("Combining canvases:", draggedCanvas.title, "and", targetCanvas.title);
-                // Navigate to chat page with combined context
-                navigate('/chat', { state: { combinedContext } });
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorData}`);
+                }
+
+                const newCombinedCanvas = await response.json();
+                
+                setCanvases(prevCanvases => {
+                    // Add the new combined canvas, formatting its timestamp and ensuring all fields are present
+                    const formattedNewCanvas = {
+                        ...newCombinedCanvas,
+                        blocks: newCombinedCanvas.blocks || [],
+                        videoTitles: newCombinedCanvas.videoTitles || [],
+                        description: newCombinedCanvas.description || '',
+                        status: newCombinedCanvas.status || 'Active',
+                        updated: formatTimeAgo(newCombinedCanvas.timestamp) 
+                    };
+                    // Add the new canvas to the list, keeping the old ones
+                    const updatedCanvases = [formattedNewCanvas, ...prevCanvases];
+                    
+                    return updatedCanvases.sort((a, b) => {
+                        // Re-apply sort after adding new canvas, respecting pinned and current sortOrder
+                        const aPinned = pinnedCanvases.includes(a.id);
+                        const bPinned = pinnedCanvases.includes(b.id);
+                        if (aPinned !== bPinned) return (bPinned ? 1 : 0) - (aPinned ? 1 : 0);
+                        if (sortOrder === 'newest') {
+                            return b.timestamp - a.timestamp;
+                        } else {
+                            return a.timestamp - b.timestamp;
+                        }
+                    });
+                });
+
+                console.log("Successfully created new canvas from combination. New canvas ID:", newCombinedCanvas.id);
+                // Navigate to the new chat page using path parameter
+                navigate(`/chat/${newCombinedCanvas.id}`, { state: { canvasData: newCombinedCanvas } });
+
+            } catch (error) {
+                console.error("Failed to combine canvases:", error);
             }
         }
         setDraggedCanvasId(null);
@@ -186,14 +225,10 @@ const UserProfilePage = () => {
             const bPinned = pinnedCanvases.includes(b.id);
             if (aPinned !== bPinned) return (bPinned ? 1 : 0) - (aPinned ? 1 : 0); // Pinned items first
 
-            // Sort by timestamp for 'newest' or 'oldest'
-            // The backend already sends `timestamp` as a number.
-            // The backend also sorts by newest first initially.
-            // This client-side sort respects the user's choice.
             if (sortOrder === 'newest') {
-                return b.timestamp - a.timestamp; // Newest (larger timestamp) first
+                return b.timestamp - a.timestamp;
             } else {
-                return a.timestamp - b.timestamp; // Oldest (smaller timestamp) first
+                return a.timestamp - b.timestamp;
             }
         });
 
