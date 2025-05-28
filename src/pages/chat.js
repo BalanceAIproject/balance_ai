@@ -37,14 +37,25 @@ function Chat() {
   const [agentReply, setAgentReply] = useState('');
   const [blocks, setBlocks] = useState([]);
   const { canvasId } = useParams();
-  const [showSharePopup, setShowSharePopup] = useState(false);
   const [showPlusPopup, setShowPlusPopup] = useState(false);
   const [showShareLinkPopup, setShowShareLinkPopup] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
   const navigate = useNavigate();
   const [showPastChats, setShowPastChats] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Selected file:', file.name);
+    }
+  };
 
+  const shareLink = `https://balanceai.com/share/${canvasId || 'canvas123'}`;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shareLink);
+    alert('Link copied to clipboard!');
+  };
   useEffect(() => {
     if (!canvasId) return;
 
@@ -174,7 +185,7 @@ function Chat() {
           <div className={`chatbar ${isExpanded ? 'expanded' : 'collapsed'}`}>
             <div className="profile-row">
               <div className="profile-avatar">
-                <img src="/images/profile-pic.jpg" className="profile-image" alt="User" />
+                <img src="/images/profile-pic.jpg" className="profile-image" alt="User"/>
               </div>
             </div>
             {isExpanded && (
@@ -184,11 +195,35 @@ function Chat() {
                 </div>
             )}
             <div className="nav-menu">
-              <button className="nav-item" onClick={() => handleNavigation('chat')}><MessageCircle /><span className="label">Chat</span></button>
-              <button className="nav-item" onClick={() => handleNavigation('new-chat')}><Plus /><span className="label">New Chat</span></button>
-              <button className="nav-item" onClick={() => handleNavigation('past-chats')}><Clock /><span className="label">Past Chats</span></button>
-              <button className="nav-item logout" onClick={() => { localStorage.clear(); navigate('/login'); }}><LogOut /><span className="label">Logout</span></button>
+              <button className="nav-item" onClick={() => handleNavigation('chat')}><MessageCircle/><span
+                  className="label">Chat</span></button>
+              <button className="nav-item" onClick={() => handleNavigation('new-chat')}><Plus/><span className="label">New Chat</span>
+              </button>
+              <button className="nav-item" onClick={() => handleNavigation('past-chats')}><Clock/><span
+                  className="label">Past Chats</span></button>
+              <button className="nav-item logout" onClick={() => {
+                localStorage.clear();
+                navigate('/login');
+              }}><LogOut/><span className="label">Logout</span></button>
             </div>
+          </div>
+
+          <div className={`expand-btn-container ${isExpanded ? 'expanded' : 'collapsed'}`}>
+            <button
+                className={`expand-btn ${isExpanded ? 'expanded' : 'collapsed'}`}
+                onClick={() => setIsExpanded(!isExpanded)}
+            >
+              <svg width="40" height="40" viewBox="0 0 24 24">
+                <path
+                    d={isExpanded ? "M15 6l-6 6 6 6" : "M9 6l6 6-6 6"}
+                    stroke="black"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </div>
 
           <div className="chat-main">
@@ -198,14 +233,24 @@ function Chat() {
                   {groupChatsByDate(chatHistory).map(([dateLabel, chats]) => (
                       <div key={dateLabel} className="chat-day-section">
                         <div className="chat-day-divider">
-                          <hr className="divider-line" />
+                          <hr className="divider-line"/>
                           <span className="day-label">{dateLabel}</span>
-                          <hr className="divider-line" />
+                          <hr className="divider-line"/>
                         </div>
                         {chats.map((chat, i) => (
-                            <div key={i} className="chat-bubble-wrapper" onClick={() => { setShowPastChats(false); navigate(`/chat/${chat.canvasId}`); }}>
+                            <div
+                                key={i}
+                                className="chat-bubble-wrapper"
+                                onClick={() => {
+                                  setShowPastChats(false);
+                                  navigate(`/chat/${chat.canvasId}`);
+                                }}
+                            >
                               <div className="chat-timestamp">{chat.time}</div>
-                              <div className="chat-bubble">{chat.firstPrompt || 'No prompt'}<span className="edit-icon">✎</span></div>
+                              <div className="chat-bubble">
+                                {chat.firstPrompt || 'No prompt'}
+                                <span className="edit-icon">✎</span>
+                              </div>
                             </div>
                         ))}
                       </div>
@@ -213,12 +258,39 @@ function Chat() {
                 </div>
             ) : (
                 <div className="chat-content">
-                  {agentReply && (<div className="agent-reply"><strong>Agent:</strong> {agentReply}</div>)}
+                  {agentReply && (
+                      <div className="agent-reply">
+                        <strong>Agent:</strong> {agentReply}
+                      </div>
+                  )}
                   {blocks.map((block, index) => {
                     switch (block.type) {
-                      case 'CHECKLIST': return <div key={index} className="block checklist"><h3>{block.title}</h3><ul>{block.items.map((item, i) => <li key={i}>{item}</li>)}</ul></div>;
-                      case 'RESOURCE_CARD': return <div key={index} className="block resource"><h3>{block.title}</h3>{block.items.map((item, i) => (<div key={i}><strong>{item.name}</strong>: {item.purpose}<br /><em>Recommended: {item.recommended}</em></div>))}</div>;
-                      default: return null;
+                      case 'CHECKLIST':
+                        return (
+                            <div key={index} className="block checklist">
+                              <h3>{block.title}</h3>
+                              <ul>
+                                {block.items.map((item, i) => (
+                                    <li key={i}>{item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                        );
+                      case 'RESOURCE_CARD':
+                        return (
+                            <div key={index} className="block resource">
+                              <h3>{block.title}</h3>
+                              {block.items.map((item, i) => (
+                                  <div key={i}>
+                                    <strong>{item.name}</strong>: {item.purpose}
+                                    <br/>
+                                    <em>Recommended: {item.recommended}</em>
+                                  </div>
+                              ))}
+                            </div>
+                        );
+                      default:
+                        return null;
                     }
                   })}
                 </div>
@@ -227,12 +299,62 @@ function Chat() {
             {!showPastChats && (
                 <div className="chatinput">
                   <div className="wrap">
-                    <input type="text" placeholder="Enter an idea" className="input" value={input} onChange={(e) => setInput(e.target.value)} />
-                    <button className="send-button" onClick={sendPrompt} disabled={!input.trim()}><Send /></button>
+                    {/* + Button with popup */}
+                    <div className="plus-menu-container">
+                      <button className="plus-button" onClick={() => setShowPlusPopup(!showPlusPopup)}>
+                        <div className="plus-icon-wrapper-pill">
+                          <Plus size={28} strokeWidth={3}/>
+                        </div>
+                      </button>
+                      {showPlusPopup && (
+                          <div className="plus-popup-strict">
+                            <div className="popup-option-strict">
+                              <div className="icon-circle-strict"><Upload size={28}/></div>
+                              <label htmlFor="file-upload" className="option-label">Upload</label>
+                              <input type="file" id="file-upload" style={{display: 'none'}}
+                                     onChange={handleFileUpload}/>
+                            </div>
+                            <div className="popup-option-strict" onClick={() => setShowShareLinkPopup(true)}>
+                              <div className="icon-circle-strict"><Lock size={28}/></div>
+                              <span className="option-label">Share</span>
+                            </div>
+                          </div>
+                      )}
+                    </div>
+
+                    {/* Input and Send */}
+                    <input
+                        type="text"
+                        placeholder="Enter an idea"
+                        className="input"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                    />
+                    <button className="send-button" onClick={sendPrompt} disabled={!input.trim()}>
+                      <Send/>
+                    </button>
                   </div>
                 </div>
             )}
           </div>
+          {showShareLinkPopup && (
+              <div className="share-popup">
+                <div className="popup-content">
+                  <button className="close-btn" onClick={() => setShowShareLinkPopup(false)}>×</button>
+                  <h2>Share public link to canva</h2>
+                  <div className="share-link-box">
+                    <span className="share-link">{shareLink}</span>
+                    <button
+                        className="copy-btn"
+                        onClick={copyToClipboard}
+                        tabIndex={-1}
+                    >
+                      Copy Link
+                    </button>
+                  </div>
+                </div>
+              </div>
+          )}
         </div>
       </>
   );

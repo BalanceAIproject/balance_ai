@@ -6,7 +6,7 @@ export default function TopBar() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const isActive = (path) => location.pathname === path;
+    const isActive = (path) => location.pathname.startsWith(path);
 
     return (
         <div className="top-bar-global">
@@ -14,8 +14,18 @@ export default function TopBar() {
                 <h1 className="top-bar-title">Balnce.ai</h1>
             </div>
             <div className="top-bar-right">
-                <button className={`top-bar-btn ${isActive('/chat') ? 'active' : ''}`} onClick={() => navigate('/chat')} > Chat </button>
-                <button className={`top-bar-btn ${isActive('/userprofile') ? 'active' : ''}`} onClick={() => navigate('/userprofile')} > Profile </button>
+                <button
+                    className={`top-bar-btn ${isActive('/chat') ? 'active' : ''}`}
+                    onClick={() => navigate('/chat')}
+                >
+                    Chat
+                </button>
+                <button
+                    className={`top-bar-btn ${isActive('/userprofile') ? 'active' : ''}`}
+                    onClick={() => navigate('/userprofile')}
+                >
+                    Profile
+                </button>
             </div>
         </div>
     );
