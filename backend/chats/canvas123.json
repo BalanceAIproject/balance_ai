@@ -301,5 +301,157 @@
         ]
       }
     ]
+  },
+  {
+    "timestamp": "2025-05-27T22:15:16.303Z",
+    "userPrompt": "help me start a podcast about computer science",
+    "agentReply": "Starting a podcast about computer science is a great idea! Let's break down the steps to help you get started.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Steps to Start a Podcast about Computer Science",
+        "items": [
+          "Define your podcast concept and target audience",
+          "Choose a podcast name and format",
+          "Gather necessary equipment like a microphone, headphones, and recording software",
+          "Create podcast cover art and branding",
+          "Plan your episodes and topics",
+          "Record and edit your episodes",
+          "Choose a podcast hosting platform",
+          "Publish and promote your podcast"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Equipment for Starting a Podcast",
+        "items": [
+          {
+            "name": "Microphone",
+            "purpose": "To capture high-quality audio",
+            "recommended": "Blue Yeti, Audio-Technica AT2020"
+          },
+          {
+            "name": "Headphones",
+            "purpose": "To monitor audio while recording",
+            "recommended": "Sony MDR7506, Audio-Technica ATH-M50x"
+          },
+          {
+            "name": "Recording Software",
+            "purpose": "To record and edit your podcast",
+            "recommended": "Audacity, GarageBand, Adobe Audition"
+          },
+          {
+            "name": "Pop Filter",
+            "purpose": "To reduce plosives and improve audio quality",
+            "recommended": "Aokeo Professional Microphone Pop Filter"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-05-27T22:17:42.261Z",
+    "userPrompt": "help me start a podcast about computer science",
+    "agentReply": "That's a fantastic idea! Starting a podcast about computer science can be a great way to share knowledge and insights with a wider audience. Let's break down the steps to help you get started.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Steps to Start a Podcast about Computer Science",
+        "items": [
+          "Define your podcast concept and target audience",
+          "Choose a podcast name and format",
+          "Gather necessary equipment like microphones, headphones, and recording software",
+          "Plan your episodes and create a content calendar",
+          "Record and edit your episodes",
+          "Select a podcast hosting platform",
+          "Publish and promote your podcast on various platforms"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Recommended Equipment for Podcasting",
+        "items": [
+          {
+            "name": "Microphone",
+            "purpose": "To capture high-quality audio",
+            "recommended": "Blue Yeti, Audio-Technica AT2020"
+          },
+          {
+            "name": "Headphones",
+            "purpose": "To monitor audio while recording",
+            "recommended": "Sony MDR7506, Audio-Technica ATH-M50x"
+          },
+          {
+            "name": "Recording Software",
+            "purpose": "To edit and produce episodes",
+            "recommended": "Audacity, Adobe Audition"
+          },
+          {
+            "name": "Pop Filter",
+            "purpose": "To reduce plosive sounds in recordings",
+            "recommended": "Aokeo Professional Microphone Pop Filter"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-05-27T22:37:36.205Z",
+    "userPrompt": "help me create a podcast about computer science",
+    "agentReply": "Sure, creating a podcast about computer science is a great idea! Let's break down the steps to help you get started.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Steps to Create a Podcast about Computer Science",
+        "items": [
+          "Define your podcast concept and target audience",
+          "Create a list of potential podcast topics and guests",
+          "Decide on a podcast format (interviews, solo episodes, panel discussions, etc.)",
+          "Choose a podcast name and design cover art",
+          "Set up recording equipment and software",
+          "Record and edit podcast episodes",
+          "Create a podcast hosting account and upload episodes",
+          "Promote your podcast through social media and other channels",
+          "Engage with your audience and seek feedback for improvement"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Equipment for Podcasting",
+        "items": [
+          {
+            "name": "Microphone",
+            "purpose": "To capture clear audio recordings",
+            "recommended": "Blue Yeti, Audio-Technica AT2020"
+          },
+          {
+            "name": "Headphones",
+            "purpose": "To monitor audio while recording",
+            "recommended": "Sony MDR7506, Sennheiser HD280 Pro"
+          },
+          {
+            "name": "Recording Software",
+            "purpose": "To record and edit podcast episodes",
+            "recommended": "Audacity, GarageBand, Adobe Audition"
+          },
+          {
+            "name": "Pop Filter",
+            "purpose": "To reduce plosive sounds in recordings",
+            "recommended": "Aokeo Professional Microphone Pop Filter"
+          },
+          {
+            "name": "Audio Interface",
+            "purpose": "To connect microphone to computer",
+            "recommended": "Focusrite Scarlett 2i2, PreSonus AudioBox"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-05-27T22:37:52.275Z",
+    "userPrompt": "show me fun ideas for birthday parties",
+    "agentReply": "Sure! Let's brainstorm some fun ideas for birthday parties. Here are some suggestions to get you started:",
+    "suggestedBlocks": []
   }
 ]
