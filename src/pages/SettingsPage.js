@@ -115,10 +115,10 @@ const SettingsPage = () => {
             {showLogoutModal && (
                 <div className="logout-modal-overlay">
                     <div className="logout-modal">
-                        <p>Are you sure you want to<br/><strong>Log Out?</strong></p>
+                        <p>Are you sure you want to log out?</p>
                         <div className="modal-buttons">
-                            <button className="modal-yes" onClick={confirmLogout}>Yes</button>
-                            <button className="modal-no" onClick={() => setShowLogoutModal(false)}>No</button>
+                            <button className="modal-yes" onClick={confirmLogout}>Log Out</button>
+                            <button className="modal-no" onClick={() => setShowLogoutModal(false)}>Cancel</button>
                         </div>
                     </div>
                 </div>

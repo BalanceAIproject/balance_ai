@@ -40,6 +40,7 @@ function Chat() {
   const [showPlusPopup, setShowPlusPopup] = useState(false);
   const [showShareLinkPopup, setShowShareLinkPopup] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
   const [showPastChats, setShowPastChats] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
@@ -48,6 +49,15 @@ function Chat() {
     if (file) {
       console.log('Selected file:', file.name);
     }
+  };
+
+  const handleLogout = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    console.log("Logging out");
+    navigate('/login');
   };
 
   const shareLink = `https://balanceai.com/share/${canvasId || 'canvas123'}`;
@@ -201,10 +211,9 @@ function Chat() {
               </button>
               <button className="nav-item" onClick={() => handleNavigation('past-chats')}><Clock/><span
                   className="label">Past Chats</span></button>
-              <button className="nav-item logout" onClick={() => {
-                localStorage.clear();
-                navigate('/login');
-              }}><LogOut/><span className="label">Logout</span></button>
+              <button className="nav-item logout" onClick={() => setShowLogoutModal(true)}>
+                <LogOut/><span className="label">Logout</span>
+              </button>
             </div>
           </div>
 
@@ -351,6 +360,17 @@ function Chat() {
                     >
                       Copy Link
                     </button>
+                  </div>
+                </div>
+              </div>
+          )}
+          {showLogoutModal && (
+              <div className="logout-modal-overlay">
+                <div className="logout-modal">
+                  <p>Are you sure you want to log out?</p>
+                  <div className="modal-buttons">
+                    <button className="modal-yes" onClick={confirmLogout}>Log Out</button>
+                    <button className="modal-no" onClick={() => setShowLogoutModal(false)}>Cancel</button>
                   </div>
                 </div>
               </div>

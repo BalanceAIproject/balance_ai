@@ -32,31 +32,44 @@
 .top-bar-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: center;
+    gap: 48px;
+    height: 100%;
 }
-
 .top-bar-btn {
+    position: relative;
     font-family: 'Inter', sans-serif;
-    padding: 12px 32px;
-    font-size: 1.1rem;
-    font-weight: 600;
     border: none;
-    border-radius: 999px;
-    background-color: #d1e4c4;
+    outline: none;
+    font-size: 1.5rem;
+    font-weight: 600;
     color: #1e3b25;
     cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    padding-top: 0.5px;
+    transition: color 0.2s ease;
+    background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .top-bar-btn:hover {
-    background-color: rgba(182, 219, 173, 0.63);
-    transform: translateY(-2px);
+    color: #89b993;
+    background-color: transparent;
 }
 
-.top-bar-btn.active {
-    background-color: #b6dbad;
-    color: #1e3b25;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
+.top-bar-btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.top-bar-btn.active::after {
+    background-color: #89b993;
 }
