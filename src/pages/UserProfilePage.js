@@ -32,44 +32,55 @@ const UserProfilePage = () => {
     const statusOptions = ['Active', 'Ambient', 'Checkpointed', 'Dormant'];
     const [editingCanvasId, setEditingCanvasId] = useState(null);
     const [editingTitle, setEditingTitle] = useState('');
-    const [canvases, setCanvases] = useState([
-        {
-            id: 1,
-            title: 'Small Business',
-            description: 'Manage tasks and finances for your business.',
-            blocks: ['Journal Block', 'Budget Block', 'To-Do List', 'Idea Mapper'],
-            updated: '1 Min Ago',
-            status: 'Active',
-            videoTitles: []
-        },
-        {
-            id: 2,
-            title: 'Short Stories',
-            description: 'Track your characters, timelines, and story drafts.',
-            blocks: ['Journal Block', 'Characters Block', 'Timeline Block', 'To-Do List'],
-            updated: '5 Hrs Ago',
-            status: 'Active',
-            videoTitles: []
-        },
-        {
-            id: 3,
-            title: 'Crochet',
-            description: 'Organize your crochet projects and tools.',
-            blocks: ['Beginners Block', 'Tools Block', 'Ideas Block'],
-            updated: '2 Days Ago',
-            status: 'Inactive',
-            videoTitles: ['Easy Patterns']
-        },
-        {
-            id: 4,
-            title: 'Cooking',
-            description: 'Plan and collect your favorite recipes.',
-            blocks: ['Beginners Safety', 'Cooking Tools'],
-            updated: '1 Week Ago',
-            status: 'Active',
-            videoTitles: ['Beginners Recipe', 'Recipe with no Peanuts']
+    const [canvases, setCanvases] = useState([]); // Initialize with empty array
+
+    // Helper function to format timestamp to relative time
+    const formatTimeAgo = (timestamp) => {
+        const now = new Date();
+        const secondsPast = (now.getTime() - new Date(timestamp).getTime()) / 1000;
+
+        if (secondsPast < 60) {
+            return `${Math.round(secondsPast)} Sec Ago`;
         }
-    ]);
+        if (secondsPast < 3600) {
+            return `${Math.round(secondsPast / 60)} Min Ago`;
+        }
+        if (secondsPast <= 86400) {
+            return `${Math.round(secondsPast / 3600)} Hrs Ago`;
+        }
+        if (secondsPast > 86400) {
+            const days = Math.round(secondsPast / 86400);
+            if (days === 1) {
+                return `${days} Day Ago`;
+            }
+            return `${days} Days Ago`;
+        }
+    };
+
+
+    useEffect(() => {
+        const fetchCanvases = async () => {
+            try {
+                const response = await fetch('http://localhost:3001/chat-history');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                // Transform data to match the structure expected by the component
+                const formattedCanvases = data.map(canvas => ({
+                    ...canvas, // id, title, description, blocks, status, videoTitles are from backend
+                    updated: formatTimeAgo(canvas.timestamp) // Format timestamp
+                }));
+                setCanvases(formattedCanvases);
+            } catch (error) {
+                console.error("Failed to fetch canvases:", error);
+                setCanvases([]); // Set to empty array on error
+            }
+        };
+
+        fetchCanvases();
+    }, []);
+
 
     const handleDragStart = (e, canvasId) => {
         setDraggedCanvasId(canvasId);
@@ -82,21 +93,60 @@ const UserProfilePage = () => {
         e.dataTransfer.dropEffect = "move";
     };
 
-    const handleDrop = (e, targetCanvasId) => {
+    const handleDrop = async (e, targetCanvasId) => {
         e.preventDefault();
         if (draggedCanvasId && draggedCanvasId !== targetCanvasId) {
-            const draggedCanvas = canvases.find(c => c.id === draggedCanvasId);
-            const targetCanvas = canvases.find(c => c.id === targetCanvasId);
+            try {
+                const response = await fetch('http://localhost:3001/combine-chats', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sourceChatId1: draggedCanvasId,
+                        sourceChatId2: targetCanvasId,
+                    }),
+                });
 
-            if (draggedCanvas && targetCanvas) {
-                const combinedContext = {
-                    title: `Combined: ${draggedCanvas.title} & ${targetCanvas.title}`,
-                    canvases: [draggedCanvas, targetCanvas],
-                    blocks: [...new Set([...draggedCanvas.blocks, ...targetCanvas.blocks])]
-                };
-                console.log("Combining canvases:", draggedCanvas.title, "and", targetCanvas.title);
-                // Navigate to chat page with combined context
-                navigate('/chat', { state: { combinedContext } });
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorData}`);
+                }
+
+                const newCombinedCanvas = await response.json();
+                
+                setCanvases(prevCanvases => {
+                    // Add the new combined canvas, formatting its timestamp and ensuring all fields are present
+                    const formattedNewCanvas = {
+                        ...newCombinedCanvas,
+                        blocks: newCombinedCanvas.blocks || [],
+                        videoTitles: newCombinedCanvas.videoTitles || [],
+                        description: newCombinedCanvas.description || '',
+                        status: newCombinedCanvas.status || 'Active',
+                        updated: formatTimeAgo(newCombinedCanvas.timestamp) 
+                    };
+                    // Add the new canvas to the list, keeping the old ones
+                    const updatedCanvases = [formattedNewCanvas, ...prevCanvases];
+                    
+                    return updatedCanvases.sort((a, b) => {
+                        // Re-apply sort after adding new canvas, respecting pinned and current sortOrder
+                        const aPinned = pinnedCanvases.includes(a.id);
+                        const bPinned = pinnedCanvases.includes(b.id);
+                        if (aPinned !== bPinned) return (bPinned ? 1 : 0) - (aPinned ? 1 : 0);
+                        if (sortOrder === 'newest') {
+                            return b.timestamp - a.timestamp;
+                        } else {
+                            return a.timestamp - b.timestamp;
+                        }
+                    });
+                });
+
+                console.log("Successfully created new canvas from combination. New canvas ID:", newCombinedCanvas.id);
+                // Navigate to the new chat page using path parameter
+                navigate(`/chat/${newCombinedCanvas.id}`, { state: { canvasData: newCombinedCanvas } });
+
+            } catch (error) {
+                console.error("Failed to combine canvases:", error);
             }
         }
         setDraggedCanvasId(null);
@@ -173,9 +223,13 @@ const UserProfilePage = () => {
         .sort((a, b) => {
             const aPinned = pinnedCanvases.includes(a.id);
             const bPinned = pinnedCanvases.includes(b.id);
-            if (aPinned !== bPinned) return (bPinned ? 1 : 0) - (aPinned ? 1 : 0);
+            if (aPinned !== bPinned) return (bPinned ? 1 : 0) - (aPinned ? 1 : 0); // Pinned items first
 
-            return sortOrder === 'newest' ? b.id - a.id : a.id - b.id;
+            if (sortOrder === 'newest') {
+                return b.timestamp - a.timestamp;
+            } else {
+                return a.timestamp - b.timestamp;
+            }
         });
 
     return (
@@ -187,8 +241,8 @@ const UserProfilePage = () => {
                 </div>
 
                 <aside className="sidebar">
-                    <img src="/images/profile-pic.jpg" alt="Amy Smith" className="profile-pic" />
-                    <h2 className="username">Amy Smith</h2>
+                    <img src="/images/profile-pic.jpg" alt="User Name" className="profile-pic" />
+                    <h2 className="username">User Name</h2>
                     <div className="profile-actions">
                         <button title="Add" onClick={() => navigate("../chat")}>
                             <Plus size={40}/>
@@ -248,24 +302,7 @@ const UserProfilePage = () => {
                             </div>
                         </div>
                     </div>
-{/* 
-                    <div className="chat-prompts-section">
-                        <h3>Recent Chat History</h3>
-                        {chatHistory.length > 0 ? (
-                            <ul>
-                            {chatHistory.slice(-5).reverse().map((entry, index) => ( // Display last 5 entries, newest first
-                                    <li key={index}>
-                                        <p><strong>You:</strong> {entry.userInput}</p>
-                                        <p><strong>Agent:</strong> {entry.agentReply}</p>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>No chat history recorded yet.</p>
-                        )}
-                    </div> */}
 
-                    {/* Delete Confirmation Modal */}
                     {deleteConfirmation && (
                         <div className="delete-modal" onClick={cancelDelete}>
                             <div className="delete-modal-content" onClick={e => e.stopPropagation()}>
@@ -315,22 +352,55 @@ const UserProfilePage = () => {
                                 {canvas.status === 'Active' && <div className="active-bar"/>}
 
                                 <div className="canvas-preview-grid">
-                                    {canvas.blocks.map((block, i) => (
-                                        <div className="canvas-block" key={`text-${i}`}>
-                                            <div className="block-title">{block}</div>
-                                            <div className="block-text">Insert text here...</div>
-                                        </div>
-                                    ))}
-                                    {canvas.videoTitles?.map((title, i) => (
-                                        <div className="canvas-block video-block" key={`video-${i}`}>
-                                            <div className="block-title">{title}</div>
-                                            <div className="video-container">
-                                                <div className="video-overlay-text">Video Preview</div>
-                                                <div className="play-button"/>
-                                            </div>
-                                            <div className="video-footer-space"></div>
-                                        </div>
-                                    ))}
+                                    {(() => {
+                                        const displayItems = [];
+                                        const MAX_PREVIEW_ITEMS = 4;
+
+                                        (canvas.blocks || []).forEach(blockTitle => {
+                                            if (displayItems.length < MAX_PREVIEW_ITEMS) {
+                                                displayItems.push({ type: 'text', title: blockTitle });
+                                            }
+                                        });
+
+                                        (canvas.videoTitles || []).forEach(videoTitle => {
+                                            if (displayItems.length < MAX_PREVIEW_ITEMS) {
+                                                displayItems.push({ type: 'video', title: videoTitle });
+                                            }
+                                        });
+                                        
+                                        while (displayItems.length < MAX_PREVIEW_ITEMS) {
+                                            displayItems.push({ type: 'empty' });
+                                        }
+
+                                        return displayItems.map((item, i) => {
+                                            if (item.type === 'text') {
+                                                return (
+                                                    <div className="canvas-block" key={`text-${canvas.id}-${i}`}>
+                                                        <div className="block-title">{item.title}</div>
+                                                        <div className="block-text">Insert text here...</div>
+                                                    </div>
+                                                );
+                                            } else if (item.type === 'video') {
+                                                return (
+                                                    <div className="canvas-block video-block" key={`video-${canvas.id}-${i}`}>
+                                                        <div className="block-title">{item.title}</div>
+                                                        <div className="video-container">
+                                                            <div className="video-overlay-text">Video Preview</div>
+                                                            <div className="play-button"/>
+                                                        </div>
+                                                        <div className="video-footer-space"></div>
+                                                    </div>
+                                                );
+                                            } else { // 'empty'
+                                                return (
+                                                    <div className="canvas-block empty-canvas-block" key={`empty-${canvas.id}-${i}`}>
+                                                        <div className="block-title"></div>
+                                                        <div className="block-text"></div>
+                                                    </div>
+                                                );
+                                            }
+                                        });
+                                    })()}
                                 </div>
 
                                 <div className="canvas-title" onDoubleClick={() => {
