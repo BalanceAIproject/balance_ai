@@ -1,6 +1,13 @@
 .backdropP {
     text-align: center;
-    background-image: linear-gradient(to bottom, #ffffff 0%, #b7dab3 100%);;
+    background: linear-gradient(
+            to bottom,
+            #fdfefd 0%,
+            #f7f9f7 25%,
+            #f1f5f1 50%,
+            #ecf3ec 75%,
+            #e6f0e7 100%
+    );
     display: flex;
     justify-content: center;
     flex-direction: column;

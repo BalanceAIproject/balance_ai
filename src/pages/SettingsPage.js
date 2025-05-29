@@ -4,15 +4,14 @@ import { Settings as SettingsIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 
-const SettingsPage = () => {
+const SettingsPage = ({ onClose }) => {
     const navigate = useNavigate();
-
+    const [showSaveSuccess, setShowSaveSuccess] = useState(false);
     const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        fullName: ""
+        email: '',
+        password: '',
+        fullName: ''
     });
-
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const handleInputChange = (e) => {
@@ -25,8 +24,13 @@ const SettingsPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Saving updated settings:", formData);
-        alert("Settings updated successfully!");
+        console.log('Saving updated settings:', formData);
+        setShowSaveSuccess(true);
+
+        setTimeout(() => {
+            setShowSaveSuccess(false);
+            if (onClose) onClose();
+        });
     };
 
     const handleLogout = () => {
@@ -34,7 +38,7 @@ const SettingsPage = () => {
     };
 
     const confirmLogout = () => {
-        console.log("Logging out");
+        console.log('Logging out');
         navigate('/login');
     };
 
@@ -42,13 +46,11 @@ const SettingsPage = () => {
         <div className="settings-container">
             <TopBar />
 
-            {/* Header */}
             <div className="settings-header">
-                <SettingsIcon className="settings-icon-large"/>
+                <SettingsIcon className="settings-icon-large" />
                 <h1 className="settings-title">Settings</h1>
             </div>
 
-            {/* Profile Info */}
             <div className="profile-info-section">
                 <img
                     className="profile-photo-large"
@@ -56,8 +58,8 @@ const SettingsPage = () => {
                     alt="User Profile"
                 />
                 <div className="profile-text-info">
-                    <h2 className="profile-name">{formData.fullName || "User Name"}</h2>
-                    <h3 className="profile-email">{formData.email || "username@gmail.com"}</h3>
+                    <h2 className="profile-name">{formData.fullName || 'User Name'}</h2>
+                    <h3 className="profile-email">{formData.email || 'username@gmail.com'}</h3>
                 </div>
             </div>
 
@@ -102,11 +104,21 @@ const SettingsPage = () => {
                                 </div>
 
                                 <div className="input-group">
-                                    <button type="button" className="logout-button" onClick={handleLogout}>
+                                    <button
+                                        type="button"
+                                        className="logout-button"
+                                        onClick={handleLogout}
+                                    >
                                         Log Out
                                     </button>
                                 </div>
                             </div>
+                        </div>
+
+                        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                            <button type="submit" className="logout-button">
+                                Save Settings
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -117,8 +129,12 @@ const SettingsPage = () => {
                     <div className="logout-modal">
                         <p>Are you sure you want to log out?</p>
                         <div className="modal-buttons">
-                            <button className="modal-yes" onClick={confirmLogout}>Log Out</button>
-                            <button className="modal-no" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+                            <button className="modal-yes" onClick={confirmLogout}>
+                                Log Out
+                            </button>
+                            <button className="modal-no" onClick={() => setShowLogoutModal(false)}>
+                                Cancel
+                            </button>
                         </div>
                     </div>
                 </div>

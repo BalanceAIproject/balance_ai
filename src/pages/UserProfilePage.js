@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserProfilePage.css';
+import SettingsPage from './SettingsPage';
 import {
     Search,
     Filter,
@@ -30,10 +31,11 @@ const UserProfilePage = () => {
     const [chatHistory, setChatHistory] = useState([]);
     const [sortOrder, setSortOrder] = useState('newest');
     const statusOptions = ['Active', 'Ambient', 'Checkpointed', 'Dormant'];
+    const [showSettingsPopup, setShowSettingsPopup] = useState(false);
     const [editingCanvasId, setEditingCanvasId] = useState(null);
     const [editingTitle, setEditingTitle] = useState('');
     const [canvases, setCanvases] = useState([]); // Initialize with empty array
-
+    const [showSettings, setShowSettings] = useState(false);
     // Helper function to format timestamp to relative time
     const formatTimeAgo = (timestamp) => {
         const now = new Date();
@@ -114,7 +116,7 @@ const UserProfilePage = () => {
                 }
 
                 const newCombinedCanvas = await response.json();
-                
+
                 setCanvases(prevCanvases => {
                     // Add the new combined canvas, formatting its timestamp and ensuring all fields are present
                     const formattedNewCanvas = {
@@ -123,11 +125,11 @@ const UserProfilePage = () => {
                         videoTitles: newCombinedCanvas.videoTitles || [],
                         description: newCombinedCanvas.description || '',
                         status: newCombinedCanvas.status || 'Active',
-                        updated: formatTimeAgo(newCombinedCanvas.timestamp) 
+                        updated: formatTimeAgo(newCombinedCanvas.timestamp)
                     };
                     // Add the new canvas to the list, keeping the old ones
                     const updatedCanvases = [formattedNewCanvas, ...prevCanvases];
-                    
+
                     return updatedCanvases.sort((a, b) => {
                         // Re-apply sort after adding new canvas, respecting pinned and current sortOrder
                         const aPinned = pinnedCanvases.includes(a.id);
@@ -232,6 +234,11 @@ const UserProfilePage = () => {
             }
         });
 
+    useEffect(() => {
+        setTotalPages(Math.ceil(filteredData.length / 4) || 1);
+        setCurrentPage(prev => Math.min(prev, Math.ceil(filteredData.length / 4) || 1));
+    }, [filteredData]);
+
     return (
         <>
             <TopBar />
@@ -243,11 +250,12 @@ const UserProfilePage = () => {
                 <aside className="sidebar">
                     <img src="/images/profile-pic.jpg" alt="User Name" className="profile-pic" />
                     <h2 className="username">User Name</h2>
+                    <p className="user-email">Username@gmail.com</p>
                     <div className="profile-actions">
                         <button title="Add" onClick={() => navigate("../chat")}>
                             <Plus size={40}/>
                         </button>
-                        <button title="Settings" onClick={() => navigate("/settings")}>
+                        <button title="Settings" onClick={() => setShowSettings(true)}>
                             <Settings size={30}/>
                         </button>
                     </div>
@@ -258,40 +266,47 @@ const UserProfilePage = () => {
                     <div className="top-controls">
                         <div className="top-controls-inner">
                             <div className="left-controls">
-                                <button className="pill-btn">My Canvases</button>
-                                <div className={`filter-dropdown-full ${filterOpen ? 'open' : ''}`}
-                                     onClick={handleFilterClick}>
-                                    <div className="filter-header">
-                                        <Filter/>
-                                        Filter
-                                        <ChevronDown className={`filter-chevron ${filterOpen ? 'rotated' : ''}`}/>
-                                    </div>
+                                <button className="pill-btn my-library-btn">My Library</button>
+
+                                <div className="filter-button-container">
+                                    <button
+                                        className={`pill-btn filter-btn ${filterOpen ? 'open' : ''}`}
+                                        onClick={handleFilterClick}
+                                    >
+                                        <Filter size={18}/>
+                                        <span>Filter</span>
+                                        <ChevronDown size={16}
+                                                     className={`filter-chevron ${filterOpen ? 'rotated' : ''}`}/>
+                                    </button>
+
                                     {filterOpen && (
-                                        <div className="filter-options">
-                                            <div
-                                                className={`sort-option ${sortOrder === 'newest' ? 'selected' : ''}`}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleSortOrderChange('newest');
-                                                }}
-                                            >
-                                                Oldest to Newest
-                                            </div>
-                                            <div
-                                                className={`sort-option ${sortOrder === 'oldest' ? 'selected' : ''}`}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleSortOrderChange('oldest');
-                                                }}
-                                            >
-                                                Newest to Oldest
+                                        <div className="filter-dropdown-full open">
+                                            <div className="filter-options">
+                                                <div
+                                                    className={`sort-option ${sortOrder === 'newest' ? 'selected' : ''}`}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleSortOrderChange('newest');
+                                                    }}
+                                                >
+                                                    Oldest to Newest
+                                                </div>
+                                                <div
+                                                    className={`sort-option ${sortOrder === 'oldest' ? 'selected' : ''}`}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleSortOrderChange('oldest');
+                                                    }}
+                                                >
+                                                    Newest to Oldest
+                                                </div>
                                             </div>
                                         </div>
                                     )}
                                 </div>
                             </div>
                             <div className="search-container">
-                                <Search className="search-icon" size={18}/>
+                                <Search className="search-icon" size={20}/>
                                 <input
                                     className="search-box"
                                     type="text"
@@ -323,7 +338,7 @@ const UserProfilePage = () => {
                     )}
 
                     <div className="canvas-grid">
-                        {filteredData.map(canvas => (
+                        {filteredData.slice((currentPage - 1) * 4, currentPage * 4).map(canvas => (
                             <div
                                 className={`canvas-card ${draggedCanvasId === canvas.id ? 'dragging' : ''}`}
                                 key={canvas.id}
@@ -367,7 +382,7 @@ const UserProfilePage = () => {
                                                 displayItems.push({ type: 'video', title: videoTitle });
                                             }
                                         });
-                                        
+
                                         while (displayItems.length < MAX_PREVIEW_ITEMS) {
                                             displayItems.push({ type: 'empty' });
                                         }
@@ -473,17 +488,25 @@ const UserProfilePage = () => {
                             onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                             disabled={currentPage === 1}
                         >
-                            <ChevronLeft/>
+                            <ChevronLeft size={50} strokeWidth={5}/>
                         </button>
                         <button
                             className="arrow-btn"
                             onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                             disabled={currentPage === totalPages}
                         >
-                            <ChevronRight/>
+                            <ChevronRight size={50} strokeWidth={5}/>
                         </button>
                     </div>
                 </main>
+                {showSettings && (
+                    <div className="settings-popup-overlay" onClick={() => setShowSettings(false)}>
+                        <div className="settings-popup" onClick={e => e.stopPropagation()}>
+                            <button className="close-button" onClick={() => setShowSettings(false)}>✕</button>
+                            <SettingsPage onClose={() => setShowSettings(false)} />
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );

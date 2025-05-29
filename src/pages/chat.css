@@ -5,7 +5,14 @@
 .chatbackdrop {
   display: flex;
   height: 100vh;
-  background-image: linear-gradient(to bottom, rgba(241, 247, 240, 0.69) 0%, rgba(214, 233, 210, 0.37) 100%);
+  background: linear-gradient(
+          to bottom,
+          #fdfefd 0%,
+          #f7f9f7 25%,
+          #f1f5f1 50%,
+          #ecf3ec 75%,
+          #e6f0e7 100%
+  );
   overflow: hidden;
   flex-direction: row;
   box-sizing: border-box;
@@ -74,7 +81,7 @@
 
 .expand-btn-container {
   position: absolute;
-  top: 120px;
+  top: 90px;
   z-index: 10;
   transition: left 0.3s ease;
 }
@@ -226,40 +233,39 @@
 
 .chatinput {
   position: fixed;
-  bottom: 0;
-  height: auto;
-  max-height: 120px;
-  width: 1990px;
+  bottom: 60px;
+  left: 20%;
+  width: 80%;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 10px 0;
   z-index: 1000;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  transition: left 0.3s ease, width 0.3s ease;
 }
-
-
 
 .wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  width: 100%;
-  max-width: 900px;
+  width: 70vw;
   padding: 16px 20px;
   background-color: white;
   border-radius: 20px;
 }
 
-.wrap input {
-  flex: 1;
-  height: 56px;
-  border-radius: 16px;
-  border: none;
-  padding: 0 20px;
-  font-size: 2.0rem;
+.input {
+  padding: 20px 24px;
+  font-size: 1.6rem;
+  border: 3px solid #376135;
+  border-radius: 12px;
+  width: 100%;
+  max-height: 65px;
+  max-width: 2000px;
+  box-sizing: border-box;
+}
+
+.wrap input:focus {
+  border-color: #2e5c2e;
 }
 
 .send-button {
@@ -274,6 +280,7 @@
   cursor: pointer;
   padding: 0;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .send-button:hover {
@@ -290,6 +297,7 @@
 
 .plus-menu-container {
   position: relative;
+  flex-shrink: 0;
 }
 
 .plus-button {
@@ -547,17 +555,92 @@
   position: relative;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   cursor: pointer;
+  min-width: 300px;
+  height: 40px;
+  width: calc(100% - 80px);
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .edit-icon {
   position: absolute;
   right: 12px;
-  top: 12px;
-  font-size: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
   cursor: pointer;
-  color: #444;
+  color: #666;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .edit-icon:hover {
-  color: #222;
+  color: #333;
+  background-color: #f0f0f0;
+}
+
+.chat-bubble-edit-input {
+  background: transparent;
+  border: 2px solid #2e5c2e;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  width: calc(100% - 60px);
+  outline: none;
+  font-family: inherit;
+}
+
+.edit-buttons {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+}
+
+.edit-save-btn,
+.edit-cancel-btn {
+  height: 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.edit-save-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.edit-save-btn:hover {
+  background-color: #45a049;
+}
+
+.edit-cancel-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.edit-cancel-btn:hover {
+  background-color: #da190b;
+}
+
+.chat-bubble.editing {
+  cursor: default;
+}
+
+.chat-bubble.editing .chat-bubble-content {
+  pointer-events: none;
 }

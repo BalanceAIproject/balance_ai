@@ -1,57 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
 body {
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.34) 0%, rgba(211, 234, 207, 0.45) 100%);
 }
 
 .backdrop {
-    text-align: center;
-    background-image: linear-gradient(to bottom, rgba(241, 247, 240, 0.69) 0%, rgba(214, 233, 210, 0.37) 100%);
+    background: linear-gradient(
+            to bottom,
+            #fdfefd 0%,
+            #f7f9f7 25%,
+            #f1f5f1 50%,
+            #ecf3ec 75%,
+            #e6f0e7 100%
+    );
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
     height: 100vh;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .backdrop h1 {
-    color: #374a31;
-    font-size: 7.5rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #2d5a27;
+    font-size: 106px;
     font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.backdrop h3 {
-    color: #374a31;
-    font-size: 4.0rem;
-    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: 0;
     margin: 0;
 }
 
-.space {
-    height: 50px;
+.backdrop h3 {
+    color: #2d5a27;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 50px;
+    font-weight: 600;
+    margin: 20px 0 60px 0;
 }
 
 .buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
 }
 
 .buttons button {
-    border-radius: 50px;
+    border-radius: 999px;
     border: none;
-    color: #374a31;
+    color: #2d5a27;
     background-color: white;
-    width: 400px;
+    width: 350px;
     height: 85px;
-    font-size: 3.25rem;
+    font-size: 40px;
     font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .buttons button:hover {
-    color: rgba(55, 74, 49, 0.97);
+    background-color: #edf5eb;
+    color: #2d5a27;
 }

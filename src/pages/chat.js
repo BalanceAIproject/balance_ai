@@ -47,21 +47,39 @@ function Chat() {
 
   useEffect(() => {
     fetch('http://localhost:3001/chat-history')
-      .then(res => res.json())
-      .then(setChatHistory)
-      .catch(err => console.error('Failed to fetch chat history', err));
+        .then(res => res.json())
+        .then(setChatHistory)
+        .catch(err => console.error('Failed to fetch chat history', err));
   }, []);
 
   useEffect(() => {
     if (!canvasId) return;
     fetch(`http://localhost:3001/chat/${canvasId}`)
-      .then(res => res.json())
-      .then(data => setPastMessages(Array.isArray(data) ? data : []))
-      .catch(err => {
-        console.error('Failed to load chat', err);
-        setPastMessages([]);
-      });
+        .then(res => res.json())
+        .then(data => setPastMessages(Array.isArray(data) ? data : []))
+        .catch(err => {
+          console.error('Failed to load chat', err);
+          setPastMessages([]);
+        });
   }, [canvasId]);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Selected file:', file.name);
+      // Add your file upload logic here
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shareLink);
+    alert('Link copied to clipboard!');
+  };
+
+  const confirmLogout = () => {
+    console.log("Logging out");
+    navigate('/login');
+  };
 
   const sendPrompt = async () => {
     if (!input.trim()) return;
@@ -73,7 +91,7 @@ function Chat() {
         body: JSON.stringify({
           prompt: input,
           canvasId,
-          blocks: []  
+          blocks: []
         })
       });
 
@@ -120,108 +138,175 @@ function Chat() {
   };
 
   return (
-    <>
-      <TopBar />
-      <div className="chatbackdrop">
-        <div className={`chatbar ${isExpanded ? 'expanded' : 'collapsed'}`}>
-          <div className="profile-row">
-            <div className="profile-avatar">
-              <img src="/images/profile-pic.jpg" className="profile-image" alt="User" />
-            </div>
-          </div>
-          {isExpanded && (
-            <div className="profile-info">
-              <div className="profile-name">User Name</div>
-              <div className="profile-email">username@gmail.com</div>
-            </div>
-          )}
-          <div className="nav-menu">
-            <button className="nav-item" onClick={() => handleNavigation('chat')}><MessageCircle/><span className="label">Chat</span></button>
-            <button className="nav-item" onClick={() => handleNavigation('new-chat')}><Plus/><span className="label">New Chat</span></button>
-            <button className="nav-item" onClick={() => handleNavigation('past-chats')}><Clock/><span className="label">Past Chats</span></button>
-            <button className="nav-item logout" onClick={() => setShowLogoutModal(true)}><LogOut/><span className="label">Logout</span></button>
-          </div>
-        </div>
-
-        <div className="expand-btn-container">
-          <button className={`expand-btn ${isExpanded ? 'expanded' : 'collapsed'}`} onClick={() => setIsExpanded(!isExpanded)}>
-            <svg width="40" height="40" viewBox="0 0 24 24">
-              <path d={isExpanded ? "M15 6l-6 6 6 6" : "M9 6l6 6-6 6"} stroke="black" strokeWidth="2" fill="none" />
-            </svg>
-          </button>
-        </div>
-
-        <div className="chat-main">
-          {showPastChats ? (
-            <div className="past-chats-list-container">
-              <h2 className="past-chats-title">Past Chats</h2>
-              {groupChatsByDate(chatHistory).map(([dateLabel, chats]) => (
-                <div key={dateLabel} className="chat-day-section">
-                  <div className="chat-day-divider">
-                    <hr className="divider-line" /><span className="day-label">{dateLabel}</span><hr className="divider-line" />
-                  </div>
-                  {chats.map((chat, i) => (
-                    <div key={i} className="chat-bubble-wrapper" onClick={() => {
-                      setShowPastChats(false);
-                      navigate(`/chat/${chat.canvasId}`);
-                    }}>
-                      <div className="chat-timestamp">{chat.time}</div>
-                      <div className="chat-bubble">{chat.summary || chat.firstPrompt || 'No prompt'}</div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="chat-content">
-              {pastMessages.map((entry, i) => (
-                <div key={i} className="chat-turn">
-                  <div><strong>You:</strong> {entry.userPrompt}</div>
-                  <div><strong>Agent:</strong> {entry.agentReply}</div>
-                  {(entry.suggestedBlocks || []).map((block, j) => {
-                    switch (block.type) {
-                      case 'CHECKLIST':
-                        return (
-                          <div key={j} className="block checklist">
-                            <h3>{block.title}</h3>
-                            <ul>{block.items.map((item, k) => <li key={k}>{item}</li>)}</ul>
-                          </div>
-                        );
-                      case 'RESOURCE_CARD':
-                        return (
-                          <div key={j} className="block resource">
-                            <h3>{block.title}</h3>
-                            {block.items.map((item, k) => (
-                              <div key={k}>
-                                <strong>{item.name}</strong>: {item.purpose}<br />
-                                <em>Recommended: {item.recommended}</em>
-                              </div>
-                            ))}
-                          </div>
-                        );
-                      default:
-                        return null;
-                    }
-                  })}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {!showPastChats && (
-            <div className="chatinput">
-              <div className="wrap">
-                <button className="plus-button" onClick={() => setShowPlusPopup(!showPlusPopup)}>
-                  <Plus />
-                </button>
-                <input type="text" placeholder="Enter an idea" value={input} onChange={e => setInput(e.target.value)} />
-                <button className="send-button" onClick={sendPrompt} disabled={!input.trim()}><Send /></button>
+      <>
+        <TopBar />
+        <div className="chatbackdrop">
+          <div className={`chatbar ${isExpanded ? 'expanded' : 'collapsed'}`}>
+            <div className="profile-row">
+              <div className="profile-avatar">
+                <img src="/images/profile-pic.jpg" className="profile-image" alt="User" />
               </div>
             </div>
+            {isExpanded && (
+                <div className="profile-info">
+                  <div className="profile-name">User Name</div>
+                  <div className="profile-email">username@gmail.com</div>
+                </div>
+            )}
+            <div className="nav-menu">
+              <button className="nav-item" onClick={() => handleNavigation('chat')}><MessageCircle/><span className="label">Chat</span></button>
+              <button className="nav-item" onClick={() => handleNavigation('new-chat')}><Plus/><span className="label">New Chat</span></button>
+              <button className="nav-item" onClick={() => handleNavigation('past-chats')}><Clock/><span className="label">Past Chats</span></button>
+              <button className="nav-item logout" onClick={() => setShowLogoutModal(true)}><LogOut/><span className="label">Logout</span></button>
+            </div>
+          </div>
+
+          <div className={`expand-btn-container ${isExpanded ? 'expanded' : 'collapsed'}`}>
+            <button className={`expand-btn ${isExpanded ? 'expanded' : 'collapsed'}`} onClick={() => setIsExpanded(!isExpanded)}>
+              <svg width="40" height="40" viewBox="0 0 24 24">
+                <path
+                    d={isExpanded ? "M15 6l-6 6 6 6" : "M9 6l6 6-6 6"}
+                    stroke="black"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div className="chat-main">
+            {showPastChats ? (
+                <div className="past-chats-list-container">
+                  <h2 className="past-chats-title">Past Chats</h2>
+                  {groupChatsByDate(chatHistory).map(([dateLabel, chats]) => (
+                      <div key={dateLabel} className="chat-day-section">
+                        <div className="chat-day-divider">
+                          <hr className="divider-line" /><span className="day-label">{dateLabel}</span><hr className="divider-line" />
+                        </div>
+                        {chats.map((chat, i) => (
+                            <div key={i} className="chat-bubble-wrapper" onClick={() => {
+                              setShowPastChats(false);
+                              navigate(`/chat/${chat.canvasId}`);
+                            }}>
+                              <div className="chat-timestamp">{chat.time}</div>
+                              <div className="chat-bubble">
+                                {chat.summary || chat.firstPrompt || 'No prompt'}
+                                <span className="edit-icon">✎</span>
+                              </div>
+                            </div>
+                        ))}
+                      </div>
+                  ))}
+                </div>
+            ) : (
+                <div className="chat-content">
+                  {pastMessages.map((entry, i) => (
+                      <div key={i} className="chat-turn">
+                        <div><strong>You:</strong> {entry.userPrompt}</div>
+                        <div><strong>Agent:</strong> {entry.agentReply}</div>
+                        {(entry.suggestedBlocks || []).map((block, j) => {
+                          switch (block.type) {
+                            case 'CHECKLIST':
+                              return (
+                                  <div key={j} className="block checklist">
+                                    <h3>{block.title}</h3>
+                                    <ul>{block.items.map((item, k) => <li key={k}>{item}</li>)}</ul>
+                                  </div>
+                              );
+                            case 'RESOURCE_CARD':
+                              return (
+                                  <div key={j} className="block resource">
+                                    <h3>{block.title}</h3>
+                                    {block.items.map((item, k) => (
+                                        <div key={k}>
+                                          <strong>{item.name}</strong>: {item.purpose}<br />
+                                          <em>Recommended: {item.recommended}</em>
+                                        </div>
+                                    ))}
+                                  </div>
+                              );
+                            default:
+                              return null;
+                          }
+                        })}
+                      </div>
+                  ))}
+                </div>
+            )}
+
+            {!showPastChats && (
+                <div className="chatinput">
+                  <div className="wrap">
+                    <div className="plus-menu-container">
+                      <button className="plus-button" onClick={() => setShowPlusPopup(!showPlusPopup)}>
+                        <div className="plus-icon-wrapper-pill">
+                          <Plus size={28} strokeWidth={3} />
+                        </div>
+                      </button>
+                      {showPlusPopup && (
+                          <div className="plus-popup-strict">
+                            <div className="popup-option-strict">
+                              <div className="icon-circle-strict"><Upload size={28}/></div>
+                              <label htmlFor="file-upload" className="option-label">Upload</label>
+                              <input type="file" id="file-upload" style={{display: 'none'}} onChange={handleFileUpload}/>
+                            </div>
+                            <div className="popup-option-strict" onClick={() => setShowShareLinkPopup(true)}>
+                              <div className="icon-circle-strict"><Lock size={28}/></div>
+                              <span className="option-label">Share</span>
+                            </div>
+                          </div>
+                      )}
+                    </div>
+
+                    <input
+                        type="text"
+                        placeholder="Enter an idea"
+                        className="input"
+                        value={input}
+                        onChange={e => setInput(e.target.value)}
+                    />
+                    <button className="send-button" onClick={sendPrompt} disabled={!input.trim()}>
+                      <Send />
+                    </button>
+                  </div>
+                </div>
+            )}
+          </div>
+
+          {showShareLinkPopup && (
+              <div className="share-popup">
+                <div className="popup-content">
+                  <button className="close-btn" onClick={() => setShowShareLinkPopup(false)}>×</button>
+                  <h2>Share public link to canva</h2>
+                  <div className="share-link-box">
+                    <span className="share-link">{shareLink}</span>
+                    <button
+                        className="copy-btn"
+                        onClick={copyToClipboard}
+                        tabIndex={-1}
+                    >
+                      Copy Link
+                    </button>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          {showLogoutModal && (
+              <div className="logout-modal-overlay">
+                <div className="logout-modal">
+                  <p>Are you sure you want to log out?</p>
+                  <div className="modal-buttons">
+                    <button className="modal-yes" onClick={confirmLogout}>Log Out</button>
+                    <button className="modal-no" onClick={() => setShowLogoutModal(false)}>Cancel</button>
+                  </div>
+                </div>
+              </div>
           )}
         </div>
-      </div>
-    </>
+      </>
   );
 }
 
