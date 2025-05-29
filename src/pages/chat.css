@@ -256,7 +256,7 @@
 .input {
   padding: 20px 24px;
   font-size: 1.6rem;
-  border: 3px solid #376135;
+  border: 2px solid rgba(46, 92, 46, 0.28);
   border-radius: 12px;
   width: 100%;
   max-height: 65px;
@@ -588,7 +588,7 @@
 
 .chat-bubble-edit-input {
   background: transparent;
-  border: 2px solid #2e5c2e;
+  border: 2px solid rgba(46, 92, 46, 0.28);
   border-radius: 8px;
   padding: 4px 8px;
   font-size: 0.9rem;
