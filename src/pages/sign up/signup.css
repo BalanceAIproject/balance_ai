@@ -28,6 +28,7 @@
     align-items: center;
     width: 100%;
     max-width: 450px;
+    margin-right: 118px;
 }
 
 input {
@@ -39,10 +40,10 @@ input {
     text-align: left;
     color: #333;
     padding: 0 25px 0 90px;
-    font-size: 4.0rem;
+    font-size: 2.0rem;
     background-color: white;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     letter-spacing: 0.02em;
     font-weight: 500;
 }
@@ -50,7 +51,7 @@ input {
 input::placeholder {
     font-family: 'Inter', sans-serif;
     color: black;
-    font-size: 1.6rem;
+    font-size: 2.0rem;
     font-weight: 500;
     text-align: left;
 }
@@ -85,12 +86,19 @@ input::placeholder {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z'/%3E%3C/svg%3E");
 }
 
-.loginB button,
-.signupB button {
+.loginB {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 450px;
+}
+
+.loginB button {
     border-radius: 999px;
     border: none;
-    color: white;
-    background-color: #4d8c3e;
+    color: #355732;
+    background-color: white;
     font-size: 1.3rem;
     width: 250px;
     height: 65px;
@@ -99,16 +107,17 @@ input::placeholder {
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: background-color 0.2s ease, transform 0.1s ease;
+    margin: 0 auto;
 }
 
-.loginB button:hover,
-.signupB button:hover {
-    background-color: #4CAF50;
+.loginB button:hover {
+    background-color: #355732;
+    color: white;
     transform: translateY(-2px);
 }
 
 .error-message {
-    color: #ff3b30;
+    color: #ff0c00;
     font-size: 0.9rem;
     margin-bottom: 15px;
     width: 100%;
@@ -121,61 +130,135 @@ input::placeholder {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 450px;
-    margin-top: 8px;
+    max-width: 550px;
+    margin-top: 30px;
     font-family: 'Inter', sans-serif;
-    font-size: 20px;
+    font-size: 1.5rem;
     font-weight: 500;
 }
 
 .remember .left {
-    margin-left: 50px;
+    margin-left: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 .remember input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: #4d8c3e;
+    width: 18px;
+    height: 18px;
+    accent-color: #355732;
     cursor: pointer;
 }
 
 .remember label {
-    color: #2d5a27;
-    cursor: pointer;
+    color: #355732;
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
 .remember a {
-    color: #2d5a27;
+    color: #355732;
     text-decoration: underline;
-    font-size: 16px;
+    font-size: 1.5rem;
+    margin-right: 12px;
 }
 
-.remember a:hover {
-    text-decoration: underline;
+.login-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 450px;
+    margin-top: 40px;
 }
 
-.signup-link,
-.login-link {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    color: #4d7548;
+.login-section button {
+    border-radius: 999px;
+    border: none;
+    color: #355732;
+    background-color: white;
+    font-size: 1.3rem;
+    width: 250px;
+    height: 65px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.login-section button:hover {
+    background-color: #355732;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.signup-link {
+    font-size: 1.5rem;
+    color: #355732;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     text-align: center;
 }
 
-.signup-link a,
-.login-link a {
-    color: #4d8c3e;
+.signup-link a {
+    color: #355732;
     font-weight: 600;
     text-decoration: none;
     font-family: 'Montserrat', sans-serif;
 }
 
-.signup-link a:hover,
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+.signupB {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.signupB button {
+    border-radius: 999px;
+    border: none;
+    color: #355732;
+    background-color: white;
+    font-size: 1.3rem;
+    width: 250px;
+    height: 65px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.signupB button:hover {
+    background-color: #355732;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.login-link {
+    font-size: 1.5rem;
+    color: #355732;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+.login-link a {
+    color: #355732;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+}
+
 .login-link a:hover {
     text-decoration: underline;
 }

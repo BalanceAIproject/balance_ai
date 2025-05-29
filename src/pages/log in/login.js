@@ -57,14 +57,14 @@ function Login() {
                         />
                         <label htmlFor="rememberMe">Remember me</label>
                     </div>
-
                     <div className="right">
                         <a href="/forgotpassword">Forgot password?</a>
                     </div>
                 </div>
             </div>
 
-            <div className="loginB">
+            {/* Fixing spacing and vertical stacking */}
+            <div className="login-section">
                 <button
                     onClick={handleLogin}
                     disabled={state.isLoading}

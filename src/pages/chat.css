@@ -81,7 +81,7 @@
 
 .expand-btn-container {
   position: absolute;
-  top: 90px;
+  top: 130px;
   z-index: 10;
   transition: left 0.3s ease;
 }
