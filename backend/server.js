@@ -447,7 +447,7 @@ The 'suggestedBlocks' should be relevant initial blocks for this new topic.
       description: newChatDescription, // From first AI call
       timestamp: newTimestamp,
       // For UserProfilePage card preview (titles/types)
-      blocks: (parsedBlockData.suggestedBlocks || []).map(b => b.title || b.type || "New Block"), 
+      blocks: (parsedBlockData.suggestedBlocks || []).map(b => b.title || b.type || "New Block"),
       status: 'Active',
       videoTitles: [],
       initialEntry: initialChatEntry // Full initial entry for chat.js
@@ -462,6 +462,40 @@ The 'suggestedBlocks' should be relevant initial blocks for this new topic.
     }
     res.status(500).json({ error: "Server error while combining chats." });
   }
+});
+
+app.post('/chat/:canvasId/update-title', (req, res) => {
+    const { canvasId } = req.params;
+    const { title } = req.body;
+
+    const summaryPath = path.join(__dirname, "summaries", `${canvasId}_summary.json`);
+    console.log("Writing to summary path:", summaryPath);
+    console.log("Save title request received:", canvasId, title);
+
+    let summaryData = {
+        title: title || "Untitled",
+        description: "",
+        summary: ""
+    };
+
+    if (fs.existsSync(summaryPath)) {
+        try {
+            const existing = JSON.parse(fs.readFileSync(summaryPath, "utf-8"));
+            summaryData.description = existing.description || "";
+            summaryData.summary = existing.summary || "";
+        } catch (err) {
+            console.error("Error reading existing summary:", err.message);
+        }
+    }
+
+    try {
+        fs.writeFileSync(summaryPath, JSON.stringify(summaryData, null, 2));
+        console.log("Title saved to:", summaryPath);
+        res.status(200).json({ success: true });
+    } catch (err) {
+        console.error("Failed to write updated title:", err.message);
+        res.status(500).json({ error: "Failed to save title." });
+    }
 });
 
 app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));

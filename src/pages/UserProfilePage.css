@@ -118,6 +118,7 @@ html, body {
     align-items: center;
     gap: 10px;
     background-color: #e3efda;
+    display: flex;
     border: none;
     border-radius: 999px;
     padding: 14px 26px;
@@ -127,11 +128,12 @@ html, body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     box-shadow: none;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    /*transition: background-color 0.2s ease;*/
 }
 
 .rounded-pill-btn:hover {
     background-color: #d1e4c4;
+    color: #1e3b25;
 }
 
 .rounded-pill-btn svg {
@@ -214,12 +216,17 @@ html, body {
     background-color: white;
     border: 1px solid #2f4f2f;
     border-radius: 30px;
-    cursor: pointer;
+    cursor: auto;
+    display: block;
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    /*transition: background-color 0.2s ease, color 0.2s ease;*/
     margin-left: 0px;
     margin-top: -50px;
     margin-bottom: 2px;
+}
+
+.pill-btn.my-library-btn:hover {
+    color: #2f4f2f;
 }
 
 .filter-button-container {
@@ -353,8 +360,8 @@ html, body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    /*cursor: pointer;*/
+    /*transition: background-color 0.2s ease;*/
     min-width: 140px;
     margin-left: 0px;
     height: auto;
@@ -366,11 +373,11 @@ html, body {
     color: #333;
 }
 
-.pill-btn svg {
-    width: 18px;
-    height: 18px;
-    stroke: #333;
-}
+/*.pill-btn svg {*/
+/*    width: 18px;*/
+/*    height: 18px;*/
+/*    stroke: #333;*/
+/*}*/
 
 .section-title {
     margin: 0;

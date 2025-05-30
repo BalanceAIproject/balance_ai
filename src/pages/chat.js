@@ -6,29 +6,37 @@ import { Lock, Upload, Plus, Send, MessageCircle, Clock, LogOut } from 'lucide-r
 
 function groupChatsByDate(chatHistory) {
   const grouped = {};
-  const today = new Date();
-  const yesterday = new Date();
-  yesterday.setDate(today.getDate() - 1);
 
   for (const chat of chatHistory) {
     const dt = new Date(chat.timestamp || Date.now());
-    const dateStr = dt.toDateString();
-    let label = '';
+    const key = dt.toISOString().split('T')[0];
 
-    if (dateStr === today.toDateString()) {
-      label = 'Today';
-    } else if (dateStr === yesterday.toDateString()) {
-      label = 'Yesterday';
-    } else {
-      label = dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-    }
-
-    const time = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).toLowerCase();
-    if (!grouped[label]) grouped[label] = [];
-    grouped[label].push({ ...chat, time });
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push({
+      ...chat,
+      time: dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).toLowerCase(),
+      dateObj: dt
+    });
   }
 
-  return Object.entries(grouped);
+  const sorted = Object.entries(grouped).sort(
+      (a, b) => new Date(b[0]) - new Date(a[0])
+  );
+
+  const today = new Date().toDateString();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toDateString();
+
+  return sorted.map(([dateKey, chats]) => {
+    const labelDate = new Date(dateKey).toDateString();
+    let label = labelDate;
+    if (labelDate === today) label = 'Today';
+    else if (labelDate === yesterdayStr) label = 'Yesterday';
+    else label = new Date(dateKey).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+
+    return [label, chats];
+  });
 }
 
 function Chat() {
@@ -42,6 +50,8 @@ function Chat() {
   const [showShareLinkPopup, setShowShareLinkPopup] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
+  const [editingChatId, setEditingChatId] = useState(null);
+  const [editedTitle, setEditedTitle] = useState('');
 
   const shareLink = `https://balanceai.com/share/${canvasId || 'canvas123'}`;
 
@@ -70,6 +80,8 @@ function Chat() {
       // Add your file upload logic here
     }
   };
+
+  console.log("Saving title:", editedTitle);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareLink);
@@ -177,6 +189,12 @@ function Chat() {
           </div>
 
           <div className="chat-main">
+            {!showPastChats && pastMessages.length === 0 && (
+                <div className="welcome-message">
+                  <h2>Welcome to the Imagination Canvas</h2>
+                  <p>Enter your idea below to get started!</p>
+                </div>
+            )}
             {showPastChats ? (
                 <div className="past-chats-list-container">
                   <h2 className="past-chats-title">Past Chats</h2>
@@ -186,14 +204,75 @@ function Chat() {
                           <hr className="divider-line" /><span className="day-label">{dateLabel}</span><hr className="divider-line" />
                         </div>
                         {chats.map((chat, i) => (
-                            <div key={i} className="chat-bubble-wrapper" onClick={() => {
-                              setShowPastChats(false);
-                              navigate(`/chat/${chat.canvasId}`);
-                            }}>
+                            <div
+                                key={i}
+                                className="chat-bubble-wrapper"
+                                onClick={() => {
+                                  setShowPastChats(false);
+                                  navigate(`/chat/${chat.canvasId}`);
+                                }}
+                            >
                               <div className="chat-timestamp">{chat.time}</div>
+
                               <div className="chat-bubble">
-                                {chat.summary || chat.firstPrompt || 'No prompt'}
-                                <span className="edit-icon">✎</span>
+                                {editingChatId === chat.canvasId ? (
+                                    <div className="edit-title-row" onClick={(e) => e.stopPropagation()}>
+                                      <input
+                                          type="text"
+                                          value={editedTitle}
+                                          onChange={(e) => setEditedTitle(e.target.value)}
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="title-input"
+                                          autoFocus
+                                      />
+                                      <button
+                                          className="save-btn"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            console.log("Saving title:", editedTitle);
+                                            fetch(`http://localhost:3001/chat/${chat.canvasId}/update-title`, {
+                                              method: 'POST',
+                                              headers: { 'Content-Type': 'application/json' },
+                                              body: JSON.stringify({ title: editedTitle })
+                                            })
+                                                .then(() => fetch('http://localhost:3001/chat-history'))
+                                                .then(res => res.json())
+                                                .then(data => {
+                                                  setChatHistory(data);
+                                                  setEditingChatId(null);
+                                                })
+                                                .catch(err => {
+                                                  console.error('Failed to update title', err);
+                                                });
+                                          }}
+                                      >
+                                        Save
+                                      </button>
+                                      <button
+                                          className="cancel-btn"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setEditingChatId(null);
+                                          }}
+                                      >
+                                        Cancel
+                                      </button>
+                                    </div>
+                                ) : (
+                                    <>
+                                      {chat.title || chat.summary || chat.firstPrompt || 'No prompt'}
+                                      <span
+                                          className="edit-icon"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setEditingChatId(chat.canvasId);
+                                            setEditedTitle(chat.summary || chat.firstPrompt || '');
+                                          }}
+                                      >
+                                        ✎
+                                      </span>
+                                    </>
+                                )}
                               </div>
                             </div>
                         ))}
@@ -221,7 +300,7 @@ function Chat() {
                                     <h3>{block.title}</h3>
                                     {block.items.map((item, k) => (
                                         <div key={k}>
-                                          <strong>{item.name}</strong>: {item.purpose}<br />
+                                          <strong>{item.name}</strong>: {item.purpose}<br/>
                                           <em>Recommended: {item.recommended}</em>
                                         </div>
                                     ))}
