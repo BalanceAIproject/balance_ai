@@ -9,7 +9,7 @@ function groupChatsByDate(chatHistory) {
 
   for (const chat of chatHistory) {
     const dt = new Date(chat.timestamp || Date.now());
-    const key = dt.toISOString().split('T')[0];
+    const key = dt.toLocaleDateString('en-CA');
 
     if (!grouped[key]) grouped[key] = [];
     grouped[key].push({
@@ -23,16 +23,15 @@ function groupChatsByDate(chatHistory) {
       (a, b) => new Date(b[0]) - new Date(a[0])
   );
 
-  const today = new Date().toDateString();
+  const today = new Date().toLocaleDateString('en-CA');
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toDateString();
+  const yesterdayStr = yesterday.toLocaleDateString('en-CA');
 
   return sorted.map(([dateKey, chats]) => {
-    const labelDate = new Date(dateKey).toDateString();
-    let label = labelDate;
-    if (labelDate === today) label = 'Today';
-    else if (labelDate === yesterdayStr) label = 'Yesterday';
+    let label;
+    if (dateKey === today) label = 'Today';
+    else if (dateKey === yesterdayStr) label = 'Yesterday';
     else label = new Date(dateKey).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 
     return [label, chats];
