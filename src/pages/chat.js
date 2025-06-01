@@ -284,31 +284,33 @@ function Chat() {
                       <div key={i} className="chat-turn">
                         <div><strong>You:</strong> {entry.userPrompt}</div>
                         <div><strong>Agent:</strong> {entry.agentReply}</div>
-                        {(entry.suggestedBlocks || []).map((block, j) => {
+                       <div className="blocks-container">
+                        {entry.suggestedBlocks.map((block, j) => {
                           switch (block.type) {
                             case 'CHECKLIST':
                               return (
-                                  <div key={j} className="block checklist">
-                                    <h3>{block.title}</h3>
-                                    <ul>{block.items.map((item, k) => <li key={k}>{item}</li>)}</ul>
-                                  </div>
+                                <div key={j} className="block checklist">
+                                  <h3>{block.title}</h3>
+                                  <ul>{block.items.map((item, k) => <li key={k}>{item}</li>)}</ul>
+                                </div>
                               );
                             case 'RESOURCE_CARD':
                               return (
-                                  <div key={j} className="block resource">
-                                    <h3>{block.title}</h3>
-                                    {block.items.map((item, k) => (
-                                        <div key={k}>
-                                          <strong>{item.name}</strong>: {item.purpose}<br/>
-                                          <em>Recommended: {item.recommended}</em>
-                                        </div>
-                                    ))}
-                                  </div>
+                                <div key={j} className="block resource">
+                                  <h3>{block.title}</h3>
+                                  {block.items.map((item, k) => (
+                                    <div key={k}>
+                                      <strong>{item.name}</strong>: {item.purpose}<br />
+                                      <em>Recommended: {item.recommended}</em>
+                                    </div>
+                                  ))}
+                                </div>
                               );
                             default:
                               return null;
                           }
                         })}
+                      </div>
                       </div>
                   ))}
                 </div>

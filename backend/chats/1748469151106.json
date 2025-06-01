@@ -1,0 +1,33 @@
+[
+  {
+    "timestamp": "2025-05-28T21:52:38.469Z",
+    "userPrompt": "help me write a book",
+    "agentReply": "I will break down the user's request into UI blocks.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Exploring Writing a Book",
+        "items": [
+          "Research book genres and choose one",
+          "Create an outline for the book"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for Writing a Book",
+        "items": [
+          {
+            "name": "Writing Software",
+            "purpose": "To organize and write your book efficiently",
+            "recommended": "Consider tools like Scrivener or Microsoft Word"
+          },
+          {
+            "name": "Writing Prompts",
+            "purpose": "To overcome writer's block and spark creativity",
+            "recommended": "Try websites like Reedsy or DIY MFA"
+          }
+        ]
+      }
+    ]
+  }
+]

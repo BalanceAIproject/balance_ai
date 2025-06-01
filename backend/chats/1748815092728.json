@@ -1,0 +1,130 @@
+[
+  {
+    "timestamp": "2025-06-01T21:58:23.910Z",
+    "userPrompt": "help me start a podcast",
+    "agentReply": "I will break down the user's request into UI blocks.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Podcast Setup Checklist",
+        "items": [
+          "Define podcast topic and format",
+          "Choose podcast hosting platform",
+          "Get necessary recording equipment",
+          "Create podcast cover art",
+          "Plan and record first few episodes",
+          "Set up podcast distribution channels"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for Starting a Podcast",
+        "items": [
+          {
+            "name": "Anchor",
+            "purpose": "Free platform for podcast hosting and distribution",
+            "recommended": "Create a consistent schedule for releasing episodes"
+          },
+          {
+            "name": "Audacity",
+            "purpose": "Free audio editing software",
+            "recommended": "Watch tutorials on editing techniques"
+          },
+          {
+            "name": "Canva",
+            "purpose": "Design tool for creating podcast cover art",
+            "recommended": "Use high-quality images and fonts for a professional look"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-06-01T21:58:23.925Z",
+    "userPrompt": "help me start a podcast",
+    "agentReply": "Breaking down the user prompt into UI blocks",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Checklist for Starting a Podcast",
+        "items": [
+          "Research podcast topics and target audience",
+          "Create a content plan and episode structure",
+          "Choose recording equipment and software",
+          "Record and edit podcast episodes",
+          "Select a podcast hosting platform",
+          "Promote your podcast on social media and other channels"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for Starting a Podcast",
+        "items": [
+          {
+            "name": "Anchor",
+            "purpose": "All-in-one platform for podcast creation, hosting, and distribution",
+            "recommended": "Engage with your audience through listener messages"
+          },
+          {
+            "name": "Audacity",
+            "purpose": "Free, open-source software for recording and editing audio",
+            "recommended": "Explore tutorials for beginners to learn editing techniques"
+          },
+          {
+            "name": "Canva",
+            "purpose": "Graphic design tool for creating podcast cover art and promotional graphics",
+            "recommended": "Use templates for a professional look"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-06-01T21:58:49.404Z",
+    "userPrompt": "about sustainable living",
+    "agentReply": "Breaking down the user request into UI blocks",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Podcast Setup Checklist",
+        "items": [
+          "Define podcast topic and target audience",
+          "Choose podcast format and style",
+          "Select podcast hosting platform",
+          "Get necessary recording equipment",
+          "Create podcast artwork and branding",
+          "Plan and record episodes",
+          "Edit and finalize episodes",
+          "Publish episodes on hosting platform",
+          "Promote podcast on social media and other channels"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for Starting a Podcast",
+        "items": [
+          {
+            "name": "Anchor",
+            "purpose": "All-in-one platform for recording, hosting, and distributing podcasts",
+            "recommended": "Consider using their free hosting service to start"
+          },
+          {
+            "name": "Audacity",
+            "purpose": "Free audio editing software for podcast editing",
+            "recommended": "Great for beginners and offers advanced features"
+          },
+          {
+            "name": "Canva",
+            "purpose": "Graphic design tool for creating podcast artwork and promotional materials",
+            "recommended": "Use templates for professional designs"
+          },
+          {
+            "name": "Podcast Insights - How to Start a Podcast",
+            "purpose": "Comprehensive guide on starting a podcast from planning to promotion",
+            "recommended": "Valuable resource for beginners"
+          }
+        ]
+      }
+    ]
+  }
+]

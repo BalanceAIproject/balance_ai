@@ -1,0 +1,90 @@
+[
+  {
+    "timestamp": "2025-06-01T21:31:57.893Z",
+    "userPrompt": "help me start a bakery",
+    "agentReply": "Breaking down the user's request into UI blocks",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Checklist for Starting a Bakery",
+        "items": [
+          "Research bakery business",
+          "Create a business plan",
+          "Find a suitable location",
+          "Obtain necessary permits and licenses",
+          "Purchase equipment and supplies",
+          "Hire staff (if needed)",
+          "Create a menu",
+          "Market your bakery"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for Starting a Bakery",
+        "items": [
+          {
+            "name": "Bakery Business Plan Template",
+            "purpose": "To help you structure your business plan effectively",
+            "recommended": "Include financial projections and market analysis"
+          },
+          {
+            "name": "Small Business Administration (SBA) Guide",
+            "purpose": "Provides information on permits, licenses, and regulations",
+            "recommended": "Check local regulations as well"
+          },
+          {
+            "name": "Commercial Bakery Equipment List",
+            "purpose": "Lists essential equipment needed for a bakery",
+            "recommended": "Consider both new and used options to save costs"
+          },
+          {
+            "name": "Marketing Strategies for Bakeries",
+            "purpose": "Offers tips on promoting your bakery and attracting customers",
+            "recommended": "Utilize social media and local advertising"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "timestamp": "2025-06-01T21:50:13.874Z",
+    "userPrompt": "help me start a chocolate factory",
+    "agentReply": "Breaking down the user's request into UI blocks",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Starting a Chocolate Factory",
+        "items": [
+          "Research chocolate market",
+          "Create a business plan",
+          "Secure funding",
+          "Find a suitable location",
+          "Source equipment and ingredients",
+          "Hire staff",
+          "Market your products"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources",
+        "items": [
+          {
+            "name": "Chocolate Making Equipment",
+            "purpose": "To produce chocolate products efficiently",
+            "recommended": "Look for reliable suppliers"
+          },
+          {
+            "name": "Chocolate Recipe Books",
+            "purpose": "To experiment with different chocolate recipes",
+            "recommended": "Try recipes from renowned chocolatiers"
+          },
+          {
+            "name": "Business Plan Template",
+            "purpose": "To outline your chocolate factory business strategy",
+            "recommended": "Customize it to your specific needs"
+          }
+        ]
+      }
+    ]
+  }
+]

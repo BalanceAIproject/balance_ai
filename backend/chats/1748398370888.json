@@ -1,0 +1,36 @@
+[
+  {
+    "timestamp": "2025-05-28T02:13:02.976Z",
+    "userPrompt": "help me bake a chocolate cake",
+    "agentReply": "Breaking down the user's request into UI blocks for baking a chocolate cake",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Baking a Chocolate Cake",
+        "items": [
+          "Gather Ingredients",
+          "Preheat Oven",
+          "Prepare Cake Batter",
+          "Bake the Cake",
+          "Cool and Frost Cake"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources",
+        "items": [
+          {
+            "name": "Chocolate Cake Recipe",
+            "purpose": "Step-by-step guide on baking a chocolate cake",
+            "recommended": "Use high-quality chocolate for better taste"
+          },
+          {
+            "name": "Baking Tips",
+            "purpose": "Tips for successful baking",
+            "recommended": "Measure ingredients accurately"
+          }
+        ]
+      }
+    ]
+  }
+]

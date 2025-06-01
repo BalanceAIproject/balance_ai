@@ -1,0 +1,33 @@
+[
+  {
+    "timestamp": "2025-05-28T23:36:45.681Z",
+    "userPrompt": null,
+    "agentReply": "Welcome to the Creative Writing Workshop! Get ready to explore innovative storytelling techniques and enhance your writing skills in a collaborative space.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Workshop Checklist",
+        "items": [
+          "Attend the next live session",
+          "Engage with writing prompts"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Writing Resources",
+        "items": [
+          {
+            "name": "Character Development Tool",
+            "purpose": "Craft compelling characters",
+            "recommended": "Try creating character profiles"
+          },
+          {
+            "name": "Narrative Structure Guide",
+            "purpose": "Explore different storytelling frameworks",
+            "recommended": "Experiment with non-linear structures"
+          }
+        ]
+      }
+    ]
+  }
+]

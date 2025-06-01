@@ -1,0 +1,36 @@
+[
+  {
+    "timestamp": "2025-05-28T21:54:43.180Z",
+    "userPrompt": "help me with creating a new business",
+    "agentReply": "I will break down the user's request into UI blocks.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Exploring New Business Creation",
+        "items": [
+          "Research market trends",
+          "Identify target audience",
+          "Create a business plan",
+          "Register business name",
+          "Set up legal structure"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for New Business Creation",
+        "items": [
+          {
+            "name": "Business Plan Template",
+            "purpose": "A guide to structuring your business plan",
+            "recommended": "Include financial projections"
+          },
+          {
+            "name": "LegalZoom",
+            "purpose": "Legal services for business registration",
+            "recommended": "Consult a lawyer for complex legal matters"
+          }
+        ]
+      }
+    ]
+  }
+]
