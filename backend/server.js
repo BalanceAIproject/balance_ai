@@ -452,7 +452,7 @@ The 'suggestedBlocks' should be relevant initial blocks for this new topic.
       timestamp: newTimestamp,
       // For UserProfilePage card preview (titles/types)
       blocksTitle: (parsedBlockData.suggestedBlocks || []).map(b => b.title || b.type || "New Block"),
-      blockContent:(parsedBlockData.suggestedBlocks || []).map(b => b.items || "Some text in here...."),
+      blockContent:(parsedBlockData.suggestedBlocks || []).map(b => b.items || "Some text in here...."), //NHAN ADDED
       status: 'Active',
       videoTitles: [],
       initialEntry: initialChatEntry // Full initial entry for chat.js
