@@ -1,0 +1,30 @@
+[
+  {
+    "timestamp": "2025-05-30T23:44:16.753Z",
+    "userPrompt": "help me create a user flow",
+    "agentReply": "I will break down the user's request into UI blocks.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "User Flow Creation",
+        "items": [
+          "Define user goals",
+          "Map out user actions",
+          "Design user interface",
+          "Test user flow"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources",
+        "items": [
+          {
+            "name": "User Flow Tool",
+            "purpose": "To visually map out user journeys",
+            "recommended": "Consider including different user personas"
+          }
+        ]
+      }
+    ]
+  }
+]

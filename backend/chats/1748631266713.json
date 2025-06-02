@@ -1,0 +1,41 @@
+[
+  {
+    "timestamp": "2025-05-30T18:54:47.949Z",
+    "userPrompt": "help me create a project about ai",
+    "agentReply": "I will break down the user's prompt into UI blocks.",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Project Creation Checklist",
+        "items": [
+          "Define project scope",
+          "Research AI technologies",
+          "Create project timeline",
+          "Identify team members",
+          "Set project goals"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for AI Project",
+        "items": [
+          {
+            "name": "AI Project Management Tool",
+            "purpose": "Organize tasks and track progress efficiently",
+            "recommended": "Consider using Trello or Asana"
+          },
+          {
+            "name": "AI Development Platform",
+            "purpose": "Build and deploy AI models",
+            "recommended": "Explore TensorFlow or PyTorch"
+          },
+          {
+            "name": "AI Datasets",
+            "purpose": "Training data for AI models",
+            "recommended": "Check Kaggle or UCI Machine Learning Repository"
+          }
+        ]
+      }
+    ]
+  }
+]

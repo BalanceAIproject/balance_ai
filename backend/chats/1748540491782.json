@@ -1,0 +1,41 @@
+[
+  {
+    "timestamp": "2025-05-29T17:41:47.378Z",
+    "userPrompt": "Help me start a podcast about computer science",
+    "agentReply": "Breaking down the user prompt into UI blocks",
+    "suggestedBlocks": [
+      {
+        "type": "CHECKLIST",
+        "title": "Podcast Setup Checklist",
+        "items": [
+          "Choose a podcast name",
+          "Select podcast format",
+          "Prepare podcast equipment",
+          "Create podcast cover art",
+          "Decide on podcast hosting platform"
+        ]
+      },
+      {
+        "type": "RESOURCE_CARD",
+        "title": "Resources for Starting a Podcast",
+        "items": [
+          {
+            "name": "Microphone",
+            "purpose": "To record high-quality audio",
+            "recommended": "Consider investing in a USB condenser microphone for better sound quality"
+          },
+          {
+            "name": "Editing Software",
+            "purpose": "To edit and enhance audio recordings",
+            "recommended": "Audacity or Adobe Audition are popular choices"
+          },
+          {
+            "name": "Hosting Platform",
+            "purpose": "To host and distribute podcast episodes",
+            "recommended": "Platforms like Podbean, Anchor, or Buzzsprout"
+          }
+        ]
+      }
+    ]
+  }
+]
