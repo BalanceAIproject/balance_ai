@@ -1,0 +1,17 @@
+{
+  "type": "CHECKLIST",
+  "description": "A block for creating a list of items with checkboxes. Use for tasks, to-do items, or a series of steps.",
+  "schema": {
+    "title": {
+      "type": "string",
+      "description": "The main title or heading for the checklist."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array of strings, where each string represents an individual checklist item."
+    }
+  }
+}

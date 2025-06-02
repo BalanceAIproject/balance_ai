@@ -1,0 +1,32 @@
+{
+  "type": "RESOURCE_CARD",
+  "description": "A block for listing resources, tools, or links. Each item can have a name, purpose, and optional recommendations.",
+  "schema": {
+    "title": {
+      "type": "string",
+      "description": "The title for the resource card (e.g., 'Helpful Tools', 'Further Reading')."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the resource or tool."
+          },
+          "purpose": {
+            "type": "string",
+            "description": "A brief explanation of what the resource is or why it's useful."
+          },
+          "recommended": {
+            "type": "string",
+            "description": "Optional tips, specific use cases, or recommendations for the resource."
+          }
+        },
+        "required": ["name", "purpose"]
+      },
+      "description": "An array of objects, where each object represents a resource."
+    }
+  }
+}

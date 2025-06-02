@@ -503,10 +503,43 @@ html, body {
 }
 
 .block-text {
-    font-size: 0.8rem;
+    font-size: 0.8rem; /* Default for block text area */
     line-height: 1.4;
     color: #555;
     flex-grow: 1;
+    display: flex; /* Added to help with alignment of children */
+    flex-direction: column; /* Added for vertical stacking of items */
+    gap: 4px; /* Added space between items */
+}
+
+/* Styles for specific content items within the block preview */
+.block-content-item {
+    font-family: Arial, sans-serif;
+    font-size: 0.78rem; /* Slightly increased for legibility */
+    line-height: 1.35;
+    color: #333; /* Darker color for better visibility */
+    margin: 0 0 3px 0; 
+    word-wrap: break-word; 
+}
+
+.resource-name {
+    font-family: Arial, sans-serif;
+    font-weight: 600; /* Increased font-weight */
+    font-size: 0.82rem; /* Slightly increased */
+    color: #222; /* Darker color */
+}
+
+.resource-purpose {
+    font-family: Arial, sans-serif;
+    font-size: 0.72rem; 
+    color: #555; /* Darker color */
+}
+
+.block-content-more {
+    font-family: Arial, sans-serif;
+    font-size: 0.72rem;
+    color: #666; /* Adjusted color */
+    font-style: italic;
 }
 
 .canvas-title {

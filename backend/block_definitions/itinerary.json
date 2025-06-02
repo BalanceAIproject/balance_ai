@@ -1,0 +1,48 @@
+{
+  "type": "ITINERARY_BLOCK",
+  "description": "A block for outlining a schedule, itinerary, or a multi-step plan, often organized by days or phases with activities for different times.",
+  "schema": {
+    "title": {
+      "type": "string",
+      "description": "The main title for the itinerary (e.g., 'Sample Austin Itinerary', 'Project Timeline')."
+    },
+    "introduction": {
+      "type": "string",
+      "description": "A brief overview or introduction to the itinerary."
+    },
+    "days": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dayLabel": {
+            "type": "string",
+            "description": "Label for the day or phase (e.g., 'Day 1', 'Phase A')."
+          },
+          "morning": {
+            "type": "string",
+            "description": "Activities or tasks for the morning. Can be a short description or a list."
+          },
+          "afternoon": {
+            "type": "string",
+            "description": "Activities or tasks for the afternoon."
+          },
+          "evening": {
+            "type": "string",
+            "description": "Activities or tasks for the evening."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Optional additional notes for this day/phase."
+          }
+        },
+        "required": ["dayLabel"]
+      },
+      "description": "An array of objects, where each object represents a day or phase in the itinerary."
+    },
+    "conclusion": {
+      "type": "string",
+      "description": "Optional concluding remarks or notes for the entire itinerary."
+    }
+  }
+}

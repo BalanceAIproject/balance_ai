@@ -371,9 +371,13 @@ const UserProfilePage = () => {
                                         const displayItems = [];
                                         const MAX_PREVIEW_ITEMS = 4;
 
-                                        (canvas.blocks || []).forEach(blockTitle => {
+                                        // Assuming canvas.blocks is an array of full block objects
+                                        (canvas.blocks || []).forEach(block => { // block is an object
                                             if (displayItems.length < MAX_PREVIEW_ITEMS) {
-                                                displayItems.push({ type: 'text', title: blockTitle });
+                                                displayItems.push({
+                                                    type: 'block', // A generic type for blocks from canvas.blocks
+                                                    blockData: block // Store the whole block object
+                                                });
                                             }
                                         });
 
@@ -388,11 +392,46 @@ const UserProfilePage = () => {
                                         }
 
                                         return displayItems.map((item, i) => {
-                                            if (item.type === 'text') {
+                                            if (item.type === 'block') {
+                                                const block = item.blockData;
+                                                let contentPreview = null;
+
+                                                if (block && block.type === 'CHECKLIST') {
+                                                    contentPreview = (block.items || []).slice(0, 2).map((checklistItem, index) => (
+                                                        <p key={`${canvas.id}-cl-${i}-${index}`} className="block-content-item">{checklistItem}</p>
+                                                    ));
+                                                    if ((block.items || []).length > 2) {
+                                                        contentPreview.push(<p key={`${canvas.id}-cl-${i}-more`} className="block-content-more">...</p>);
+                                                    }
+                                                } else if (block && block.type === 'RESOURCE_CARD') {
+                                                    contentPreview = (block.items || []).slice(0, 1).map((resourceItem, index) => (
+                                                        <div key={`${canvas.id}-rc-${i}-${index}`}>
+                                                            <p className="block-content-item resource-name">{resourceItem.name}</p>
+                                                            <p className="block-content-item resource-purpose">{resourceItem.purpose ? resourceItem.purpose.substring(0, 50) + (resourceItem.purpose.length > 50 ? '...' : '') : ''}</p>
+                                                        </div>
+                                                    ));
+                                                     if ((block.items || []).length > 1) {
+                                                        contentPreview.push(<p key={`${canvas.id}-rc-${i}-more`} className="block-content-more">...</p>);
+                                                    }
+                                                } else if (block && typeof block.items === 'string') {
+                                                    contentPreview = <p className="block-content-item">{block.items.substring(0, 70)}{block.items.length > 70 ? '...' : ''}</p>;
+                                                } else if (block && block.title && (!block.items || (Array.isArray(block.items) && block.items.length === 0))) {
+                                                    // If block has a title but no items or empty items array
+                                                    contentPreview = <p className="block-content-item"><i>No content items in this block.</i></p>;
+                                                }
+                                                else {
+                                                    // Fallback for other block types or if block structure is not as expected
+                                                    contentPreview = <p className="block-content-item">Content preview not available.</p>;
+                                                    // If block itself is a string (legacy or unexpected format)
+                                                    if(typeof block === 'string') {
+                                                        contentPreview = <p className="block-content-item">{block.substring(0,70)}{block.length > 70 ? '...' : ''}</p>;
+                                                    }
+                                                }
+
                                                 return (
-                                                    <div className="canvas-block" key={`text-${canvas.id}-${i}`}>
-                                                        <div className="block-title">{item.title}</div>
-                                                        <div className="block-text">Insert text here...</div>
+                                                    <div className="canvas-block" key={`block-${canvas.id}-${i}`}>
+                                                        <div className="block-title">{block ? block.title : 'Untitled Block'}</div>
+                                                        <div className="block-text">{contentPreview}</div>
                                                     </div>
                                                 );
                                             } else if (item.type === 'video') {

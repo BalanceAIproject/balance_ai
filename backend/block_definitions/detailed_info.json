@@ -1,0 +1,54 @@
+{
+  "type": "DETAILED_INFO_BLOCK",
+  "description": "A block for presenting detailed information, potentially with sub-sections and lists. Use for researched content, guides, or explanations.",
+  "schema": {
+    "title": {
+      "type": "string",
+      "description": "The main title for the information block (e.g., 'Austin Highlights', 'Project Overview')."
+    },
+    "introduction": {
+      "type": "string",
+      "description": "An introductory paragraph or overview for the information presented."
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "heading": {
+            "type": "string",
+            "description": "The heading for this specific section (e.g., 'Music and Entertainment', 'Key Features')."
+          },
+          "content": {
+            "type": "string",
+            "description": "A paragraph of text content for this section. Can include markdown for simple formatting like bold or italics, but not lists here."
+          },
+          "listItems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "The text for a list item."
+                },
+                "details": {
+                  "type": "string",
+                  "description": "Optional further details or sub-text for the list item."
+                },
+                "link": {
+                  "type": "string",
+                  "description": "Optional URL link associated with the list item."
+                }
+              },
+              "required": ["text"]
+            },
+            "description": "An optional list of items related to this section. Each item can have text, details, and a link."
+          }
+        },
+        "required": ["heading"]
+      },
+      "description": "An array of objects, where each object represents a distinct section of information."
+    }
+  }
+}

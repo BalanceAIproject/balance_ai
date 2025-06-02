@@ -1,0 +1,36 @@
+{
+  "type": "PREFERENCES_INPUT_BLOCK",
+  "description": "A block for collecting specific user preferences or inputs. Use this to ask targeted questions to tailor future suggestions.",
+  "schema": {
+    "title": {
+      "type": "string",
+      "description": "The main title for the preferences input section (e.g., 'Trip Planning Preferences', 'Project Details')."
+    },
+    "introduction": {
+      "type": "string",
+      "description": "A brief introductory text explaining why these preferences are being asked."
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "The label for the input field (e.g., 'Length of stay', 'Travel style', 'Budget')."
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "Placeholder text for the input field (e.g., 'Enter a value', 'e.g., 3 days, 1 week')."
+          },
+          "inputType": {
+            "type": "string",
+            "description": "Suggested type of input, e.g., 'text', 'number', 'date'. (Frontend can interpret this). Default to 'text'."
+          }
+        },
+        "required": ["label"]
+      },
+      "description": "An array of objects, where each object represents an input field for a user preference."
+    }
+  }
+}

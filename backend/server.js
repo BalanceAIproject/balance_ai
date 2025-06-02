@@ -171,8 +171,7 @@ app.get("/chat-history", (req, res) => {
 
       let title = 'Untitled Canvas';
       let description = 'No description available.';
-      let blocksTitle = [];
-      let blocksContent = [];
+      let blocks = []; // Initialize blocks as an empty array
       let status = 'Active';
       let videoTitles = [];
       let firstPrompt = '';
@@ -184,13 +183,13 @@ app.get("/chat-history", (req, res) => {
             for (const entry of chatData) {
               if (entry.userPrompt) {
                 firstPrompt = entry.userPrompt;
-                break;
+                break; // Found the first user prompt
               }
             }
             const lastEntry = chatData[chatData.length - 1];
-            if (lastEntry?.suggestedBlocks?.length) {
-              blocksTitle = lastEntry.suggestedBlocks.map(block => block.title || block.type || 'Unnamed Block');
-              blocksContent= lastEntry.suggestedBlocks.map(block => block.items || "No content"); //NHAN ADDED
+            // Directly use suggestedBlocks if available, otherwise keep blocks as empty array
+            if (lastEntry && lastEntry.suggestedBlocks && Array.isArray(lastEntry.suggestedBlocks)) {
+              blocks = lastEntry.suggestedBlocks;
             }
           }
         } catch (e) {
@@ -216,14 +215,13 @@ app.get("/chat-history", (req, res) => {
         title,
         description,
         timestamp,
-        blocksTitle,
-        blocksContent, //NHAN ADDED
+        blocks, // Send the full blocks array
         status,
         videoTitles,
-        firstPrompt 
+        firstPrompt
       };
     })
-    .sort((a, b) => b.timestamp - a.timestamp); 
+    .sort((a, b) => b.timestamp - a.timestamp);
 
   res.json(chatFilesData);
 });
@@ -450,9 +448,8 @@ The 'suggestedBlocks' should be relevant initial blocks for this new topic.
       title: newChatTitle, // From first AI call
       description: newChatDescription, // From first AI call
       timestamp: newTimestamp,
-      // For UserProfilePage card preview (titles/types)
-      blocksTitle: (parsedBlockData.suggestedBlocks || []).map(b => b.title || b.type || "New Block"),
-      blockContent:(parsedBlockData.suggestedBlocks || []).map(b => b.items || "Some text in here...."), //NHAN ADDED
+      // For UserProfilePage card preview, send the actual blocks
+      blocks: parsedBlockData.suggestedBlocks || [], // Send full blocks
       status: 'Active',
       videoTitles: [],
       initialEntry: initialChatEntry // Full initial entry for chat.js
