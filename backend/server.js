@@ -171,7 +171,8 @@ app.get("/chat-history", (req, res) => {
 
       let title = 'Untitled Canvas';
       let description = 'No description available.';
-      let blocks = [];
+      let blocksTitle = [];
+      let blocksContent = [];
       let status = 'Active';
       let videoTitles = [];
       let firstPrompt = '';
@@ -188,7 +189,8 @@ app.get("/chat-history", (req, res) => {
             }
             const lastEntry = chatData[chatData.length - 1];
             if (lastEntry?.suggestedBlocks?.length) {
-              blocks = lastEntry.suggestedBlocks.map(block => block.title || block.type || 'Unnamed Block');
+              blocksTitle = lastEntry.suggestedBlocks.map(block => block.title || block.type || 'Unnamed Block');
+              blocksContent= lastEntry.suggestedBlocks.map(block => block.items || "No content"); //NHAN ADDED
             }
           }
         } catch (e) {
@@ -214,7 +216,8 @@ app.get("/chat-history", (req, res) => {
         title,
         description,
         timestamp,
-        blocks,
+        blocksTitle,
+        blocksContent, //NHAN ADDED
         status,
         videoTitles,
         firstPrompt 
@@ -411,6 +414,7 @@ The 'suggestedBlocks' should be relevant initial blocks for this new topic.
     let parsedBlockData;
     try {
       parsedBlockData = JSON.parse(rawBlockData);
+      console.log(parsedBlockData);
     } catch (blockParseError) {
       console.error("OpenAI did not return valid JSON for block generation. Raw response:\n", rawBlockData);
       // Fallback to a generic reply and empty blocks if block generation fails
@@ -447,7 +451,8 @@ The 'suggestedBlocks' should be relevant initial blocks for this new topic.
       description: newChatDescription, // From first AI call
       timestamp: newTimestamp,
       // For UserProfilePage card preview (titles/types)
-      blocks: (parsedBlockData.suggestedBlocks || []).map(b => b.title || b.type || "New Block"),
+      blocksTitle: (parsedBlockData.suggestedBlocks || []).map(b => b.title || b.type || "New Block"),
+      blockContent:(parsedBlockData.suggestedBlocks || []).map(b => b.items || "Some text in here...."),
       status: 'Active',
       videoTitles: [],
       initialEntry: initialChatEntry // Full initial entry for chat.js
