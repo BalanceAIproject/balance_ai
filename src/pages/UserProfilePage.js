@@ -397,24 +397,30 @@ const UserProfilePage = () => {
                                                 let contentPreview = null;
 
                                                 if (block && block.type === 'CHECKLIST') {
-                                                    contentPreview = (block.items || []).slice(0, 2).map((checklistItem, index) => (
+                                                    const checklistItemsToShow = 3; // Show more checklist items
+                                                    contentPreview = (block.items || []).slice(0, checklistItemsToShow).map((checklistItem, index) => (
                                                         <p key={`${canvas.id}-cl-${i}-${index}`} className="block-content-item">{checklistItem}</p>
                                                     ));
-                                                    if ((block.items || []).length > 2) {
+                                                    if ((block.items || []).length > checklistItemsToShow) {
                                                         contentPreview.push(<p key={`${canvas.id}-cl-${i}-more`} className="block-content-more">...</p>);
                                                     }
                                                 } else if (block && block.type === 'RESOURCE_CARD') {
-                                                    contentPreview = (block.items || []).slice(0, 1).map((resourceItem, index) => (
+                                                    const resourceItemsToShow = 1; // Keep showing 1 resource item, but more of its purpose
+                                                    const purposeCharLimit = 100; // Increased character limit for purpose
+                                                    contentPreview = (block.items || []).slice(0, resourceItemsToShow).map((resourceItem, index) => (
                                                         <div key={`${canvas.id}-rc-${i}-${index}`}>
                                                             <p className="block-content-item resource-name">{resourceItem.name}</p>
-                                                            <p className="block-content-item resource-purpose">{resourceItem.purpose ? resourceItem.purpose.substring(0, 50) + (resourceItem.purpose.length > 50 ? '...' : '') : ''}</p>
+                                                            <p className="block-content-item resource-purpose">
+                                                                {resourceItem.purpose ? resourceItem.purpose.substring(0, purposeCharLimit) + (resourceItem.purpose.length > purposeCharLimit ? '...' : '') : ''}
+                                                            </p>
                                                         </div>
                                                     ));
-                                                     if ((block.items || []).length > 1) {
+                                                     if ((block.items || []).length > resourceItemsToShow) {
                                                         contentPreview.push(<p key={`${canvas.id}-rc-${i}-more`} className="block-content-more">...</p>);
                                                     }
                                                 } else if (block && typeof block.items === 'string') {
-                                                    contentPreview = <p className="block-content-item">{block.items.substring(0, 70)}{block.items.length > 70 ? '...' : ''}</p>;
+                                                    const stringCharLimit = 120; // Increased character limit for generic string items
+                                                    contentPreview = <p className="block-content-item">{block.items.substring(0, stringCharLimit)}{block.items.length > stringCharLimit ? '...' : ''}</p>;
                                                 } else if (block && block.title && (!block.items || (Array.isArray(block.items) && block.items.length === 0))) {
                                                     // If block has a title but no items or empty items array
                                                     contentPreview = <p className="block-content-item"><i>No content items in this block.</i></p>;
