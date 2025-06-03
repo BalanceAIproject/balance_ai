@@ -7,6 +7,11 @@ import TopBar from '../components/TopBar';
 const SettingsPage = ({ onClose }) => {
     const navigate = useNavigate();
     const [showSaveSuccess, setShowSaveSuccess] = useState(false);
+    const [showPictureOptions, setShowPictureOptions] = useState(false);
+    const [selectedPicture, setSelectedPicture] = useState(null);
+    const [profilePicture, setProfilePicture] = useState(null); // actual current picture
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -52,11 +57,19 @@ const SettingsPage = ({ onClose }) => {
             </div>
 
             <div className="profile-info-section">
-                <img
-                    className="profile-photo-large"
-                    src="/images/profile-pic.jpg"
-                    alt="User Profile"
-                />
+                <div style={{position: "relative"}}>
+                    <img
+                        className="profile-photo-large"
+                        src={profilePicture || "/images/green.png"}
+                        alt="User Profile"
+                    />
+                    <button
+                        onClick={() => setShowPictureOptions(true)}
+                        className="edit-profile-picture-button"
+                    >
+                        ✎
+                    </button>
+                </div>
                 <div className="profile-text-info">
                     <h2 className="profile-name">{formData.fullName || 'User Name'}</h2>
                     <h3 className="profile-email">{formData.email || 'username@gmail.com'}</h3>
@@ -136,6 +149,35 @@ const SettingsPage = ({ onClose }) => {
                                 Cancel
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+            {showPictureOptions && (
+                <div className="logout-modal-overlay">
+                    <div className="logout-modal">
+                        <p>Choose new profile picture!</p>
+                        <div className="profile-pic-options">
+                            {["blue", "purple", "red", "pink", "orange", "yellow", "green"].map(color => (
+                                <img
+                                    key={color}
+                                    src={`/images/${color}.png`}
+                                    alt={color}
+                                    className="profile-pic-option"
+                                    onClick={() => {
+                                        setSelectedPicture(`/images/${color}.png`);
+                                        setShowConfirmModal(true);
+                                        setShowPictureOptions(false);
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+            {showSuccessMessage && (
+                <div className="logout-modal-overlay">
+                    <div className="logout-modal">
+                        <p>Profile Picture update was successful!</p>
                     </div>
                 </div>
             )}

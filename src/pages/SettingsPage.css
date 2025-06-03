@@ -54,6 +54,7 @@
     height: 300px;
     border-radius: 50%;
     object-fit: cover;
+    border: 3.5px solid #e6f0e7;
 }
 
 .profile-text-info {
@@ -104,20 +105,23 @@
 
 .input-group input {
     padding: 40px 48px;
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1.9rem;
+    font-weight: 500;
     border-radius: 999px;
     border: none;
     background-color: #fff;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
-    text-align: center;
+    text-align: left;
     width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .input-group label {
     font-size: 2.2rem;
-    font-weight: 600;
+    font-weight: 500;
     color: #111;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding-left: 60px;
 }
 
 .logout-button {
@@ -499,4 +503,79 @@
     background-color: #dbe6d1;
     border-color: #dbe6d1;
     color: black
+}
+
+.edit-profile-picture-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #dbe6d1;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    color: black;
+    width: 70px;
+    margin-bottom: -45px;
+}
+
+.edit-profile-picture-button:hover {
+    background-color: rgba(219, 230, 209, 0.6);
+    border: none;
+    color: black;
+}
+
+.profile-pic-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.profile-pic-option {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #cde2bd;
+    transition: transform 0.2s ease;
+}
+
+.profile-pic-option:hover {
+    transform: scale(1.1);
+}
+
+.edit-profile-picture-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #cde2bd;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.profile-pic-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.profile-pic-option {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #cde2bd;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.profile-pic-option:hover {
+    transform: scale(1.1);
 }

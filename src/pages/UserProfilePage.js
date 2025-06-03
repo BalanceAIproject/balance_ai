@@ -248,7 +248,7 @@ const UserProfilePage = () => {
                 </div>
 
                 <aside className="sidebar">
-                    <img src="/images/profile-pic.jpg" alt="User Name" className="profile-pic" />
+                    <img src="/images/green.png" alt="User Name" className="profile-pic" />
                     <h2 className="username">User Name</h2>
                     <p className="user-email">Username@gmail.com</p>
                     <div className="profile-actions">

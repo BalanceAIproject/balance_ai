@@ -155,7 +155,7 @@ function Chat() {
           <div className={`chatbar ${isExpanded ? 'expanded' : 'collapsed'}`}>
             <div className="profile-row">
               <div className="profile-avatar">
-                <img src="/images/profile-pic.jpg" className="profile-image" alt="User" />
+                <img src="/images/green.png" className="profile-image" alt="User" />
               </div>
             </div>
             {isExpanded && (
