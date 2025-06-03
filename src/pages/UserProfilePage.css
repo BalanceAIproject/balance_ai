@@ -121,7 +121,7 @@ html, body {
 }
 
 .profile-actions button {
-    background-color: #f3f9f4;
+    background-color: transparent;
     border: none;
     border-radius: 12px;
     cursor: pointer;
@@ -421,6 +421,7 @@ html, body {
     width: 680px;
     font-size: 1.4rem;
     overflow: visible;
+    margin-bottom: 30px;
 }
 
 .canvas-card:hover {
@@ -436,7 +437,7 @@ html, body {
 }
 
 .canvas-block {
-    padding: 20px;
+    padding: 25px;
     font-size: 1.2rem;
     min-height: 200px;
     border-radius: 12px;
@@ -446,7 +447,7 @@ html, body {
     background-color: #fff;
     overflow: visible;
     position: relative;
-    border: 1px solid #ccc;
+    border: 1px solid #afafaf;
 }
 
 .block-title {

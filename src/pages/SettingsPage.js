@@ -116,7 +116,7 @@ const SettingsPage = ({ onClose }) => {
                         </div>
 
                         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                            <button type="submit" className="logout-button">
+                            <button type="submit" className="save-button">
                                 Save Settings
                             </button>
                         </div>
