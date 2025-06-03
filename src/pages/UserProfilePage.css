@@ -417,7 +417,7 @@ html, body {
     z-index: 5;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, opacity 0.2s ease-out;
-    height: 775px;
+    height: 475px;
     width: 680px;
     font-size: 1.4rem;
     overflow: visible;

@@ -412,7 +412,6 @@ The 'suggestedBlocks' should be relevant initial blocks for this new topic.
     let parsedBlockData;
     try {
       parsedBlockData = JSON.parse(rawBlockData);
-      console.log(parsedBlockData);
     } catch (blockParseError) {
       console.error("OpenAI did not return valid JSON for block generation. Raw response:\n", rawBlockData);
       // Fallback to a generic reply and empty blocks if block generation fails

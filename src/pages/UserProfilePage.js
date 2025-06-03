@@ -369,7 +369,7 @@ const UserProfilePage = () => {
                                 <div className="canvas-preview-grid">
                                     {(() => {
                                         const displayItems = [];
-                                        const MAX_PREVIEW_ITEMS = 4;
+                                        const MAX_PREVIEW_ITEMS = 2;
 
                                         // Assuming canvas.blocks is an array of full block objects
                                         (canvas.blocks || []).forEach(block => { // block is an object
